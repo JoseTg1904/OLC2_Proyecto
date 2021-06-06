@@ -1,0 +1,28 @@
+<app-barra></app-barra>
+
+<div id = "superior">
+  <ngx-codemirror
+  [options] = "editorQueryOptions"
+  [(ngModel)] = "querys"
+  (ngModelChange)="setEditorContent()">
+</ngx-codemirror>
+</div>
+
+<div id = "centro"></div>
+
+<div id = "inferior">
+  <div class = "izquierda">
+    <ngx-codemirror
+    [options] = "codeMirrorOptions"
+    [(ngModel)]="obj"
+    (ngModelChange)="setEditorContent()">
+  </ngx-codemirror>
+  </div>
+  <div class = "derecha">
+    <ngx-codemirror
+    [options] = "codeMirrorOptions"
+    [(ngModel)]="obj"
+    (ngModelChange)="setEditorContent()">
+  </ngx-codemirror>
+  </div>
+</div>
