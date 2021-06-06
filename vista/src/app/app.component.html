@@ -8,17 +8,15 @@
 </ngx-codemirror>
 </div>
 
-<div id = "centro"></div>
-
 <div id = "inferior">
-  <div class = "izquierda">
+  <div id = "izquierda">
     <ngx-codemirror
     [options] = "codeMirrorOptions"
     [(ngModel)]="obj"
     (ngModelChange)="setEditorContent()">
   </ngx-codemirror>
   </div>
-  <div class = "derecha">
+  <div id = "derecha">
     <ngx-codemirror
     [options] = "codeMirrorOptions"
     [(ngModel)]="obj"

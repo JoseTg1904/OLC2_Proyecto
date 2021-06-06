@@ -1,14 +1,17 @@
-.izquierda {
-    float: left;
-    box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
+#superior { 
+    height: 35vh;
 }
 
-#centro {
-    margin: 0 auto;
+#inferior {
+    height: 58vh;
+    width: 100vw;
+    display: flex;
 }
 
-.derecha {
-    float: right;
+#izquierda {
+    width: 50vw;
+}
+
+#derecha {
+    width: 50vw;
 }
