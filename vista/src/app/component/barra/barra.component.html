@@ -1,9 +1,9 @@
-<mat-toolbar color = "primary">
+<mat-toolbar color = "warn">
     <span>Tytus X</span>
 
     <div class = "spacer"></div>
 
-    <button mat-stroked-button [matMenuTriggerFor] = "archivo">Archivo</button>
+    <button mat-raised-button color = "accent" [matMenuTriggerFor] = "archivo">Archivo</button>
     <mat-menu #archivo = "matMenu">
         <button mat-menu-item>
             <mat-icon>attach_file</mat-icon>
@@ -19,7 +19,7 @@
         </button>
     </mat-menu>
 
-    <button mat-stroked-button [matMenuTriggerFor] = "ejecutar">Ejecutar</button>
+    <button mat-raised-button color = "accent" [matMenuTriggerFor] = "ejecutar">Ejecutar</button>
     <mat-menu #ejecutar = "matMenu">
         <button mat-menu-item>
             <mat-icon>keyboard_arrow_up</mat-icon>
@@ -31,7 +31,7 @@
         </button>
     </mat-menu>
 
-    <button mat-stroked-button [matMenuTriggerFor] = "reporte">Reportes</button>
+    <button mat-raised-button color = "accent" [matMenuTriggerFor] = "reporte">Reportes</button>
     <mat-menu #reporte = "matMenu">
         <button mat-menu-item>
             <span>...</span>

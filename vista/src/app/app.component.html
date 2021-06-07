@@ -1,26 +1,28 @@
-<app-barra></app-barra>
+<div id = "barra">
+  <app-barra></app-barra>
+</div>
 
 <div id = "superior">
   <ngx-codemirror
-  [options] = "editorQueryOptions"
-  [(ngModel)] = "querys"
-  (ngModelChange)="setEditorContent()">
-</ngx-codemirror>
+    [options] = "editorQueryOptions"
+    [(ngModel)] = "querys">
+  </ngx-codemirror>
 </div>
+
+<div id = "separador1"></div>
 
 <div id = "inferior">
   <div id = "izquierda">
     <ngx-codemirror
-    [options] = "codeMirrorOptions"
-    [(ngModel)]="obj"
-    (ngModelChange)="setEditorContent()">
-  </ngx-codemirror>
+      [options] = "editorXMLEntradaOptions"
+      [(ngModel)] = "xmlEntrada">
+    </ngx-codemirror>
   </div>
+  <div id = "separador2"></div>
   <div id = "derecha">
     <ngx-codemirror
-    [options] = "codeMirrorOptions"
-    [(ngModel)]="obj"
-    (ngModelChange)="setEditorContent()">
-  </ngx-codemirror>
+      [options] = "editorXMLSalidaOptions"
+      [(ngModel)] = "xmlSalida">
+    </ngx-codemirror>
   </div>
 </div>

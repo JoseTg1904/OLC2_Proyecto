@@ -9,25 +9,46 @@ export class AppComponent {
   title = 'interfaz';
 
   //editor query
-  querys = "Ingrese una query";
+  querys: any = "Ingrese una query";
   editorQueryOptions: any = {
-    theme: 'oceanic-next',
+    theme: 'gruvbox-dark',
+    mode: "application/xquery",
     lineNumbers: true,
-    mode: 'xquery',
+    lineWrapping: true,
+    foldGutter: true,
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
+    autoCloseBrackets: true,
+    matchBrackets: true,
     lint: true
   }
 
-  codeMirrorOptions: any = {
-  theme: 'oceanic-next',
-  mode: 'application/ld+json',
-  lineNumbers: true,
-  lineWrapping: true,
-  foldGutter: true,
-  gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
-  autoCloseBrackets: true,
-  matchBrackets: true,
-  lint: true
-  };
+  //editor XML entrada
+  xmlEntrada: any = "XML Entrada";
+  editorXMLEntradaOptions: any = {
+    theme: 'gruvbox-dark',
+    mode: "application/xml",
+    lineNumbers: true,
+    lineWrapping: true,
+    foldGutter: true,
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
+    autoCloseBrackets: true,
+    matchBrackets: true,
+    lint: true
+  }
+
+  //editor XML Salida
+  xmlSalida: any = "XML Salida";
+  editorXMLSalidaOptions: any = {
+    theme: 'gruvbox-dark',
+    mode: "application/xml",
+    lineNumbers: true,
+    lineWrapping: true,
+    foldGutter: true,
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
+    autoCloseBrackets: true,
+    matchBrackets: true,
+    lint: true
+  }
 
   obj: any;
 

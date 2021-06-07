@@ -12,6 +12,8 @@ import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/lint/lint';
 import 'codemirror/addon/lint/json-lint';
+import 'codemirror/mode/xquery/xquery';
+import 'codemirror/mode/xml/xml';
 
 if (environment.production) {
   enableProdMode();
