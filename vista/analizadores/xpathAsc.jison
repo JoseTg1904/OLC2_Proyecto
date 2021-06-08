@@ -49,8 +49,8 @@
 //Expresiones para validar los strings
 \"[^\"]*\"  {return "tk_stringTexto";}
 \“[^\“]*\“  {return "tk_stringTexto";}
-\'[^\']*\'  {return "tk_charTexto";}
-\‘[^\‘]*\‘  {return "tk_charTexto";}
+\'[^\']*\'  {return "tk_stringTexto";}
+\‘[^\‘]*\‘  {return "tk_stringTexto";}
 
 //Expresion para un identificador
 [a-zA-Z]([a-zA-Z0-9_])* {return "tk_identificador";}
@@ -87,35 +87,39 @@ INICIOPURO :
 
 INICIO : 
     INICIO tk_barra INICIO 
-    | LISTADOPATH;
-
-LISTADOPATH : 
-    INICIALES LISTADOPATH
     | INICIALES;
 
 INICIALES : 
-    tk_punto DIAGONALES DERIVACIONINICIO
-    | identificador PREDICATE
-    | tk_diagonal DERIVACIONINICIO
-    | tk_diagonal tk_diagonal DERIVACIONINICIO           
-    | tk_asterisco PREDICATE
-    | tk_node PREDICATE;
+    tk_punto DIAGONALES DERIVADOSLIMITADO DERIVACIONDIAGONAL
+    | identificador PREDICATE DERIVACIONDIAGONAL
+    | tk_diagonal DERIVACIONPATHS
+    | tk_diagonal tk_diagonal DERIVACIONPATHS           
+    | tk_asterisco PREDICATE DERIVACIONDIAGONAL
+    | tk_node PREDICATE DERIVACIONDIAGONAL;
 
 DIAGONALES : 
     tk_diagonal
     | tk_diagonal tk_diagonal;
 
-DERIVACIONINICIO :
-    tk_punto tk_punto DIAGONALES DERIVACIONINICIO
-    | DERIVADOS
-    | AXES;
+DERIVACIONDIAGONAL : 
+    DIAGONALES DERIVADOS DERIVACIONDIAGONAL
+    | ;
 
-DERIVADOS : 
-    tk_punto DIAGONALES
-    | tk_identificador PREDICATE       
+DERIVACIONPATHS : 
+    DERIVADOS DIAGONALES DERIVACIONPATHS
+    | DERIVADOS ;
+
+DERIVADOSLIMITADO :
+    tk_identificador PREDICATE       
     | tk_asterisco PREDICATE 
     | tk_node PREDICATE
-    | tk_arroba ATRIBUTO;
+    | tk_arroba ATRIBUTO COMPLEMENTOATRIBUTO
+    | AXES ;
+
+DERIVADOS : 
+    tk_punto
+    | tk_punto tk_punto
+    | DERIVADOSLIMITADO ;
 
 COMPLEMENTOATRIBUTO :
     tk_igual tk_stringTexto
