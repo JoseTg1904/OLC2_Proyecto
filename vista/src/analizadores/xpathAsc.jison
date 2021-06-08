@@ -53,7 +53,7 @@
 \‘[^\‘]*\‘  {return "tk_stringTexto";}
 
 //Expresion para un identificador
-[a-zA-Z]([a-zA-Z0-9_])* {return "tk_identificador";}
+[a-zA-Z]([a-zA-Z0-9_])* {tokenList.push("tk_identificador"); return "tk_identificador";}
 
 //Final del archivo
 <<EOF>> return "EOF";
@@ -66,6 +66,10 @@ pero todo esto se ignora*/
 . {}
 
 /lex
+
+%{
+    var tokenList = [];
+%}
 
 //Precedencia de operadores
 %left tk_mod
@@ -83,7 +87,7 @@ pero todo esto se ignora*/
 %%
 
 INICIOPURO :
-    INICIO EOF;
+    INICIO EOF {var a = {"hola": tokenList}; return a};
 
 INICIO : 
     INICIO tk_barra INICIO 
@@ -91,7 +95,7 @@ INICIO :
 
 INICIALES : 
     tk_punto DIAGONALES DERIVADOSLIMITADO DERIVACIONDIAGONAL
-    | identificador PREDICATE DERIVACIONDIAGONAL
+    | tk_identificador PREDICATE DERIVACIONDIAGONAL
     | tk_diagonal DERIVACIONPATHS
     | tk_diagonal tk_diagonal DERIVACIONPATHS           
     | tk_asterisco PREDICATE DERIVACIONDIAGONAL

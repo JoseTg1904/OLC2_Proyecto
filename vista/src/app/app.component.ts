@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import * as analizador from '../analizadores/xpathAsc';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -65,6 +67,7 @@ ngOnInit(){
       }
     }
   }, null, ' ');
+  console.log(analizador.parse("hola"));
 }
 
 setEditorContent() {
