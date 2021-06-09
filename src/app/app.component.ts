@@ -52,26 +52,17 @@ export class AppComponent {
     lint: true
   }
 
-  obj: any;
-
 ngOnInit(){
-  this.obj= JSON.stringify({
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "type": "object",
-    "title": "Object",
-    "additionalProperties": false,
-    "properties": {
-      "string": {
-        "type": "string",
-        "title": "String"
-      }
-    }
-  }, null, ' ');
   console.log(analizador.parse("hola"));
 }
 
-setEditorContent() {
-  // console.log(event, typeof event);
-  console.log(this.obj);
-}
+  abrirXML(files: FileList) {
+    this.xmlEntrada = files.item(0);
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      this.xmlEntrada = fileReader.result;
+      console.log(fileReader.result);
+    }
+    fileReader.readAsText(this.xmlEntrada);
+  }
 }
