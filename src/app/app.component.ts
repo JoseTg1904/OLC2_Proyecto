@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import * as analizador from '../analizadores/xpathAsc';
+import * as XMLasc from '../analizadorXML/index';
 
 @Component({
   selector: 'app-root',
@@ -64,5 +65,12 @@ ngOnInit(){
       console.log(fileReader.result);
     }
     fileReader.readAsText(this.xmlEntrada);
+  }
+
+  ejecutarAscendente(){
+    console.log("si?")
+    let ascXML = new XMLasc.AnalizadorASCXML();
+    let retorno = ascXML.ejecutarCodigo(this.xmlEntrada);
+    console.log(retorno);
   }
 }

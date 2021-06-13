@@ -26,7 +26,8 @@ export class TablaSimbolos {
 
         this.cuerpoHtml += `    </tbody> \n`;
         this.cuerpoHtml += `</TABLE> \n`;
-        console.log(this.cuerpoHtml);
+        //console.log(this.cuerpoHtml);
+        return this.cuerpoHtml;
     }
 
     generarFilaObjeto(objeto: any, ambito: any, posicion: any, tipo: any): string {

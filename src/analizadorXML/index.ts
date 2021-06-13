@@ -3,25 +3,36 @@ import { CST } from './AST/CST';
 import { Entorno } from './AST/Entorno';
 import { GramaticaBNF } from './AST/GramaticaBNF';
 import { TablaSimbolos } from './AST/TablaSimbolos';
+import { SalidaGramatica } from './AST/SalidaGramatica';
 
-const gramatica = require('./Gramatica/gramatica');
+import * as gramatica from './Gramatica/gramatica';
 
-function ejecutarCodigo(entrada: string) {
-    const tabla: TablaSimbolos = new TablaSimbolos();
-    const salidaG = gramatica.parse(entrada);
-    const arbolCST = new CST(salidaG.objetos);
+export class AnalizadorASCXML  {
 
-    // TABLA SIMBOLOS
-    //tabla.generarReporteTablaObjetos(salidaG.objetos); 
-    // BNF
-    //const gramBnf = new GramaticaBNF(salidaG.reporteBNF, salidaG.reporteBNF2);
-    //console.log('--------', gramBnf.getBNFReport() );
-    // DOT CST
-    arbolCST.generarArbolCST(salidaG.objetos); 
+    public ejecutarCodigo(entrada: string): object {
+        const tabla: TablaSimbolos = new TablaSimbolos();
+        const salidaG = gramatica.parse(entrada);
+        const arbolCST = new CST(salidaG.objetos);
 
-}
+        // TABLA SIMBOLOS
+        let reporteTabla = tabla.generarReporteTablaObjetos(salidaG.objetos); 
+        // BNF
+        let gramBnf = new GramaticaBNF(salidaG.reporteBNF, salidaG.reporteBNF2);
+        let reporteBNF = gramBnf.getBNFReport();
+        //console.log('--------', gramBnf.getBNFReport() );
+        // DOT CST
+        let reporteCST = arbolCST.generarArbolCST(salidaG.objetos); 
 
-ejecutarCodigo(`    
+        let retorno: object = 
+        {
+            tablaRep: reporteTabla,
+            bnfRep: reporteBNF,
+            cstRep: reporteCST
+        } 
+        return retorno;
+    }
+
+/*ejecutarCodigo(`    
 <bookstore>
     <book>
         <title lang="en">Harry Potter</title>
@@ -45,4 +56,5 @@ ejecutarCodigo(`
         <price>9.95</price>
     </book1>
 </bookstore>
-`);
+`);*/
+}

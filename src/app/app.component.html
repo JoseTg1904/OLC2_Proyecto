@@ -26,7 +26,7 @@
 
     <button mat-raised-button color = "accent" [matMenuTriggerFor] = "ejecutar">Ejecutar</button>
     <mat-menu #ejecutar = "matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click) = "ejecutarAscendente()">
             <mat-icon>keyboard_arrow_up</mat-icon>
             <span>Ascendete</span>
         </button>
