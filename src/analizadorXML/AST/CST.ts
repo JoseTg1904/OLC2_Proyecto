@@ -24,19 +24,21 @@ export class CST {
     }
 
     generarNodoObjeto(objeto: any, pos: any, padre: any): string {
-        //var nodo = `nodo${pos} [shape=record label =\"{ETIQUETA|${objeto.identificador}}\" ]\n`;
-        var nodo = `nodo${pos} [shape=plaintext ` +
+        var nodo = `nodo${pos} [label = 
+        \"ETIQUETA
+${objeto.identificador}\" ]\n`;
+        /*var nodo = `nodo${pos} [shape=plaintext ` +
             `label=<` +
             `<table border="0" cellborder="1" cellspacing="0">` +
             `<tr><td bgcolor="red">ETIQUETA</td></tr>` +
             `<tr><td bgcolor="lightblue">${objeto.identificador}</td></tr>` +
             `</table>> ]\n`;
-
+*/
         if (padre !== null) {
             nodo += `nodo${padre} -> nodo${pos}\n`;
         }
         if (objeto.texto !== '') {
-            nodo += `nodo${pos}_t [shape=record label =\"${objeto.texto}\" ]\n`;
+            nodo += `nodo${pos}_t [label =\"${objeto.texto}\" ]\n`;
             nodo += `nodo${pos} -> nodo${pos}_t [label=\"txt\"]\n`;
         }
 
@@ -53,16 +55,17 @@ export class CST {
     }
 
     generarNodoAtributo(objeto: any, pos: any, padre: any): string {
-        //var nodo = `nodo${pos} [shape=record label=\"{ATRIBUTO|${objeto.identificador}}\"]\n`+
-        var nodo = `nodo${pos} [shape=plaintext ` +
+        var nodo = `nodo${pos} [label =
+        \"ATRIBUTO
+${objeto.identificador}\"]\n`//+
+       /* var nodo = `nodo${pos} [shape=plaintext ` +
             `label=<` +
             `<table border="0" cellborder="1" cellspacing="0">` +
             `<tr><td bgcolor="yellow">ATRIBUTO</td></tr>` +
             `<tr><td bgcolor="lightblue">${objeto.identificador}</td></tr>` +
-            `</table>> ]\n`;
-
+            `</table>> ]\n`;*/
         nodo += `nodo${padre} -> nodo${pos}\n`;
-        nodo += `nodo${pos}_a [shape=box label=${objeto.valor}]\n`;
+        nodo += `nodo${pos}_a [label=${objeto.valor}]\n`;
         nodo += `nodo${pos} -> nodo${pos}_a [label=\"valor\"]\n`;
         return nodo;
     }

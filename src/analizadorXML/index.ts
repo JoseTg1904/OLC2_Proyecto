@@ -6,10 +6,18 @@ import { TablaSimbolos } from './AST/TablaSimbolos';
 import { SalidaGramatica } from './AST/SalidaGramatica';
 
 import * as gramatica from './Gramatica/gramatica';
+import { RepositionScrollStrategy } from '@angular/cdk/overlay';
+import { emitWarning } from 'process';
+
+interface retorno {
+    tablaRep: any,
+    bnfRep: any,
+    cstRep: any
+}
 
 export class AnalizadorASCXML  {
 
-    public ejecutarCodigo(entrada: string): object {
+    public ejecutarCodigo(entrada: string): retorno {
         const tabla: TablaSimbolos = new TablaSimbolos();
         const salidaG = gramatica.parse(entrada);
         const arbolCST = new CST(salidaG.objetos);
@@ -23,13 +31,13 @@ export class AnalizadorASCXML  {
         // DOT CST
         let reporteCST = arbolCST.generarArbolCST(salidaG.objetos); 
 
-        let retorno: object = 
-        {
+        let ret: retorno = {
             tablaRep: reporteTabla,
             bnfRep: reporteBNF,
             cstRep: reporteCST
-        } 
-        return retorno;
+        };
+
+        return ret;
     }
 
 /*ejecutarCodigo(`    

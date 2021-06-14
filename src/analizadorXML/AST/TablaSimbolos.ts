@@ -1,77 +1,70 @@
+import { ArrayType, ThisReceiver } from "@angular/compiler";
+import { ObjectUnsubscribedError } from "rxjs";
+import { Objeto } from "../Expresiones/Objeto";
+
+interface elementoTabla {
+    no: number,
+    nombre: string,
+    tipo: string,
+    valor: string,
+    linea: number,
+    columna: number,
+    ambito: string
+}
 
 export class TablaSimbolos {
+    contador: number = 1;
 
-    cuerpoHtml: string = '';
+    constructor() { this.contador = 1;}
 
-    constructor() { }
-
-    generarReporteTablaObjetos(objetos: any) {
-        this.cuerpoHtml = `<TABLE BORDER> \n`;
-        this.cuerpoHtml += `    <thead> \n`;
-        this.cuerpoHtml += `        <tr> \n`;
-        this.cuerpoHtml += `        <th>No.</th> \n`;
-        this.cuerpoHtml += `        <th>Nombre</th> \n`;
-        this.cuerpoHtml += `        <th>Tipo</th> \n`;
-        this.cuerpoHtml += `        <th>Valor</th> \n`;
-        this.cuerpoHtml += `        <th>Fila</th> \n`;
-        this.cuerpoHtml += `        <th>Columna</th> \n`;
-        this.cuerpoHtml += `        <th>Ambito</th> \n`;
-        this.cuerpoHtml += `        </tr> \n`;
-        this.cuerpoHtml += `    </thead> \n`;
-        this.cuerpoHtml += `    <tbody> \n`;
-
+    generarReporteTablaObjetos(objetos: any): elementoTabla[] {
+        var arrayCuerpo: elementoTabla[] = [];
         objetos.forEach((object: any) => {
-            this.cuerpoHtml += this.generarFilaObjeto(object, null, 1, 'ETIQUETA');
+            this.generarFilaObjeto(object, null, 'Etiqueta', arrayCuerpo);
         });
-
-        this.cuerpoHtml += `    </tbody> \n`;
-        this.cuerpoHtml += `</TABLE> \n`;
-        //console.log(this.cuerpoHtml);
-        return this.cuerpoHtml;
+        return arrayCuerpo;
     }
 
-    generarFilaObjeto(objeto: any, ambito: any, posicion: any, tipo: any): string {
-        var fila = `  <tr> \n`;
-        fila += `      <td class="text-left">${posicion}</td>\n`;
-        fila += `      <td class="text-left">${objeto.identificador}</td>\n`;
-        fila += `      <td class="text-left">${tipo}</td>\n`;
+    generarFilaObjeto(objeto: any, ambito: any, tipo: any, array: Array<elementoTabla>) {
+        let valor: any;
+        objeto.texto === '' ? valor = "Etiqueta raiz" : valor = objeto.texto;
+    
+        let ambitoElemento: any;
+        ambito === null ? ambitoElemento = "Global" : ambitoElemento = ambito
 
-        if (objeto.texto === '') {
-            fila += `      <th class="text-left"> Etiqueta Raiz </th>\n`;
-        } else {
-            fila += `      <td class="text-left">${objeto.texto}</td>\n`;
+        let fila: elementoTabla = {no: this.contador,
+            nombre: objeto.identificador,
+            tipo: tipo,
+            valor: valor,
+            linea: objeto.linea,
+            columna: objeto.columna,
+            ambito: ambitoElemento
         }
-        fila += `        <th>${objeto.linea}</th> \n`;
-        fila += `        <th>${objeto.columna}</th> \n`;
+        array.push(fila)
 
-        if (ambito === null) {
-            fila += `      <th class="text-left">GLOBAL</th>\n`;
-        } else {
-            fila += `      <td class="text-left">${ambito}</td>\n`;
-        }
-        fila += `  </tr> \n`;
+        this.contador++;
 
         objeto.listaAtributos.forEach((atribute: any) => {
-            fila += this.generarFilaAtributo(atribute, objeto.identificador, posicion + 1, 'ATRIBUTO');
+            this.generarFilaAtributo(atribute, objeto.identificador, 'Atributo', array);
         });
         objeto.listaObjetos.forEach((atribute: any) => {
-            fila += this.generarFilaObjeto(atribute, objeto.identificador, posicion + 1, 'ETIQUETA');
+            this.generarFilaObjeto(atribute, objeto.identificador, 'Etiqueta', array);
         });
-        return fila;
+
+
     }
 
-    generarFilaAtributo(objeto: any, ambito: any, posicion: any, tipo: any): string {
-        var fila = `  <tr> \n`;
-        fila += `      <td class="text-left">${posicion}</td>\n`;
-        fila += `      <td class="text-left">${objeto.identificador}</td>\n`;
-        fila += `      <td class="text-left">${tipo}</td>\n`;
-        fila += `      <td>${objeto.valor}</td>\n`;
-        fila += `      <td>${objeto.linea}</td> \n`;
-        fila += `      <td>${objeto.columna}</td> \n`;
-        fila += `      <td class="text-left">${ambito}</td>\n`;
-        fila += `  </tr> \n`;
-        return fila;
+    generarFilaAtributo(objeto: any, ambito: any, tipo: any, array: Array<elementoTabla>) {
+        let fila: elementoTabla = {
+            no: this.contador,
+            nombre: objeto.identificador,
+            tipo: tipo,
+            valor: objeto.valor,
+            linea: objeto.linea,
+            columna: objeto.columna,
+            ambito: ambito
+        }
+        array.push(fila)
+        this.contador++;
     }
-
-
 }

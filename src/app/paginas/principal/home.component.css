@@ -1,0 +1,36 @@
+#barra {
+    height: 06vh;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+#superior { 
+    height: 24vh;
+}
+
+#separador1 {
+    height: 01vh;
+    background-color: #f44336;
+}
+
+#inferior {
+    height: 69vh;
+    width: 100vw;
+    display: flex;
+}
+
+#izquierda {
+    width: 49.50vw;
+}
+
+#separador2 {
+    width: 01vw;
+    background-color: #f44336;
+}
+
+#derecha {
+    width: 49.50vw;
+}
+
