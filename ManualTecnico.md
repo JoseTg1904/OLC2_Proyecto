@@ -52,7 +52,7 @@ Para el proyecto, se opto por implementar una gramatica descendente. Las gramati
 
 ## Diagramas
 
-![alt text](https://github.com/JoseTg1904/OLC2_Proyecto/tree/main/src/assets/patron.png "PatronD")
+![alt text](https://github.com/JoseTg1904/OLC2_Proyecto/blob/main/src/assets/patron.png "PatronD")
 
 
 ## ESTRUCTURA

@@ -13,7 +13,6 @@ El presente documento detalla el funcionamiento básico de TytusX DBMS, el cual 
 
 ## PANTALLA PRINCIPAL
 
-![Interfaz](https://github.com/tytusdb/tytus/blob/main/parser/team12/Manuales/Interfaz.png "Interfaz")
 
 La interfaz de usuario esta compuesta por lo siguiente:
 
