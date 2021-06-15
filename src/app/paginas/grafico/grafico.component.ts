@@ -25,20 +25,21 @@ export class GraficoComponent {
     var options = parsedData.options;
 
     // you can extend the options like a normal JSON variable:
-  options = {
-    layout: {
-      hierarchical: {
-        sortMethod: 'directed',  // hubsize, directed
-        direction: 'UD'   // UD, DU, LR, RL
+    options = {
+      layout: {
+        hierarchical: {
+          sortMethod: 'directed',  // hubsize, directed
+          direction: 'UD'   // UD, DU, LR, RL
+        }
+      },
+      nodes: {
+        color: 'skyblue',
+        shape: 'box'
       }
-    },
-    nodes: {
-      color: 'skyblue',
-      shape: 'box'
     }
-  }
 
-  // create a network
-  var network = new vis.Network(container, data, options);
+    // create a network
+    var network = new vis.Network(container, data, options);
+    network.stabilize();  
   }
 }

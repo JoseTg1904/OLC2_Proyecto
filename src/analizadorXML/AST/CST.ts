@@ -24,21 +24,20 @@ export class CST {
     }
 
     generarNodoObjeto(objeto: any, pos: any, padre: any): string {
+        let id:string =  objeto.identificador;
+        id = id.replace(/\'/gi, "")
+        id = id.replace(/\"/gi, "")
         var nodo = `nodo${pos} [label = 
         \"ETIQUETA
-${objeto.identificador}\" ]\n`;
-        /*var nodo = `nodo${pos} [shape=plaintext ` +
-            `label=<` +
-            `<table border="0" cellborder="1" cellspacing="0">` +
-            `<tr><td bgcolor="red">ETIQUETA</td></tr>` +
-            `<tr><td bgcolor="lightblue">${objeto.identificador}</td></tr>` +
-            `</table>> ]\n`;
-*/
+${id}\" ]\n`;
         if (padre !== null) {
             nodo += `nodo${padre} -> nodo${pos}\n`;
         }
         if (objeto.texto !== '') {
-            nodo += `nodo${pos}_t [label =\"${objeto.texto}\" ]\n`;
+            let texto =  objeto.texto;
+            texto = texto.replace(/\'/gi, "")
+            texto = texto.replace(/\"/gi, "")
+            nodo += `nodo${pos}_t [label =\"${texto}\" ]\n`;
             nodo += `nodo${pos} -> nodo${pos}_t [label=\"txt\"]\n`;
         }
 
@@ -55,17 +54,17 @@ ${objeto.identificador}\" ]\n`;
     }
 
     generarNodoAtributo(objeto: any, pos: any, padre: any): string {
+        let id =  objeto.identificador;
+        id = id.replace(/\'/gi, "")
+        id = id.replace(/\"/gi, "")
+        let valor =  objeto.valor;
+        valor = valor.replace(/\'/gi, "")
+        valor = valor.replace(/\"/gi, "")
         var nodo = `nodo${pos} [label =
         \"ATRIBUTO
-${objeto.identificador}\"]\n`//+
-       /* var nodo = `nodo${pos} [shape=plaintext ` +
-            `label=<` +
-            `<table border="0" cellborder="1" cellspacing="0">` +
-            `<tr><td bgcolor="yellow">ATRIBUTO</td></tr>` +
-            `<tr><td bgcolor="lightblue">${objeto.identificador}</td></tr>` +
-            `</table>> ]\n`;*/
+${id}\"]\n`
         nodo += `nodo${padre} -> nodo${pos}\n`;
-        nodo += `nodo${pos}_a [label=${objeto.valor}]\n`;
+        nodo += `nodo${pos}_a [label=${valor}]\n`;
         nodo += `nodo${pos} -> nodo${pos}_a [label=\"valor\"]\n`;
         return nodo;
     }
