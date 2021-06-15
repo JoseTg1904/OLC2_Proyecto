@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BnfComponent implements OnInit {
 
-  constructor() { }
+  displayedColumns: string[] = ['no', 'produccion', 'accion'];
+  simbolos: any;
+
+constructor() {this.simbolos = localStorage.getItem('bnf'); }
 
   ngOnInit(): void {
+    this.simbolos = JSON.parse(this.simbolos);
+    console.log(this.simbolos, "vacia?")
   }
 
 }

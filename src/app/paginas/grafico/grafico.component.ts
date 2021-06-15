@@ -13,8 +13,8 @@ export class GraficoComponent {
 
   ngOnInit() {
     var container = document.getElementById("vis");
-    console.log(localStorage.getItem("CSTxml"));
-    var DOTstring = localStorage.getItem("CSTxml");;
+    console.log(localStorage.getItem("grafo"));
+    var DOTstring = localStorage.getItem("grafo");;
     var parsedData = vis.network.convertDot(DOTstring);
   
     var data = {

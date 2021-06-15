@@ -7,6 +7,7 @@ interface elementoTabla {
     nombre: string,
     tipo: string,
     valor: string,
+    tipoEtiqueta: any,
     linea: number,
     columna: number,
     ambito: string
@@ -32,10 +33,14 @@ export class TablaSimbolos {
         let ambitoElemento: any;
         ambito === null ? ambitoElemento = "Global" : ambitoElemento = ambito
 
+        let tipoEti: any;
+        objeto.completa === 1 ? tipoEti = "Doble" : tipoEti = "Simple" 
+
         let fila: elementoTabla = {no: this.contador,
             nombre: objeto.identificador,
             tipo: tipo,
             valor: valor,
+            tipoEtiqueta: tipoEti,
             linea: objeto.linea,
             columna: objeto.columna,
             ambito: ambitoElemento
@@ -60,6 +65,7 @@ export class TablaSimbolos {
             nombre: objeto.identificador,
             tipo: tipo,
             valor: objeto.valor,
+            tipoEtiqueta: "No aplica",
             linea: objeto.linea,
             columna: objeto.columna,
             ambito: ambito

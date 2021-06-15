@@ -9,7 +9,7 @@ import { ReporteService } from '../../reporte.service';
 })
 
 export class TablaXMLComponent implements OnInit {
-  displayedColumns: string[] = ['no', 'nombre', 'tipo', 'valor', 'ambito', 'fila', 'columna'];
+  displayedColumns: string[] = ['no', 'nombre', 'tipo', 'valor', 'ambito', 'tipoEtiqueta', 'fila', 'columna'];
   simbolos: any;
 
 constructor(_servicio: ReporteService) {this.simbolos = localStorage.getItem('tablaXML'); }

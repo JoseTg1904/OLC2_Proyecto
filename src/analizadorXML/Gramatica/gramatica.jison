@@ -120,7 +120,7 @@ BSL                                 "\\".
 /* Definición de la gramática */
 START : 
         ENCODING RAICES EOF         {   
-                                        reportBNF.push('&lt;START&gt; ::= &lt;RAICES&gt; EOF');
+                                        reportBNF.push(`<START> ::= <RAICES> EOF`);
                                         reportBNF2.push('Start.val = Raiz.val. // Fin del documento');
                                         $$ = $2;
                                         return new SalidaGramatica($$, reportBNF, reportBNF2,$1);
@@ -134,20 +134,20 @@ ENCODING:
 
 RAICES: 
         RAICES RAIZ         {   
-                                reportBNF.push('&lt;RAICES&gt; ::= &lt;RAICES&gt; &lt;RAIZ&gt;');
+                                reportBNF.push('<RAICES> ::= <RAICES> <RAIZ>');
                                 reportBNF2.push('Raices.val = Raices.push(Raiz)');
                                 $1.push($2);
                                 $$ = $1;
                             }
 	|   RAIZ                { 
-                                reportBNF.push('&lt;RAICES&gt; ::= &lt;RAIZ&gt;');
+                                reportBNF.push('<RAICES> ::= <RAIZ>');
                                 reportBNF2.push('Raices.val = Raiz.val');
                                 $$ = [$1];
                             } ;
 
 RAIZ: 
         OBJETO              { 
-                                reportBNF.push('&lt;RAIZ&gt; ::= &lt;OBJETO&gt;');
+                                reportBNF.push('<RAIZ> ::= <OBJETO>');
                                 reportBNF2.push('Raiz.val = Objeto.val');
                                 $$ = $1;
                             }
@@ -155,17 +155,17 @@ RAIZ:
 
 OBJETO:
         lt identifier LATRIBUTOS gt OBJETOS lt div identifier gt                { 
-                                                                                    reportBNF.push('&lt;OBJETO&gt; ::= lt identifier &lt;LATRIBUTOS&gt; gt &lt;OBJETOS&gt; lt div identifier gt');
+                                                                                    reportBNF.push('<OBJETO> ::= lt identifier <LATRIBUTOS> gt <OBJETOS> lt div identifier gt');
                                                                                     reportBNF2.push('Objeto = new Objeto(id,\'\',linea, columna, atributos, objetos)');
                                                                                     $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,$5,1,$8);
                                                                                 }
     |   lt identifier LATRIBUTOS gt LISTA_ID_OBJETO lt div identifier gt        { 
-                                                                                    reportBNF.push('&lt;OBJETO&gt; ::= lt identifier &lt;LATRIBUTOS&gt; gt &lt;LISTA_ID_OBJETO&gt; lt div identifier gt');
+                                                                                    reportBNF.push('<OBJETO> ::= lt identifier <LATRIBUTOS> gt <LISTA_ID_OBJETO> lt div identifier gt');
                                                                                     reportBNF2.push('Objeto = new Objeto(id,texto,linea, columna,atributos,[])');
                                                                                     $$ = new Objeto($2,$5,@1.first_line, @1.first_column,$3,[],1,$8);
                                                                                 }
     |   lt identifier LATRIBUTOS div gt                                         { 
-                                                                                    reportBNF.push('&lt;OBJETO&gt; ::= lt identifier &lt;LATRIBUTOS&gt; div gt');
+                                                                                    reportBNF.push('<OBJETO> ::= lt identifier <LATRIBUTOS> div gt');
                                                                                     reportBNF2.push('Objeto = new Objeto(id,\'\',linea, columna,atributos,[])');
                                                                                     $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[],0,'');
                                                                                 }
@@ -176,12 +176,12 @@ OBJETO:
 
 LATRIBUTOS: 
         ATRIBUTOS                               { 
-                                                    reportBNF.push('&lt;LATRIBUTOS&gt; ::= &lt;ATRIBUTOS&gt;');
+                                                    reportBNF.push('<LATRIBUTOS> ::= <ATRIBUTOS>');
                                                     reportBNF2.push('Lista_Atributos.val = Atributos.val');
                                                     $$ = $1;
                                                 }
     |   /* vacio */                             { 
-                                                    reportBNF.push('&lt;LATRIBUTOS&gt; ::= /*vacio*/');
+                                                    reportBNF.push('<LATRIBUTOS> ::= /*vacio*/');
                                                     reportBNF2.push('Lista_Atributos.val = [] ');
                                                     $$ = [];
                                                 }
@@ -189,13 +189,13 @@ LATRIBUTOS:
 
 ATRIBUTOS:
         ATRIBUTOS ATRIBUTO                      {   
-                                                    reportBNF.push('&lt;ATRIBUTOS&gt; ::= &lt;ATRIBUTOS&gt; &lt;ATRIBUTO&gt;');
+                                                    reportBNF.push('<ATRIBUTOS> ::= <ATRIBUTOS> <ATRIBUTO>');
                                                     reportBNF2.push('Atributos.val = Atributos.push(Atributo)');
                                                     $1.push($2);
                                                     $$ = $1;/*revisar*/
                                                 }
     |   ATRIBUTO                                { 
-                                                    reportBNF.push('&lt;ATRIBUTOS&gt; ::= &lt;ATRIBUTO&gt;');
+                                                    reportBNF.push('<ATRIBUTOS> ::= <ATRIBUTO>');
                                                     reportBNF2.push('Atributos.val = Atributo.val');
                                                     $$ = [$1];
                                                 } 
@@ -203,7 +203,7 @@ ATRIBUTOS:
 
 ATRIBUTO: 
         identifier asig StringLiteral           {   
-                                                    reportBNF.push('&lt;ATRIBUTO&gt; ::= identifier asig StringLiteral');
+                                                    reportBNF.push('<ATRIBUTO> ::= identifier asig StringLiteral');
                                                     reportBNF2.push('Atributo = new Atributo(id, valor, fila, columna)');
                                                     $$ = new Atributo($1, $3, @1.first_line, @1.first_column);
                                                 }
@@ -212,13 +212,13 @@ ATRIBUTO:
     ;
 
 OBJETOS:
-        OBJETOS OBJETO      {   reportBNF.push('&lt;OBJETOS&gt; ::= &lt;OBJETOS&gt; &lt;OBJETO&gt;');
+        OBJETOS OBJETO      {   reportBNF.push('<OBJETOS> ::= <OBJETOS> <OBJETO>');
                                 reportBNF2.push('Objetos.val = Objetos.push(Objeto)');
                                 $1.push($2);
                                 $$ = $1;
                             }
 	|   OBJETO              { 
-                                reportBNF.push('&lt;OBJETOS&gt; ::= &lt;OBJETO&gt;');
+                                reportBNF.push('<OBJETOS> ::= <OBJETO>');
                                 reportBNF2.push('Objetos.val = Objeto.val');
                                 $$ = [$1];
                             } 
@@ -226,12 +226,12 @@ OBJETOS:
 
 LISTA_ID_OBJETO: 
         LISTA_ID_OBJETO LISTA_VALORES               { 
-                                                        reportBNF.push('&lt;LISTA_ID_OBJETO&gt; ::= &lt;LISTA_ID_OBJETO&gt; &lt;LISTA_VALORES&gt;');
+                                                        reportBNF.push('<LISTA_ID_OBJETO> ::= <LISTA_ID_OBJETO> <LISTA_VALORES>');
                                                         reportBNF2.push('Lista_Id_Objeto.val = Lista_Id_Objeto.val + \' \' + Lista_Id_Objeto.val');
                                                         $$ = $1 + ' ' + $2;
                                                     }
     |   LISTA_VALORES                               {   
-                                                        reportBNF.push('&lt;LISTA_ID_OBJETO&gt; ::= &lt;LISTA_VALORES&gt;');
+                                                        reportBNF.push('<LISTA_ID_OBJETO> ::= <LISTA_VALORES>');
                                                         reportBNF2.push('Lista_Id_Objeto.val = Lista_valores.val');
                                                         $$ = $1;
                                                     }

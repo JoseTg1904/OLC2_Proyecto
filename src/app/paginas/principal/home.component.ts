@@ -32,7 +32,8 @@ export class HomeComponent {
   }
 
   //editor XML entrada
-  xmlEntrada: any = `<bookstore>
+  xmlEntrada: any = `<?xml version="1.0" encoding="UTF-8"?>
+<bookstore>
   <book>
     <title lang="en">Harry Potter</title>
     <price>29.99</price>
@@ -72,6 +73,7 @@ export class HomeComponent {
   tablaXML: any[] = [];
   cstXML: string = "";
   bnfXML: any[] = [];
+  encodingXML: any = "";
 
   queryMod: string = "";
 
@@ -104,8 +106,7 @@ export class HomeComponent {
         this.queryMod += ret1.objetos[i].estado + ret1.objetos[i].identificador;
       }
     }
-    console.log(this.queryMod)
-    console.log(ret1.objetos);
+    console.log(ret);
     this.tablaXML = ret.tablaRep;
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
@@ -120,12 +121,14 @@ export class HomeComponent {
 
   reporteCSTXML() {
     localStorage.clear();
-    localStorage.setItem('CSTxml', this.cstXML);
+    localStorage.setItem('grafo', this.cstXML);
     window.open("grafico", "_blank")
   }
 
   reporteBNFXML() {
-
+    localStorage.clear();
+    localStorage.setItem('bnf', JSON.stringify(this.bnfXML));
+    window.open("bnf", "_blank")
   }
 
   reproteBNFXPATH() {

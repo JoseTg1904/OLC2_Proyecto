@@ -12,7 +12,8 @@ import { emitWarning } from 'process';
 interface retorno {
     tablaRep: any,
     bnfRep: any,
-    cstRep: any
+    cstRep: any,
+    encoding: any
 }
 
 export class AnalizadorASCXML  {
@@ -27,42 +28,16 @@ export class AnalizadorASCXML  {
         // BNF
         let gramBnf = new GramaticaBNF(salidaG.reporteBNF, salidaG.reporteBNF2);
         let reporteBNF = gramBnf.getBNFReport();
-        //console.log('--------', gramBnf.getBNFReport() );
         // DOT CST
         let reporteCST = arbolCST.generarArbolCST(salidaG.objetos); 
 
         let ret: retorno = {
             tablaRep: reporteTabla,
             bnfRep: reporteBNF,
-            cstRep: reporteCST
+            cstRep: reporteCST,
+            encoding: salidaG.encoding
         };
 
         return ret;
     }
-
-/*ejecutarCodigo(`    
-<bookstore>
-    <book>
-        <title lang="en">Harry Potter</title>
-        <price>29.99</price>
-    </book>
-
-    <book1>
-        <title lang="en">Learning XML</title>
-        <price>39.95</price>
-    </book1>
-</bookstore>
-
-<bookstore>
-    <book>
-        <title lang="en">El principito</title>
-        <price>9.99</price>
-    </book>
-
-    <book1>
-        <title lang="en">Pinocho</title>
-        <price>9.95</price>
-    </book1>
-</bookstore>
-`);*/
 }

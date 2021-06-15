@@ -1,3 +1,8 @@
+interface retornoBNF {
+    no: number,
+    produccion: string
+    accion: string
+}
 
 export class GramaticaBNF {
 
@@ -9,30 +14,22 @@ export class GramaticaBNF {
         this.reporte2 = repo2;
     }
 
-    getBNFReport(): string {
-        var reportBody = `<TABLE BORDER> \n`;
-        reportBody += `    <thead> \n`;
-        reportBody += `        <tr> \n`;
-        reportBody += `        <th>Producción</th> \n`;
-        reportBody += `        <th>Regla Semantica</th> \n`;
-        reportBody += `        </tr> \n`;
-        reportBody += `    </thead> \n`;
-        reportBody += `    <tbody> \n`;
+    getBNFReport(): retornoBNF[] {
+        let ret: retornoBNF[] = [];
 
         for (let i = 0; i < this.reporte.length; i++) {
-            reportBody += this.generarBodyReporte(this.reporte[i], this.reporte2[i]);
+            ret.push(this.generarBodyReporte(this.reporte[i], this.reporte2[i], i));
         }
 
-        reportBody += `    </tbody> \n`;
-        reportBody += `</TABLE> \n`;
-        return reportBody;
+        return ret
     }
 
-    generarBodyReporte(object: any, object2: any): string {
-        var fila = `  <tr> \n`;
-        fila += `      <td class="text-left">${object}</td>\n`;
-        fila += `      <td class="text-left">${object2}</td>\n`;
-        fila += `  </tr> \n`;
+    generarBodyReporte(object: any, object2: any, iterator: number): retornoBNF {
+        var fila: retornoBNF = {
+            no: iterator,
+            produccion: object,
+            accion: object2
+        }
         return fila;
     }
 
