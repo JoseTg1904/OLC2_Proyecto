@@ -33,6 +33,9 @@ BSL                                 "\\".
 "null"                      return 'null';
 "true"                      return 'true';
 "false"                     return 'false';
+"xml"                       return 'xml';
+"version"                   return 'version';
+"encoding"                  return 'encoding';
 
 "+"                         return 'plus';
 "-"                         return 'minus';
@@ -51,6 +54,7 @@ BSL                                 "\\".
 "&&"                        return 'and';
 "||"                        return 'or';
 "!"                         return 'not';
+"?"                         return 'interC';
 
 ";"                         return 'semicolon';
 ","                         return 'coma';
@@ -69,7 +73,7 @@ BSL                                 "\\".
 [0-9]+                              return 'IntegerLiteral';
 
 /* Identifier literals */
-[a-zA-Z_][a-zA-Z0-9_ñÑ]*            return 'identifier';
+[a-zA-Z_áÁéÉíÍóÓ][a-zA-Z0-9_ñÑ]*            return 'identifier';
 
 {stringliteral}                     return 'StringLiteral';
 {charliteral}                       return 'CharLiteral';
@@ -115,12 +119,17 @@ BSL                                 "\\".
 
 /* Definición de la gramática */
 START : 
-        RAICES EOF          {   
-                                reportBNF.push('&lt;START&gt; ::= &lt;RAICES&gt; EOF');
-                                reportBNF2.push('Start.val = Raiz.val. // Fin del documento');
-                                $$ = $1;
-                                return new SalidaGramatica($$, reportBNF, reportBNF2);
-                            }
+        ENCODING RAICES EOF         {   
+                                        reportBNF.push('&lt;START&gt; ::= &lt;RAICES&gt; EOF');
+                                        reportBNF2.push('Start.val = Raiz.val. // Fin del documento');
+                                        $$ = $2;
+                                        return new SalidaGramatica($$, reportBNF, reportBNF2,$1);
+                                    }
+    ;
+
+ENCODING: 
+        lt interC xml version asig StringLiteral encoding asig StringLiteral interC gt      {   $$ = $9; }
+    |   error gt                                                                            {}
     ;
 
 RAICES: 
@@ -148,17 +157,20 @@ OBJETO:
         lt identifier LATRIBUTOS gt OBJETOS lt div identifier gt                { 
                                                                                     reportBNF.push('&lt;OBJETO&gt; ::= lt identifier &lt;LATRIBUTOS&gt; gt &lt;OBJETOS&gt; lt div identifier gt');
                                                                                     reportBNF2.push('Objeto = new Objeto(id,\'\',linea, columna, atributos, objetos)');
-                                                                                    $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,$5);
+                                                                                    $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,$5,1,$8);
                                                                                 }
     |   lt identifier LATRIBUTOS gt LISTA_ID_OBJETO lt div identifier gt        { 
                                                                                     reportBNF.push('&lt;OBJETO&gt; ::= lt identifier &lt;LATRIBUTOS&gt; gt &lt;LISTA_ID_OBJETO&gt; lt div identifier gt');
                                                                                     reportBNF2.push('Objeto = new Objeto(id,texto,linea, columna,atributos,[])');
-                                                                                    $$ = new Objeto($2,$5,@1.first_line, @1.first_column,$3,[]);
+                                                                                    $$ = new Objeto($2,$5,@1.first_line, @1.first_column,$3,[],1,$8);
                                                                                 }
     |   lt identifier LATRIBUTOS div gt                                         { 
                                                                                     reportBNF.push('&lt;OBJETO&gt; ::= lt identifier &lt;LATRIBUTOS&gt; div gt');
                                                                                     reportBNF2.push('Objeto = new Objeto(id,\'\',linea, columna,atributos,[])');
-                                                                                    $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[]);
+                                                                                    $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[],0,'');
+                                                                                }
+    |   error gt                                                                {
+
                                                                                 }
     ;
 
@@ -195,6 +207,8 @@ ATRIBUTO:
                                                     reportBNF2.push('Atributo = new Atributo(id, valor, fila, columna)');
                                                     $$ = new Atributo($1, $3, @1.first_line, @1.first_column);
                                                 }
+    |   error gt                                {}
+    |   error lt                                {}
     ;
 
 OBJETOS:
@@ -239,9 +253,13 @@ LISTA_VALORES :
     |   CharLiteral             {
                                     $$ = $1;
                                 }
+    |   xml                     {
+                                    $$ = $1;
+                                }
     |   CARACTERES              {
                                     $$ = $1;
                                 }
+    |   error                   {}                                
     ;
 
 CARACTERES :
