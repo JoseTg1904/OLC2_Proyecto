@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import * as vis from 'vis';
 
 @Component({
-  selector: 'grafico-root',
+  selector: 'app-grafico',
   templateUrl: './grafico.component.html',
   styleUrls: ['./grafico.component.css']
 })
@@ -25,10 +25,6 @@ export class GraficoComponent {
     var options = parsedData.options;
 
     // you can extend the options like a normal JSON variable:
-  options.nodes = {
-    color: "red"
-  };
-
   options = {
     layout: {
       hierarchical: {

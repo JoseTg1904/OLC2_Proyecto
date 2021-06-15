@@ -7,7 +7,7 @@
 [0-9]+\b            {return "tk_entero";}
 
 //Palabras reservadas
-"node()"             {return "tk_node";}
+"node"               {return "tk_node";}
 "child"              {return "tk_child";}
 "descendant"         {return "tk_descendant";}
 "descendant-or-self" {return "tk_descendatOr"}
@@ -20,9 +20,9 @@
 "preceding"          {return "tk_preceding"}
 "preceding-sibling"  {return "tk_precedingSi"}
 "self"               {return "tk_self"}
-"text()"             {return "tk_text"}
-"position()"         {return "tk_position"}
-"last()"             {return "tk_last"}
+"text"               {return "tk_text"}
+"position"           {return "tk_position"}
+"last"               {return "tk_last"}
 "div"                {return "tk_div"}
 "and"                {return "tk_and"}
 "or"                 {return "tk_or"}
@@ -45,6 +45,8 @@
 "["  {return "tk_llaveA"}
 "]"  {return "tk_llaveC"}
 "@"  {return "tk_arroba"}
+"("  {return "tk_parA"}
+")"  {return "tk_parC"}
 
 //Expresiones para validar los strings
 \"[^\"]*\"  {return "tk_stringTexto";}
@@ -53,7 +55,7 @@
 \‘[^\‘]*\‘  {return "tk_stringTexto";}
 
 //Expresion para un identificador
-[a-zA-Z]([a-zA-Z0-9_])* {tokenList.push("tk_identificador"); return "tk_identificador";}
+[a-zA-Z]([a-zA-Z0-9_])* {return "tk_identificador";}
 
 //Final del archivo
 <<EOF>> return "EOF";
@@ -68,7 +70,12 @@ pero todo esto se ignora*/
 /lex
 
 %{
-    var tokenList = [];
+    const { SalidaGramatica } = require("./AST/SalidaGramatica");
+    const { Nodo } = require('./Expresiones/Nodo');
+    //const { Atributo } = require('./Expresiones/Atributo');
+
+    var produccion = [];
+    var accion = [];
 %}
 
 //Precedencia de operadores
@@ -82,52 +89,146 @@ pero todo esto se ignora*/
 %left tk_llaveA tk_llaveC
 %left tk_div tk_asterisco
 %left tk_mas tk_menos
+%left tk_parA tk_parC
 
 %start INICIOPURO
 %%
 
 INICIOPURO :
-    INICIO EOF {var a = {"hola": tokenList}; return a};
+    INICIO EOF 
+        {
+            produccion.push('&lt;INICIOPURO&gt; ::= &lt;INICIO&gt; EOF');
+            accion.push('INICIOPURO.Val = INICIO.val //fin del documento');
+            $$ = $1;
+            return new SalidaGramatica($$, produccion, accion);
+        };
 
 INICIO : 
-    INICIO tk_barra INICIO 
-    | INICIALES;
+    INICIO tk_barra INICIALES 
+        { 
+            produccion.push('&lt;INICIO&gt; ::= &lt;INICIO&gt; | &lt;INICIALES&gt;');
+            accion.push('INICIO.Val = INICIO.push(INICIALES)');
+            $1.push($3); 
+            $$ = $1; 
+        }   
+    | INICIALES 
+        {
+            produccion.push('&lt;INICIO&gt; ::= &lt;INICIALES&gt;');
+            accion.push('INICIO.Val = INICIALES.Val');
+            $$ = $1; 
+        };
 
 INICIALES : 
     tk_punto DIAGONALES DERIVADOSLIMITADO DERIVACIONDIAGONAL
+        {
+            produccion.push(`&lt;INICIALES&gt; ::= punto &lt;DIAGONALES&gt; &lt;DERIVADOSLIMITADO&gt; &lt;DERIVAIONDIAGONAL&gt;`);
+            accion.push('INICIALES.Val = []; INICIALES.Val.push(new Nodo(tipo, id, predicado, fila, columna)); INICIALES.Val.push(new Nodo(tipo, id, predicado, fila, columna)); INICIALES.push(DERIVACIONDIAGONAL)'); 
+            $$ = new Array();
+            $$.push(new Nodo("", ".", [], @1.first_line, @1.first_column))
+            $$.push(new Nodo($2, $3, [], @1.first_line, @1.first_column))
+            $$.push(...$4)
+        }
     | tk_identificador PREDICATE DERIVACIONDIAGONAL
-    | tk_diagonal DERIVACIONPATHS
-    | tk_diagonal tk_diagonal DERIVACIONPATHS           
+        {
+            produccion.push(`&lt;INICIALES&gt; ::= identificador &lt;PREDICATE&gt; &lt;DERIVACIONDIAGONAL&gt;`);
+            accion.push('INICIALES.Val = []; INICIALES.Val.push(new Nodo(tipo, id, predicado, fila, columna)); INICIALES.push(DERIVACIONDIAGONAL)'); 
+            $$ = new Array();
+            $$.push(new Nodo("", $1, [], @1.first_line, @1.first_column))
+            $$.push(...$3)
+        }
+    | tk_diagonal DERIVADOS DERIVACIONDIAGONAL 
+        {
+            produccion.push(`&lt;INICIALES&gt; ::= / &lt;DERIVADOS&gt; &lt;DERIVACIONDIAGONAL&gt;`);
+            accion.push('INICIALES.Val = []; INICIALES.Val.push(new Nodo(tipo, id, predicado, fila, columna)); INICIALES.push(DERIVACIONDIAGONAL)'); 
+            $$ = new Array();
+            $$.push(new Nodo($1, $2, [], @1.first_line, @1.first_column))
+            $$.push(...$3)
+        }
+    | tk_diagonal tk_diagonal DERIVADOS DERIVACIONDIAGONAL 
+        {
+            produccion.push('&lt;INICIALES&gt; ::= // &lt;DERIVADOS&gt; &lt;DERIVACIONDIAGONAL&gt;');
+            accion.push('INICIALES.Val = []; INICIALES.Val.push(new Nodo(tipo, id, predicado, fila, columna)); INICIALES.push(DERIVACIONDIAGONAL)'); 
+            $$ = new Array();
+            $$.push(new Nodo("//", $3, [], @1.first_line, @1.first_column))
+            $$.push(...$4)
+        }           
     | tk_asterisco PREDICATE DERIVACIONDIAGONAL
-    | tk_node PREDICATE DERIVACIONDIAGONAL;
+        {
+            produccion.push(`&lt;INICIALES&gt; ::= asterisco &lt;PREDICATE&gt; &lt;DERIVACIONDIAGONAL&gt;`);
+            accion.push('INICIALES.Val = []; INICIALES.Val.push(new Nodo(tipo, id, predicado, fila, columna)); INICIALES.push(DERIVACIONDIAGONAL)'); 
+            $$ = new Array();
+            $$.push(new Nodo("", $1, [], @1.first_line, @1.first_column))
+            $$.push(...$3)
+        }
+    | tk_node tk_parA tk_parC PREDICATE DERIVACIONDIAGONAL
+        {
+            produccion.push(`&lt;INICIALES&gt; ::= node() &lt;PREDICATE&gt; &lt;DERIVACIONDIAGONAL&gt;`);
+            accion.push('INICIALES.Val = []; INICIALES.Val.push(new Nodo(tipo, id, predicado, fila, columna)); INICIALES.push(DERIVACIONDIAGONAL)'); 
+            $$ = new Array();
+            $$.push(new Nodo("", "node()", [], @1.first_line, @1.first_column))
+            $$.push(...$3)
+        };
 
 DIAGONALES : 
-    tk_diagonal
-    | tk_diagonal tk_diagonal;
+    tk_diagonal 
+        {
+            produccion.push('&lt;DIAGONALES&gt; ::= /');
+            accion.push('DIAGONALES.Val = \"/\"'); 
+            $$ = $1 
+        }
+    | tk_diagonal tk_diagonal 
+        {
+            produccion.push(`&lt;DIAGONALES&gt; ::= //`);
+            accion.push('DIAGONALES.Val = \"//\"'); 
+            $$ = "//" 
+        };
 
 DERIVACIONDIAGONAL : 
-    DIAGONALES DERIVADOS DERIVACIONDIAGONAL
-    | ;
-
-DERIVACIONPATHS : 
-    DERIVADOS DIAGONALES DERIVACIONPATHS
-    | DERIVADOS ;
+    DIAGONALES DERIVADOS DERIVACIONDIAGONAL 
+        {
+            produccion.push(`&lt;DERIVACIONDIAGONAL&gt; ::= &lt;DIAGONALES&gt; &lt;DERIVADOS&gt; &lt;DERIVACIONDIAGONAL&gt;`);
+            accion.push('DERIVACIONDIAGONAL.Val = []; DERIVACIONDIAGONAL.Val.push(new Nodo(tipo, id, predicado, fila, columna)); DERIVACIONDIAGONAL.push(DERIVACIONDIAGONAL)'); 
+            $$ = new Array();
+            $$.push(new Nodo($1, $2, [], @1.first_line, @1.first_column)) 
+            $$.push(...$3)
+        }
+    | { $$ = [null] };
 
 DERIVADOSLIMITADO :
-    tk_identificador PREDICATE       
-    | tk_asterisco PREDICATE 
-    | tk_node PREDICATE
-    | tk_arroba ATRIBUTO COMPLEMENTOATRIBUTO
-    | AXES ;
+    tk_identificador PREDICATE  {$$ = $1}     
+    | tk_asterisco PREDICATE {$$ = $1}
+    | tk_node tk_parA tk_parC PREDICATE {$$ = $1}
+    | tk_arroba ATRIBUTO
+        {
+            produccion.push(`&lt;DERIVADOSLIMIADO&gt; ::= arroba &lt;ATRIBUTO&gt;`);
+            accion.push('DERIVADOSLIMITADO.Val = \"@\" + ATRIBUTO.Val'); 
+            $$ = $1 + "" + $2; 
+        }
+    
+    | AXES {$$ = $1};
 
 DERIVADOS : 
-    tk_punto
-    | tk_punto tk_punto
-    | DERIVADOSLIMITADO ;
+    tk_punto 
+        { 
+            produccion.push(`&lt;DERIVADOS&gt; ::= punto`);
+            accion.push("DERIVADOS.Val = \".\" ");
+            $$ = $1; 
+        }
+    | tk_punto tk_punto 
+        {
+            produccion.push(`&lt;DERIVADOS&gt; ::= doblePunto`);
+            accion.push('DERIVADOS.Val = \"..\"');
+            $$ = ".."; }
+    | DERIVADOSLIMITADO 
+        { 
+            produccion.push(`&lt;DERIVADOS&gt; ::= &lt;DERIVADOSLIMITADO&gt;`);
+            accion.push('DERIVADOS.Val = DERIVADOSLIMITADO.Val'); 
+            $$ = $1; 
+        };
 
 COMPLEMENTOATRIBUTO :
-    tk_igual tk_stringTexto
-    | ;
+    tk_igual tk_stringTexto { $$ = $2; }
+    | { $$ = "" };
 
 AXES :
     tk_child tk_dosPuntos tk_dosPuntos NODETEST
@@ -145,9 +246,9 @@ AXES :
 
 NODETEST :
     tk_asterisco PREDICATE
-    | tk_node PREDICATE
+    | tk_node tk_parA tk_parC PREDICATE
     | tk_identificador PREDICATE
-    | tk_text;
+    | tk_text tk_parA tk_parC;
 
 PREDICATE : 
     tk_llaveA EXPRESION tk_llaveC
@@ -171,11 +272,12 @@ EXPRESION :
     | tk_decimal
     | tk_arroba ATRIBUTO
     | tk_identificador
-    | tk_position
-    | tk_last
-    | tk_stringTexto;
+    | tk_position tk_parA tk_parC
+    | tk_last tk_parA tk_parC
+    | tk_stringTexto
+    | tk_parA EXPRESION tk_parC;
 
 ATRIBUTO :
-    tk_asterisco
-    | tk_identificador
-    | tk_node;
+    tk_asterisco { $$ = $1; }
+    | tk_identificador { $$ = $1 }
+    | tk_node tk_parA tk_ParC { $$ = "node()"} ;

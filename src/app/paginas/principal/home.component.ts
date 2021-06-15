@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 
-import * as analizador from '../../../analizadores/xpathAsc';
 import * as XMLasc from '../../../analizadorXML/index';
-
+import * as XPATHasc from '../../../analizadores/index';
 import { ReporteService } from '../../reporte.service';
 import { Router } from '@angular/router';
 
@@ -69,10 +68,18 @@ export class HomeComponent {
     lint: true
   }
 
-ngOnInit(){
-  console.log(analizador.parse("hola"));
-  localStorage.clear();
-}
+  //reportes
+  tablaXML: any[] = [];
+  cstXML: string = "";
+  bnfXML: any[] = [];
+
+  queryMod: string = "";
+
+  ngOnInit(){
+    let ascXpath = new XPATHasc.AnalizadosAscXpath();
+    console.log(ascXpath.ejecutarCodigo("//hola/hola//adios/pero"));
+    localStorage.clear();
+  }
 
   abrirXML(files: FileList) {
     this.xmlEntrada = files.item(0);
@@ -87,14 +94,42 @@ ngOnInit(){
   ejecutarAscendente(){
     localStorage.clear();
     let ascXML = new XMLasc.AnalizadorASCXML();
+    let ascXpath = new XPATHasc.AnalizadosAscXpath();
+
     let ret = ascXML.ejecutarCodigo(this.xmlEntrada);
-    localStorage.setItem('tablaXML', JSON.stringify(ret.tablaRep));
-    localStorage.setItem('CSTxml', ret.cstRep);
-    //this._servicio.llenarTablaXML(ret.tablaRep);
-    //console.log(retorno);
+    let ret1 = ascXpath.ejecutarCodigo(this.querys);
+    this.queryMod = "";
+    for (let i = 0; i < ret1.objetos.length ; i++ ){
+      if (ret1.objetos[i] != null){
+        this.queryMod += ret1.objetos[i].estado + ret1.objetos[i].identificador;
+      }
+    }
+    console.log(this.queryMod)
+    console.log(ret1.objetos);
+    this.tablaXML = ret.tablaRep;
+    this.cstXML = ret.cstRep;
+    this.bnfXML = ret.bnfRep;
+    alert("Analisis concluido");
   }
 
   reporteTablaSimbolosXML() {
+    localStorage.clear();
+    localStorage.setItem('tablaXML', JSON.stringify(this.tablaXML));
     window.open("tablaSimbolosXML", "_blank")
   }
+
+  reporteCSTXML() {
+    localStorage.clear();
+    localStorage.setItem('CSTxml', this.cstXML);
+    window.open("grafico", "_blank")
+  }
+
+  reporteBNFXML() {
+
+  }
+
+  reproteBNFXPATH() {
+
+  }
+
 }

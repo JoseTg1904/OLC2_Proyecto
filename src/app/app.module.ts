@@ -16,13 +16,15 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { TablaXMLComponent } from './paginas/tabla-xml/tabla-xml.component';
 import { MatTableModule } from '@angular/material/table';
 import { GraficoComponent } from './paginas/grafico/grafico.component';
+import { BnfComponent } from './paginas/bnf/bnf.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TablaXMLComponent,
     HomeComponent,
-    GraficoComponent
+    GraficoComponent,
+    BnfComponent
   ],
   imports: [
     BrowserModule,
