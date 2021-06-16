@@ -78,8 +78,6 @@ export class HomeComponent {
   queryMod: string = "";
 
   ngOnInit(){
-    let ascXpath = new XPATHasc.AnalizadosAscXpath();
-    console.log(ascXpath.ejecutarCodigo("//hola/hola//adios/pero"));
     localStorage.clear();
   }
 
@@ -107,6 +105,7 @@ export class HomeComponent {
       }
     }
     console.log(ret);
+    console.log(ret1);
     this.tablaXML = ret.tablaRep;
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;

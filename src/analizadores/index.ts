@@ -1,5 +1,9 @@
 import { SalidaGramatica } from './AST/SalidaGramatica';
 import { Nodo } from './Expresiones/Nodo';
+import Primitivo from './Expresiones/Primitivo';
+import Aritmetica from './Operaciones/Aritmeticas';
+import Relacional from './Operaciones/Relacional';
+import Logica from './Operaciones/Logica';
 
 import * as gramatica from './xpathAsc';
 
