@@ -104,8 +104,7 @@ INICIOPURO :
         {
             produccion.push('<INICIOPURO> ::= <INICIO> EOF');
             accion.push('INICIOPURO.Val = INICIO.val //fin del documento');
-            $$ = $1;
-            return new SalidaGramatica($$, produccion, accion);
+            return new SalidaGramatica($1, produccion, accion);
         };
 
 INICIO : 
@@ -113,14 +112,13 @@ INICIO :
         { 
             produccion.push('<INICIO> ::= <INICIO> | <INICIALES>');
             accion.push('INICIO.Val = INICIO.push(INICIALES)');
-            $1.push($3); 
-            $$ = $1; 
+            $$.push($3); 
         }   
     | INICIALES 
         {
             produccion.push('<INICIO> ::= <INICIALES>');
             accion.push('INICIO.Val = INICIALES.Val');
-            $$ = $1; 
+            $$ = [$1]; 
         };
 
 INICIALES : 

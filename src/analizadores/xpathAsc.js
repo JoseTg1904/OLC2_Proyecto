@@ -87,16 +87,14 @@ case 1:
 
             produccion.push('<INICIOPURO> ::= <INICIO> EOF');
             accion.push('INICIOPURO.Val = INICIO.val //fin del documento');
-            this.$ = $$[$0-1];
-            return new SalidaGramatica(this.$, produccion, accion);
+            return new SalidaGramatica($$[$0-1], produccion, accion);
         
 break;
 case 2:
  
             produccion.push('<INICIO> ::= <INICIO> | <INICIALES>');
             accion.push('INICIO.Val = INICIO.push(INICIALES)');
-            $$[$0-2].push($$[$0]); 
-            this.$ = $$[$0-2]; 
+            this.$.push($$[$0]); 
         
 break;
 case 3:
@@ -188,7 +186,7 @@ case 13:
 
             produccion.push(`<DERIVACIONDIAGONAL> ::= epsilon`);
             accion.push('DERIVACIONDIAGONAL.Val = [/*Vacio*/]');
-            this.$ = [null];
+            this.$ = [];
         
 break;
 case 14:

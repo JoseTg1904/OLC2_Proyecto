@@ -1,5 +1,7 @@
 import { SalidaGramatica } from './AST/SalidaGramatica';
 import { Nodo } from './Expresiones/Nodo';
+import { GramaticaBNF } from './AST/GramaticaBNF';
+import { Arbol } from './AST/Arbol';
 import Primitivo from './Expresiones/Primitivo';
 import Aritmetica from './Operaciones/Aritmeticas';
 import Relacional from './Operaciones/Relacional';
@@ -9,8 +11,9 @@ import * as gramatica from './xpathAsc';
 
 interface retorno {
     objetos: Nodo[],
-    bnf1: string[],
-    bnf2: string[]
+    bnfRep: any,
+    astRep: any,
+    cstRep: any
 }
 
 export class AnalizadosAscXpath {
@@ -18,13 +21,18 @@ export class AnalizadosAscXpath {
     public ejecutarCodigo(entrada: string): retorno {
 
         const salidaG = gramatica.parse(entrada);
+        const gramBnf = new GramaticaBNF(salidaG.reporteBNF, salidaG.reporteBNF2);
+        const arbol = new Arbol(salidaG.objetos);
 
-        let a: retorno = {
+        let reporteBNF = gramBnf.getBNFReport();
+        let reporteAST = arbol.crearGrafoAST();
+        let reporteCST = arbol.crearGrafoCST();
+
+        return {
             objetos: salidaG.objetos,
-            bnf1: salidaG.reporteBNF,
-            bnf2: salidaG.reporteBNF2
-        }
-
-        return a;
+            bnfRep: reporteBNF,
+            astRep: reporteAST,
+            cstRep: reporteCST
+        };
     }
 }

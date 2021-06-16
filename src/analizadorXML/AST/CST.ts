@@ -19,7 +19,6 @@ export class CST {
             num = num + 1000;
         });
         this.cuerpoDot += '} \n ';
-        this.generateDot(this.cuerpoDot);
         return this.cuerpoDot;
     }
 
@@ -68,9 +67,4 @@ ${id}\"]\n`
         nodo += `nodo${pos} -> nodo${pos}_a [label=\"valor\"]\n`;
         return nodo;
     }
-
-    generateDot(cuerpo: any) {
-        console.log('Cuerpo', cuerpo);
-    }
-
 }

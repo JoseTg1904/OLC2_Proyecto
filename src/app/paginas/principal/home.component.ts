@@ -78,6 +78,10 @@ export class HomeComponent {
 
   queryMod: string = "";
 
+  bnfXpath: any[] = [];
+  astXpath:string = "";
+  cstXpath: string = "";
+
   ngOnInit(){
     localStorage.clear();
   }
@@ -99,17 +103,21 @@ export class HomeComponent {
 
     let ret = ascXML.ejecutarCodigo(this.xmlEntrada);
     let ret1 = ascXpath.ejecutarCodigo(this.querys);
+    console.log(ret1);
     this.queryMod = "";
     for (let i = 0; i < ret1.objetos.length ; i++ ){
       if (ret1.objetos[i] != null){
         this.queryMod += ret1.objetos[i].estado + ret1.objetos[i].identificador;
       }
     }
-    console.log(ret);
-    console.log(ret1);
+
     this.tablaXML = ret.tablaRep;
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
+    this.encodingXML = ret.encoding;
+    this.bnfXpath = ret1.bnfRep;
+    this.astXpath = ret1.astRep;
+    this.cstXpath = ret1.cstRep;
     alert("Analisis concluido");
   }
 
@@ -117,10 +125,10 @@ export class HomeComponent {
     localStorage.clear();
     let descXML = new XMLdesc.AnalizadorASCXML();
     let ret = descXML.ejecutarCodigo(this.xmlEntrada);
-    console.log(ret);
     this.tablaXML = ret.tablaRep;
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
+    alert("Analisis concluido");
   }
 
   reporteTablaSimbolosXML() {
@@ -141,8 +149,22 @@ export class HomeComponent {
     window.open("bnf", "_blank")
   }
 
-  reproteBNFXPATH() {
+  reporteBNFXPATH() {
+    localStorage.clear();
+    localStorage.setItem('bnf', JSON.stringify(this.bnfXpath));
+    window.open("bnf", "_blank")
+  }
 
+  reporteASTXPATH() {
+    localStorage.clear()
+    localStorage.setItem('grafo', this.astXpath);
+    window.open("grafico", "_blank")
+  }
+
+  reporteCSTXPATH() {
+    localStorage.clear()
+    localStorage.setItem('grafo', this.cstXpath);
+    window.open("grafico", "_blank")
   }
 
 }

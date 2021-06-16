@@ -21,7 +21,6 @@ export class AnalizadorASCXML  {
     public ejecutarCodigo(entrada: string): retorno {
         const tabla: TablaSimbolos = new TablaSimbolos();
         const salidaG = gramatica.parse(entrada);
-        console.log(salidaG)
         const arbolCST = new CST(salidaG.objetos);
 
         // TABLA SIMBOLOS

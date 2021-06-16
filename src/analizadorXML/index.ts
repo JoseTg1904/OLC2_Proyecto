@@ -23,8 +23,6 @@ export class AnalizadorASCXML  {
         const salidaG = gramatica.parse(entrada);
         const arbolCST = new CST(salidaG.objetos);
 
-        console.log(salidaG)
-
         // TABLA SIMBOLOS
         let reporteTabla = tabla.generarReporteTablaObjetos(salidaG.objetos); 
         // BNF
