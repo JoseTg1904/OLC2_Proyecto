@@ -5,16 +5,38 @@ export class xpathBusqueda {
     }
 
     getNodesByFilters(filter: any, param: any, objects: any) {
+        // solo el nombre del root ej: mundo
         if (filter === '1') {
             console.log('val nodo\n\t', this.findByRootName(param, objects));
         }
+        // rutas 
         if (filter === '2') {
-            console.log('val nodo\n\t', this.validateRootNode(param.substring(1), objects));
+            this.startTypeSearch(param, objects);
         }
+        //multiples rutas ej. /mundo/continente/pais1/nombre|/mundo/continente/pais/nombre
         if (filter === '3') {
-            console.log('val nodo\n\t', this.findByPath(param, objects));
+            if (param.includes('|')) {
+                var parameters = param.split('|');
+                console.log('val nodo m ', parameters);
+                for (let i = 0; i < parameters.length; i++) {
+                    this.startTypeSearch(parameters[i], objects);
+                }
+            }
         }
     }
+
+    startTypeSearch(param: any, objects: any) {
+        // console.log('param ', param);
+        param = param.replace('//', '/-');
+        // console.log('param replace ', param);
+        //ruta relativa, inicia con /        
+        if (param.startsWith('/')) {
+            console.log('val nodo\n\t', this.initSearchMethod(param.substring(1), objects));
+        } else {
+            console.log('val nodo\n\t', this.initSearchMethod(param, objects));
+        }
+    }
+
 
     // 1. Obtener cuando solo se escribe el nombre
     findByRootName(param: any, objects: any): string {
@@ -33,91 +55,128 @@ export class xpathBusqueda {
     }
 
     // 2. Obtener cuando la ruta empiza por el root '/'
-    validateRootNode(param: any, objects: any): string {
+    initSearchMethod(param: any, objects: any) {
+        var qryValue = '';
         var parameters = param.split('/');
-        var texto = '';
-        var root = parameters[0];
-        objects.forEach((obj: any) => {
-            var tmpParam = param.split('/');
-            if (obj.identificador === root) {
-                if (tmpParam.length === 1) {
-                    texto += `++ ${this.findValuesNodes(obj)}\n`;
-                } else {
-                    tmpParam.shift();
-                    texto += this.findByRootNode(tmpParam, obj);
-                }
-            }
-        });
-        return texto;
-    }
-
-    findByRootNode(param: any, objects: any): string {
-        var texto = '';
-        var parameters = param;
-        var root = parameters[0];
-        if (objects.listaObjetos.length !== 0) {
-            objects.listaObjetos.forEach((obj: any) => {
-                var tmpParam = parameters;
-                if (obj.identificador === root) {
-                    if (tmpParam.length === 1) {
-                        texto += `++ ${this.findValuesNodes(obj)}\n`;
-                    } else {
-                        tmpParam.shift();
-                        texto += this.findByRootNode(tmpParam, obj);
-                    }
-                }
-            });
-        } else if (objects.identificador === root) {
-            texto += objects.texto;
+        for (let i = 0; i < objects.length; i++) {
+            qryValue = this.findByRootNode(parameters, objects[i]);
         }
-        return texto;
+        return qryValue;
     }
 
-    // 3. Obtener por ruta no relativa 
-    findByPath(param: any, objects: any) {
-        var parameters = param.split('/');
-        var texto = '';
-        var root = parameters[0];
-        objects.forEach((obj: any) => {
-            var tmpParam = param.split('/');
-            if (obj.identificador === root) {
-                if (tmpParam.length === 1) {
-                    texto += `-- ${this.findValuesNodes(obj)}\n`;
-                } else {
-                    tmpParam.shift();
-                    texto += this.findNodesByPath(tmpParam, obj);
+    findByRootNode(param: any, nodeObject: any, index = 0, parent = null): string {
+        // console.log('\nNODE: ', nodeObject.identificador);
+        // console.log('PARAM: ', index);
+        // console.log('TMP ROOT: ', param[index]);
+        var valueQry = '';
+        const tmp = index + 1;
+        var root = param[index];
+        var hasDoubleSlash = false;
+        if (root.startsWith('-')) {
+            hasDoubleSlash = true;
+        }
+        if (nodeObject.identificador === root && tmp === param.length) {
+            //console.log('FINAL NODE ', nodeObject.identificador);
+            valueQry += this.findValuesNodes(nodeObject);
+        } else if (nodeObject.identificador === root && param.length > tmp) {
+            var arr = nodeObject.listaObjetos;
+            var secondR = param[tmp];
+            // console.log('SECOND ROOT', secondR);
+            var hasPassedDot = false;
+            var hasAtribute = false;
+            for (let i = 0; i < arr.length; i++) {
+                var tmpParam = param;
+                if (arr[i].identificador === secondR) {
+                    valueQry += `${this.findByRootNode(tmpParam, arr[i], tmp, nodeObject)}\n`;
+                } else if (secondR.startsWith('-')) {
+                    valueQry += `${this.findByRootNode(tmpParam, arr[i], tmp, nodeObject)}\n`;
+                } else if (secondR === '.' && !hasPassedDot) {
+                    hasPassedDot = true;
+                    valueQry += this.findValuesNodes(nodeObject);
+                } else if (secondR === '..' && !hasPassedDot) {
+                    hasPassedDot = true;
+                    valueQry += this.findValuesNodes(parent);
+                } else if (secondR.startsWith('@*') && !hasAtribute) {
+                    hasAtribute = true;
+                    valueQry += this.findAllAtribute(nodeObject);
+                } else if (secondR.startsWith('@') && !hasAtribute) {
+                    hasAtribute = true;
+                    valueQry += this.findAtribute(nodeObject, secondR);
                 }
+
+            }
+            if (arr.length === 0 && secondR === '.') {
+                valueQry += this.findValuesNodes(nodeObject);
+            } else if (arr.length === 0 && secondR === '..') {
+                valueQry += this.findValuesNodes(parent);
+            } else if (arr.length === 0 && secondR.startsWith('@*')) {
+                valueQry += this.findAllAtribute(nodeObject);
+            } else if (arr.length === 0 && secondR.startsWith('@')) {
+                valueQry += this.findAtribute(nodeObject, secondR);
+            }
+
+        } else if (hasDoubleSlash) {
+            //  console.log('TIENE SLASH');
+            const tmpName = param[index].substring(1);
+            if (tmpName === nodeObject.identificador && tmp === param.length) {
+                valueQry += this.findValuesNodes(nodeObject);
+            } else if (tmpName === nodeObject.identificador) {
+                var arr = nodeObject.listaObjetos;
+                var secondR = param[tmp];
+                // console.log('SECOND ROOT+', secondR);
+                var hasPassedDot = false;
+                var hasAtribute = false;
+                for (let i = 0; i < arr.length; i++) {
+                    var tmpParam = param;
+                    if (arr[i].identificador === secondR) {
+                        valueQry += `${this.findByRootNode(tmpParam, arr[i], tmp, nodeObject)}\n`;
+                    } else if (secondR.startsWith('-')) {
+                        valueQry += `${this.findByRootNode(tmpParam, arr[i], tmp, nodeObject)}\n`;
+                    } else if (secondR === '.' && !hasPassedDot) {
+                        hasPassedDot = true;
+                        valueQry += this.findValuesNodes(nodeObject);
+                    } else if (secondR === '..' && !hasPassedDot) {
+                        hasPassedDot = true;
+                        valueQry += this.findValuesNodes(parent);
+                    } else if (secondR.startsWith('@*') && !hasAtribute) {
+                        hasAtribute = true;
+                        valueQry += this.findAllAtribute(nodeObject);
+                    } else if (secondR.startsWith('@') && !hasAtribute) {
+                        hasAtribute = true;
+                        valueQry += this.findAtribute(nodeObject, secondR);
+                    }
+
+                }
+                if (arr.length === 0 && secondR === '.') {
+                    valueQry += this.findValuesNodes(nodeObject);
+                } else if (arr.length === 0 && secondR === '..') {
+                    valueQry += this.findValuesNodes(parent);
+                } else if (arr.length === 0 && secondR.startsWith('@*')) {
+                    valueQry += this.findAllAtribute(nodeObject);
+                } else if (arr.length === 0 && secondR.startsWith('@')) {
+                    valueQry += this.findAtribute(nodeObject, secondR);
+                }
+
             } else {
-                texto += this.findNodesByPath(tmpParam, obj);
-            }
-        });
-        return texto;
-    }
-
-    findNodesByPath(param: any, objects: any) {
-        var texto = '';
-        var parameters = param;
-        var root = parameters[0];
-        if (objects.listaObjetos.length !== 0) {
-            objects.listaObjetos.forEach((obj: any) => {
-                var tmpParam = parameters;
-                if (obj.identificador === root) {
-                    console.log('node ', obj.identificador);
-                    if (tmpParam.length === 1) {
-                        console.log('entra');
-                        texto += `++ ${this.findValuesNodes(obj)}\n`;
-                    } else {
-                        tmpParam.shift();
-                        texto += this.findNodesByPath(tmpParam, obj);
-                    }
-                } else {
-                    texto += this.findNodesByPath(tmpParam, obj);
+                if (param[index].startsWith('-@*')) {
+                    valueQry += this.findAllAtribute(nodeObject);
+                } else if (param[index].startsWith('-@')) {
+                    valueQry += this.findAtribute(nodeObject, param[index].substring(1));
+                } else if (param[index].startsWith('-*')) {
+                    valueQry += `NODOS: \n\t ${this.findValuesNodes(nodeObject)}`;
+                    // valueQry += `ATRIBUTOS: \n\t ${this.findAllAtribute(nodeObject)}`;
                 }
-            });
-        } else if (objects.identificador === root) {
-            texto += objects.texto;
+                var arr1 = nodeObject.listaObjetos;
+                for (let i = 0; i < arr1.length; i++) {
+                    var tmpParam = param;
+                    valueQry += `${this.findByRootNode(tmpParam, arr1[i], index)}`;
+                }
+            }
         }
-        return texto;
+        else {
+            console.log('ELSEEEEEEEEEEE', nodeObject.identificador, '-', param);
+        }
+        return valueQry;
     }
 
 
@@ -129,13 +188,32 @@ export class xpathBusqueda {
                 texto += this.findValuesNodes(obj);
             });
         } else {
-            texto += nodeList.texto;
+            texto += `<${nodeList.identificador}>${nodeList.texto}</${nodeList.cierre}>\n`;
+        }
+        // console.log('TEXTO ', texto);
+        return texto;
+    }
+
+    findAtribute(nodeList: any, param: any): string {
+        var texto = ' ';
+        if (nodeList.listaAtributos.length !== 0) {
+            nodeList.listaAtributos.forEach((obj: any) => {
+                if (obj.identificador === param.substring(1)) {
+                    texto += `- ${obj.valor}\n`;
+                }
+            });
+        }
+        return texto;
+    }
+
+    findAllAtribute(nodeList: any): string {
+        var texto = ' ';
+        if (nodeList.listaAtributos.length !== 0) {
+            nodeList.listaAtributos.forEach((obj: any) => {
+                texto += `- ${obj.valor}\n`;
+            });
         }
         return texto;
     }
 
 }
-/*
-1   all by name
-
-*/
