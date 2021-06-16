@@ -5,7 +5,7 @@ import { GramaticaBNF } from './AST/GramaticaBNF';
 import { TablaSimbolos } from './AST/TablaSimbolos';
 import { SalidaGramatica } from './AST/SalidaGramatica';
 
-import * as gramatica from './Gramatica/gramatica';
+import * as gramatica from './Gramatica/gramaticaDesc';
 import { RepositionScrollStrategy } from '@angular/cdk/overlay';
 import { emitWarning } from 'process';
 
@@ -21,9 +21,8 @@ export class AnalizadorASCXML  {
     public ejecutarCodigo(entrada: string): retorno {
         const tabla: TablaSimbolos = new TablaSimbolos();
         const salidaG = gramatica.parse(entrada);
-        const arbolCST = new CST(salidaG.objetos);
-
         console.log(salidaG)
+        const arbolCST = new CST(salidaG.objetos);
 
         // TABLA SIMBOLOS
         let reporteTabla = tabla.generarReporteTablaObjetos(salidaG.objetos); 

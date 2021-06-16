@@ -200,7 +200,7 @@ DERIVACIONDIAGONAL :
     |   {
             produccion.push(`<DERIVACIONDIAGONAL> ::= epsilon`);
             accion.push('DERIVACIONDIAGONAL.Val = [/*Vacio*/]');
-            $$ = [null];
+            $$ = [];
         };
 
 DERIVADOSLIMITADO :

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import * as XMLasc from '../../../analizadorXML/index';
+import * as XMLdesc from '../../../analizadorXML/indexDesc';
 import * as XPATHasc from '../../../analizadores/index';
 import { ReporteService } from '../../reporte.service';
 import { Router } from '@angular/router';
@@ -110,6 +111,16 @@ export class HomeComponent {
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
     alert("Analisis concluido");
+  }
+
+  ejecutarDescendente() {
+    localStorage.clear();
+    let descXML = new XMLdesc.AnalizadorASCXML();
+    let ret = descXML.ejecutarCodigo(this.xmlEntrada);
+    console.log(ret);
+    this.tablaXML = ret.tablaRep;
+    this.cstXML = ret.cstRep;
+    this.bnfXML = ret.bnfRep;
   }
 
   reporteTablaSimbolosXML() {
