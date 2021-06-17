@@ -80,7 +80,7 @@ BSL                                 "\\".
 
 //error lexico
 .                                   {
-                                        listaErrores.push(new Error('Léxico',`Simbolo inesperado: ${yytext}`,yylloc.first_line,yylloc.first_column ));
+                                        /*listaErrores.push(new Error.default('Léxico',`Simbolo inesperado: ${yytext}`,yylloc.first_line,yylloc.first_column ));*/
                                         console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
                                     }
 
@@ -93,8 +93,7 @@ BSL                                 "\\".
     const {Objeto} = require("../Expresiones/Objeto");
     const {Atributo} = require("../Expresiones/Atributo");
     const {SalidaGramatica} = require("../AST/SalidaGramatica");
-    const {Error} = require("../Expresiones/Error");
-    
+    const {tError} = require("./Expresiones/tError");
 
     var listaErrores = [];
     var reportBNF = [];
@@ -134,7 +133,7 @@ START :
 ENCODING: 
         lt interC xml version asig StringLiteral encoding asig StringLiteral interC gt      {   $$ = $9; }
     |   error gt                                                                            {   /*listaErrores.push(
-                                                                                                    new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
+                                                                                                    new Error.default('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
                                                                                                 );*/
                                                                                             }
     ;
@@ -177,7 +176,7 @@ OBJETO:
                                                                                     $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[],0,'');
                                                                                 }
     |   error gt                                                                {   /*listaErrores.push(
-                                                                                        new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
+                                                                                        new Error.default('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
                                                                                     );*/
                                                                                 }
     ;
@@ -216,11 +215,11 @@ ATRIBUTO:
                                                     $$ = new Atributo($1, $3, @1.first_line, @1.first_column);
                                                 }
     |   error gt                                {   /*listaErrores.push(
-                                                        new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
+                                                        new Error.default('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
                                                     );*/
                                                 }
     |   error lt                                {   /*listaErrores.push(
-                                                        new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
+                                                        new Error.default('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
                                                     );*/
                                                 }
     ;
@@ -274,7 +273,7 @@ LISTA_VALORES :
                                     $$ = $1;
                                 }
     |   error                   {   /*listaErrores.push(
-                                        new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
+                                        new Error.default('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
                                     );*/
                                 }                              
     ;

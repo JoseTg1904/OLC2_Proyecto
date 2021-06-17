@@ -96,7 +96,7 @@ case 2:
 break;
 case 3:
    /*listaErrores.push(
-                                                                                                    new Error('Sintactico',`Token inesperado: ${yytext}`,_$[$0-1].first_line,_$[$0-1].first_column )
+                                                                                                    new Error.default('Sintactico',`Token inesperado: ${yytext}`,_$[$0-1].first_line,_$[$0-1].first_column )
                                                                                                 );*/
                                                                                             
 break;
@@ -145,7 +145,7 @@ case 9:
 break;
 case 10:
    /*listaErrores.push(
-                                                                                        new Error('Sintactico',`Token inesperado: ${yytext}`,_$[$0-1].first_line,_$[$0-1].first_column )
+                                                                                        new Error.default('Sintactico',`Token inesperado: ${yytext}`,_$[$0-1].first_line,_$[$0-1].first_column )
                                                                                     );*/
                                                                                 
 break;
@@ -187,7 +187,7 @@ case 15:
 break;
 case 16: case 17:
    /*listaErrores.push(
-                                                        new Error('Sintactico',`Token inesperado: ${yytext}`,_$[$0-1].first_line,_$[$0-1].first_column )
+                                                        new Error.default('Sintactico',`Token inesperado: ${yytext}`,_$[$0-1].first_line,_$[$0-1].first_column )
                                                     );*/
                                                 
 break;
@@ -226,7 +226,7 @@ case 22: case 23: case 24: case 25: case 26: case 27: case 28:
 break;
 case 29:
    /*listaErrores.push(
-                                        new Error('Sintactico',`Token inesperado: ${yytext}`,_$[$0].first_line,_$[$0].first_column )
+                                        new Error.default('Sintactico',`Token inesperado: ${yytext}`,_$[$0].first_line,_$[$0].first_column )
                                     );*/
                                 
 break;
@@ -503,8 +503,7 @@ _handle_error:
     const {Objeto} = require("../Expresiones/Objeto");
     const {Atributo} = require("../Expresiones/Atributo");
     const {SalidaGramatica} = require("../AST/SalidaGramatica");
-    const {Error} = require("../Expresiones/Error");
-    
+    const {tError} = require('../Expresiones/tError');
 
     var listaErrores = [];
     var reportBNF = [];
@@ -931,7 +930,7 @@ break;
 case 45:return 27;
 break;
 case 46:
-                                        listaErrores.push(new Error('Léxico',`Simbolo inesperado: ${yy_.yytext}`,yy_.yylloc.first_line,yy_.yylloc.first_column ));
+                                        /*listaErrores.push(new Error.default('Léxico',`Simbolo inesperado: ${yy_.yytext}`,yy_.yylloc.first_line,yy_.yylloc.first_column ));*/
                                         console.error('Este es un error léxico: ' + yy_.yytext + ', en la linea: ' + yy_.yylloc.first_line + ', en la columna: ' + yy_.yylloc.first_column);
                                     
 break;
