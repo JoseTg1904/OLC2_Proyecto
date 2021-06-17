@@ -84,3 +84,15 @@
     </ngx-codemirror>
   </div> 
 </div>
+
+<div id = "grafo" *ngIf="grafo == true">
+  <app-grafico></app-grafico>
+</div>
+
+<div id = "tablaS" *ngIf = "tabla == true">
+  <app-tabla-xml></app-tabla-xml>
+</div>
+
+<div id = "bnf" *ngIf = "bnf == true">
+  <app-bnf></app-bnf>
+</div>

@@ -1,3 +1,4 @@
+import {tError} from '../Expresiones/tError';
 
 export class SalidaGramatica {
 

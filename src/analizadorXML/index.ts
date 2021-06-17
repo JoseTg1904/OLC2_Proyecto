@@ -4,10 +4,9 @@ import { Entorno } from './AST/Entorno';
 import { GramaticaBNF } from './AST/GramaticaBNF';
 import { TablaSimbolos } from './AST/TablaSimbolos';
 import { SalidaGramatica } from './AST/SalidaGramatica';
+import { tError } from './Expresiones/tError';
 
 import * as gramatica from './Gramatica/gramatica';
-import { RepositionScrollStrategy } from '@angular/cdk/overlay';
-import { emitWarning } from 'process';
 
 interface retorno {
     tablaRep: any,

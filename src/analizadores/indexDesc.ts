@@ -29,14 +29,14 @@ export class AnalizadosAscXpath {
         let reporteBNF = gramBnf.getBNFReport();
         let reporteAST = arbol.crearGrafoAST();
         let reporteCST = arbol.crearGrafoCST();
-        //let resultado = arbol.ejecutarArbol();
+        let resultado = arbol.ejecutarArbol();
 
         return {
             objetos: salidaG.objetos,
             bnfRep: reporteBNF,
             astRep: reporteAST,
             cstRep: reporteCST,
-            ejecutado: "resultado"
+            ejecutado: resultado
         };
     }
 }

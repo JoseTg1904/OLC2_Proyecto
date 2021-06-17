@@ -79,10 +79,11 @@ BSL                                 "\\".
 {charliteral}                       return 'CharLiteral';
 
 //error lexico
-.                                   {
-                                        listaErrores.push(new Error('Léxico',`Simbolo inesperado: ${yytext}`,yylloc.first_line,yylloc.first_column ));
-                                        console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
-                                    }
+.   
+    {
+        listaErrores.push(new tError('Léxico',`Simbolo inesperado: ${yytext}`,yylloc.first_line,yylloc.first_column ));
+        //console.error('Este es un error léxico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column);
+    }
 
 <<EOF>>                     return 'EOF'
 
@@ -93,13 +94,10 @@ BSL                                 "\\".
     const {Objeto} = require("../Expresiones/Objeto");
     const {Atributo} = require("../Expresiones/Atributo");
     const {SalidaGramatica} = require("../AST/SalidaGramatica");
-    const {Error} = require("../Expresiones/Error");
-    
-
+    const {tError} = require("../Expresiones/tError");
     var listaErrores = [];
     var reportBNF = [];
     var reportBNF2 = [];
-
 %}
 
 // DEFINIMOS PRESEDENCIA DE OPERADORES
@@ -127,16 +125,16 @@ START :
                                         reportBNF.push(`<START> ::= <RAICES> EOF`);
                                         reportBNF2.push('Start.val = Raiz.val. // Fin del documento');
                                         $$ = $2;
-                                        return new SalidaGramatica($$, reportBNF, reportBNF2,$1, listaErrores);
+                                        return new SalidaGramatica($$, reportBNF, reportBNF2, $1, listaErrores);
                                     }
     ;
 
 ENCODING: 
         lt interC xml version asig StringLiteral encoding asig StringLiteral interC gt      {   $$ = $9; }
-    |   error gt                                                                            {   /*listaErrores.push(
-                                                                                                    new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                                                                                );*/
-                                                                                            }
+    |   error gt                                                                            
+        {
+            listaErrores.push(new tError('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column));
+        }
     ;
 
 RAICES: 
@@ -176,9 +174,9 @@ OBJETO:
                                                                                     reportBNF2.push('Objeto = new Objeto(id,\'\',linea, columna,atributos,[])');
                                                                                     $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[],0,'');
                                                                                 }
-    |   error gt                                                                {   /*listaErrores.push(
-                                                                                        new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                                                                    );*/
+    |   error gt                                                                {   listaErrores.push(
+                                                                                        new tError('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
+                                                                                    );
                                                                                 }
     ;
 
@@ -215,13 +213,13 @@ ATRIBUTO:
                                                     reportBNF2.push('Atributo = new Atributo(id, valor, fila, columna)');
                                                     $$ = new Atributo($1, $3, @1.first_line, @1.first_column);
                                                 }
-    |   error gt                                {   /*listaErrores.push(
-                                                        new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                                    );*/
+    |   error gt                                {   listaErrores.push(
+                                                        new tError('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
+                                                    );
                                                 }
-    |   error lt                                {   /*listaErrores.push(
-                                                        new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                                    );*/
+    |   error lt                                {   listaErrores.push(
+                                                        new tError('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
+                                                    );
                                                 }
     ;
 
@@ -273,9 +271,9 @@ LISTA_VALORES :
     |   CARACTERES              {
                                     $$ = $1;
                                 }
-    |   error                   {   /*listaErrores.push(
-                                        new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                    );*/
+    |   error                   {   listaErrores.push(
+                                        new tError('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
+                                    );
                                 }                              
     ;
 
