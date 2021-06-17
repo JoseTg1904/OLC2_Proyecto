@@ -1,4 +1,3 @@
-import { Expression, isNgContainer } from "@angular/compiler";
 import Primitivo from "../Expresiones/Primitivo";
 import Aritmetica from "../Operaciones/Aritmeticas";
 import Logica from "../Operaciones/Logica";
@@ -28,14 +27,24 @@ export class Arbol {
         this.dot += "\"raiz\" [label = \"Raiz\"]\n";
         
         if(this.objetos.length > 1){
-
+            let i = 0;
+            while ( i < this.objetos.length ){
+                this.dot += `\"${i}\" [label = \"|\"]\n`
+                this.dot += `\"raiz\" -> \"${i}\"\n`;
+                this.dot += this.generarNodoAST(this.objetos[i], `${i}`); 
+                if (i + 1 < this.objetos.length ) {
+                this.dot += this.generarNodoAST(this.objetos[i+1], `${i}`);
+                }
+                i += 2
+            }
         }else{
             this.objetos.forEach((objeto: any) => {
                 this.dot += this.generarNodoAST(objeto, 'raiz');
             });
         }
-
+        
         this.dot += "}";
+        console.log(this.dot)
         return this.dot;
     }
 
@@ -62,7 +71,18 @@ export class Arbol {
         this.dot += "\"raiz\" [label = \"Raiz\"]\n";
         
         if(this.objetos.length > 1){
-
+            let i = 0;
+            while ( i < this.objetos.length ){
+                this.dot += `\"${i}S\" [label = \"Separador\"]\n`
+                this.dot += `\"${i}\" [label = \"|\"]\n`
+                this.dot += `\"raiz\" -> \"${i}S\"\n`;
+                this.dot += `\"${i}S\" -> \"${i}\"\n`;
+                this.dot += this.generarNodoCST(this.objetos[i], `${i}`); 
+                if (i + 1 < this.objetos.length ) {
+                this.dot += this.generarNodoCST(this.objetos[i+1], `${i}`);
+                }
+                i += 2
+            }
         }else{
             this.objetos.forEach((objeto: any) => {
                 this.dot += this.generarNodoCST(objeto, 'raiz');
@@ -93,15 +113,19 @@ export class Arbol {
         return aux;
     }
 
-   ejecutarArbol():string {
+    ejecutarArbol():string {
         this.dot = "";
         
         if(this.objetos.length > 1){
-
+            for (let i = 0; i < this.objetos.length; i++){
+                this.dot += this.ejecutarNodoArbol(this.objetos[i]);
+                if (i != this.objetos.length - 1) { this.dot += "|"; }
+            }
         }else{
             this.dot += this.ejecutarNodoArbol(this.objetos[0])
         }
         
+        console.log(this.dot)
         return this.dot
     }
 
