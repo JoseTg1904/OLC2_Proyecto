@@ -93,7 +93,8 @@ BSL                                 "\\".
     const {Objeto} = require("../Expresiones/Objeto");
     const {Atributo} = require("../Expresiones/Atributo");
     const {SalidaGramatica} = require("../AST/SalidaGramatica");
-    const {Error} = require("../Errores/Error");
+    // const {Error} = require("../Errores/Error");
+    
 
     var listaErrores = [];
     var reportBNF = [];
@@ -132,9 +133,9 @@ START :
 
 ENCODING: 
         lt interC xml version asig StringLiteral encoding asig StringLiteral interC gt      {   $$ = $9; }
-    |   error gt                                                                            {   listaErrores.push(
+    |   error gt                                                                            {   /*listaErrores.push(
                                                                                                     new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                                                                                );
+                                                                                                );*/
                                                                                             }
     ;
 
@@ -175,9 +176,9 @@ OBJETO:
                                                                                     reportBNF2.push('Objeto = new Objeto(id,\'\',linea, columna,atributos,[])');
                                                                                     $$ = new Objeto($2,'',@1.first_line, @1.first_column,$3,[],0,'');
                                                                                 }
-    |   error gt                                                                {   listaErrores.push(
+    |   error gt                                                                {   /*listaErrores.push(
                                                                                         new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                                                                    );
+                                                                                    );*/
                                                                                 }
     ;
 
@@ -214,13 +215,13 @@ ATRIBUTO:
                                                     reportBNF2.push('Atributo = new Atributo(id, valor, fila, columna)');
                                                     $$ = new Atributo($1, $3, @1.first_line, @1.first_column);
                                                 }
-    |   error gt                                {   listaErrores.push(
+    |   error gt                                {   /*listaErrores.push(
                                                         new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                                    );
+                                                    );*/
                                                 }
-    |   error lt                                {   listaErrores.push(
+    |   error lt                                {   /*listaErrores.push(
                                                         new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                                    );
+                                                    );*/
                                                 }
     ;
 
@@ -272,9 +273,9 @@ LISTA_VALORES :
     |   CARACTERES              {
                                     $$ = $1;
                                 }
-    |   error                   {   listaErrores.push(
+    |   error                   {   /*listaErrores.push(
                                         new Error('Sintactico',`Token inesperado: ${yytext}`,@1.first_line,@1.first_column )
-                                    );
+                                    );*/
                                 }                              
     ;
 
