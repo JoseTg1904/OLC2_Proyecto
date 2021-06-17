@@ -12,7 +12,8 @@ interface retorno {
     tablaRep: any,
     bnfRep: any,
     cstRep: any,
-    encoding: any
+    encoding: any,
+    objetos: any
 }
 
 export class AnalizadorASCXML  {
@@ -34,7 +35,8 @@ export class AnalizadorASCXML  {
             tablaRep: reporteTabla,
             bnfRep: reporteBNF,
             cstRep: reporteCST,
-            encoding: salidaG.encoding
+            encoding: salidaG.encoding,
+            objetos: salidaG.objetos
         };
 
         return ret;

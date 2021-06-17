@@ -6,7 +6,7 @@ import * as XPATHasc from '../../../analizadores/index';
 import * as XPATHdesc from '../../../analizadores/indexDesc';
 import { ReporteService } from '../../reporte.service';
 import { Router } from '@angular/router';
-
+import { xpathBusqueda } from '../../../analizadorXML/Instrucciones/Busqueda/xpathBusqueda';
 
 @Component({
   selector: 'home-root',
@@ -88,6 +88,9 @@ export class HomeComponent {
   bnf: boolean = false;
   tabla: boolean = false;
 
+  //tabla de simbolos
+  simbolos:any;
+
   ngOnInit(){
     localStorage.clear();
   }
@@ -105,12 +108,13 @@ export class HomeComponent {
   ejecutarAscendente(){
     this.botarReportes();
     localStorage.clear();
+    
     let ascXML = new XMLasc.AnalizadorASCXML();
     let ascXpath = new XPATHasc.AnalizadosAscXpath();
-
     let ret = ascXML.ejecutarCodigo(this.xmlEntrada);
     let ret1 = ascXpath.ejecutarCodigo(this.querys);
 
+    this.simbolos = ret.objetos;
     this.tablaXML = ret.tablaRep;
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
@@ -119,17 +123,39 @@ export class HomeComponent {
     this.bnfXpath = ret1.bnfRep;
     this.astXpath = ret1.astRep;
     this.cstXpath = ret1.cstRep;
+
+    this.obtenerConsulta(this.queryMod, this.simbolos);
+
     alert("Analisis concluido");
+  }
+
+  obtenerConsulta(query: string, tabla: any){
+    var buscador: xpathBusqueda = new xpathBusqueda();
+
+    if(query.includes("|")) {
+      var multiple = buscador.getNodesByFilters("3", query, tabla);
+      this.xmlSalida = ""
+      for (let i = 0; i < multiple.length; i++){
+        this.xmlSalida += multiple[i]
+        this.xmlSalida += "\n"
+      }
+    }else if(query[0] !== "/" && query[0] !== "//"){
+      this.xmlSalida = buscador.getNodesByFilters("1", query, tabla)
+    }else{
+      this.xmlSalida = buscador.getNodesByFilters("2", query, tabla)
+    }
   }
 
   ejecutarDescendente() {
     this.botarReportes();
     localStorage.clear();
+
     let descXML = new XMLdesc.AnalizadorASCXML();
     let descXPATH = new XPATHdesc.AnalizadosAscXpath();
     let ret = descXML.ejecutarCodigo(this.xmlEntrada);
     let ret1 = descXPATH.ejecutarCodigo(this.querys);
 
+    this.simbolos = ret.objetos;
     this.tablaXML = ret.tablaRep;
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
@@ -137,6 +163,9 @@ export class HomeComponent {
     this.bnfXpath = ret1.bnfRep;
     this.astXpath = ret1.astRep;
     this.cstXpath = ret1.cstRep;
+
+    this.obtenerConsulta(this.queryMod, this.simbolos);
+
     alert("Analisis concluido");
   }
 
@@ -191,5 +220,4 @@ export class HomeComponent {
     this.grafo= true;
     // window.open("grafico", "_blank")
   }
-
 }

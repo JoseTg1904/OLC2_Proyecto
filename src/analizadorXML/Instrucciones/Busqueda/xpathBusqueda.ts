@@ -5,24 +5,28 @@ export class xpathBusqueda {
     }
 
     getNodesByFilters(filter: any, param: any, objects: any) {
+        var salida: any;
         // solo el nombre del root ej: mundo
         if (filter === '1') {
-            console.log('val nodo\n\t', this.findByRootName(param, objects));
+            salida = this.findByRootName(param, objects);
         }
         // rutas 
         if (filter === '2') {
-            this.startTypeSearch(param, objects);
+            salida = this.startTypeSearch(param, objects);
         }
         //multiples rutas ej. /mundo/continente/pais1/nombre|/mundo/continente/pais/nombre
         if (filter === '3') {
+            salida = [];
             if (param.includes('|')) {
                 var parameters = param.split('|');
-                console.log('val nodo m ', parameters);
+                //console.log('val nodo m ', parameters);
                 for (let i = 0; i < parameters.length; i++) {
-                    this.startTypeSearch(parameters[i], objects);
+                    salida.push(this.startTypeSearch(parameters[i], objects));
                 }
             }
         }
+
+        return salida;
     }
 
     startTypeSearch(param: any, objects: any) {
@@ -31,9 +35,9 @@ export class xpathBusqueda {
         // console.log('param replace ', param);
         //ruta relativa, inicia con /        
         if (param.startsWith('/')) {
-            console.log('val nodo\n\t', this.initSearchMethod(param.substring(1), objects));
+            /*console.log('val nodo\n\t', */return this.initSearchMethod(param.substring(1), objects)//);
         } else {
-            console.log('val nodo\n\t', this.initSearchMethod(param, objects));
+            /*console.log('val nodo\n\t',*/ return this.initSearchMethod(param, objects)//);
         }
     }
 
