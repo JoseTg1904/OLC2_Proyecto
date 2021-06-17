@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import * as XMLasc from '../../../analizadorXML/index';
 import * as XMLdesc from '../../../analizadorXML/indexDesc';
 import * as XPATHasc from '../../../analizadores/index';
+import * as XPATHdesc from '../../../analizadores/indexDesc';
 import { ReporteService } from '../../reporte.service';
 import { Router } from '@angular/router';
 
@@ -103,14 +104,9 @@ export class HomeComponent {
 
     let ret = ascXML.ejecutarCodigo(this.xmlEntrada);
     let ret1 = ascXpath.ejecutarCodigo(this.querys);
-    console.log(ret1);
-    this.queryMod = "";
-    for (let i = 0; i < ret1.objetos.length ; i++ ){
-      if (ret1.objetos[i] != null){
-        this.queryMod += ret1.objetos[i].estado + ret1.objetos[i].identificador;
-      }
-    }
 
+    this.queryMod = ret1.ejecutado;
+    console.log(this.queryMod)
     this.tablaXML = ret.tablaRep;
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
@@ -124,10 +120,18 @@ export class HomeComponent {
   ejecutarDescendente() {
     localStorage.clear();
     let descXML = new XMLdesc.AnalizadorASCXML();
+    let descXPATH = new XPATHdesc.AnalizadosAscXpath();
     let ret = descXML.ejecutarCodigo(this.xmlEntrada);
+    let ret1 = descXPATH.ejecutarCodigo(this.querys);
+
+    this.queryMod = ret1.ejecutado;
+    console.log(this.queryMod)
     this.tablaXML = ret.tablaRep;
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
+    this.bnfXpath = ret1.bnfRep;
+    this.astXpath = ret1.astRep;
+    this.cstXpath = ret1.cstRep;
     alert("Analisis concluido");
   }
 

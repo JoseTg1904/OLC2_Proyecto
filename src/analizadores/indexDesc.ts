@@ -7,7 +7,7 @@ import Aritmetica from './Operaciones/Aritmeticas';
 import Relacional from './Operaciones/Relacional';
 import Logica from './Operaciones/Logica';
 
-import * as gramatica from './xpathAsc';
+import * as gramatica from './xpathDesc';
 
 interface retorno {
     objetos: Nodo[],
@@ -18,7 +18,6 @@ interface retorno {
 }
 
 export class AnalizadosAscXpath {
-    
     public ejecutarCodigo(entrada: string): retorno {
 
         const salidaG = gramatica.parse(entrada);
@@ -30,14 +29,14 @@ export class AnalizadosAscXpath {
         let reporteBNF = gramBnf.getBNFReport();
         let reporteAST = arbol.crearGrafoAST();
         let reporteCST = arbol.crearGrafoCST();
-        let resultado = arbol.ejecutarArbol();
+        //let resultado = arbol.ejecutarArbol();
 
         return {
             objetos: salidaG.objetos,
             bnfRep: reporteBNF,
             astRep: reporteAST,
             cstRep: reporteCST,
-            ejecutado: resultado
+            ejecutado: "resultado"
         };
     }
 }
