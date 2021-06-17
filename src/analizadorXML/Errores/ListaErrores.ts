@@ -1,4 +1,4 @@
-const { Error } = require('../Errores/Error');
+// const { Error } = require('../Errores/Error');
 
 export class ListaErrores {
 
@@ -6,15 +6,15 @@ export class ListaErrores {
     }
 
     validateEtiquetas(listaO: any): any {
-        var tmpArray = [];
+        var tmpArray = 0;
         for (let i = 0; i < listaO.length; i++) {
             if (listaO[i].identificador !== listaO[i].cierre) {
-                tmpArray.push(
+                /*tmpArray.push(
                     new Error('Semantico',
                         `Etiquetas incorrectas ${listaO[i].identificador} !=== ${listaO[i].cierre}`,
                         listaO[i].linea,
                         listaO[i].columna
-                    ));
+                    ));*/
             }
         }
         return tmpArray;
