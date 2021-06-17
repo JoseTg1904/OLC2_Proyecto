@@ -93,7 +93,7 @@ BSL                                 "\\".
     const {Objeto} = require("../Expresiones/Objeto");
     const {Atributo} = require("../Expresiones/Atributo");
     const {SalidaGramatica} = require("../AST/SalidaGramatica");
-    // const {Error} = require("../Errores/Error");
+    const {Error} = require("../Expresiones/Error");
     
 
     var listaErrores = [];
