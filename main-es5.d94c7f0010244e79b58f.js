@@ -123,7 +123,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div id = \"barra\">\n  <mat-toolbar color = \"warn\">\n    <span>Tytus X</span>\n\n    <div class = \"spacer\"></div>\n\n    <button mat-raised-button color = \"accent\" [matMenuTriggerFor] = \"archivo\">Archivo</button>\n    <mat-menu #archivo = \"matMenu\">\n        <button mat-menu-item>\n            <mat-icon>attach_file</mat-icon>\n            <label for = \"file\">Abrir XML</label>\n            <input type = \"file\"\n            id = \"file\"\n            class = \"hidend\"\n            (change) = \"abrirXML($event.target.files)\">\n        </button>\n        <button mat-menu-item>\n            <mat-icon>attach_file</mat-icon>\n            <span>Abrir XPath</span>\n        </button>\n        <button mat-menu-item>\n            <mat-icon>delete</mat-icon>\n            <span>Limpiar</span>\n        </button>\n    </mat-menu>\n\n    <button mat-raised-button color = \"accent\" [matMenuTriggerFor] = \"ejecutar\">Ejecutar</button>\n    <mat-menu #ejecutar = \"matMenu\">\n        <button mat-menu-item (click) = \"ejecutarAscendente()\">\n            <mat-icon>keyboard_arrow_up</mat-icon>\n            <span>Ascendete</span>\n        </button>\n        <button mat-menu-item (click) = \"ejecutarDescendente()\"> \n            <mat-icon>keyboard_arrow_down</mat-icon>\n            <span>Descendente</span>\n        </button>\n    </mat-menu>\n\n    <button mat-raised-button color = \"accent\" [matMenuTriggerFor] = \"reporte\">Reportes</button>\n    <mat-menu #reporte = \"matMenu\">\n        <button mat-menu-item (click) = \"reporteTablaSimbolosXML()\">\n            <span>Tabla de simbolos XML</span>\n        </button>\n        <button mat-menu-item (click) = \"reporteCSTXML()\">\n          <span>CST XML</span>\n        </button>\n        <button mat-menu-item (click) = \"reporteASTXPATH()\">\n          <span>AST XPATH</span>\n        </button>\n        <button mat-menu-item (click) = \"reporteCSTXPATH()\">\n          <span>CST XPATH</span>\n        </button>\n        <button mat-menu-item (click) = \"reporteBNFXML()\">\n          <span>BNF XML</span>\n        </button>  \n        <button mat-menu-item (click) = \"reporteBNFXPATH()\">\n          <span>BNF XPATH</span>\n        </button>  \n      </mat-menu>\n</mat-toolbar>\n</div>\n\n<div id = \"superior\">\n  <ngx-codemirror\n    [options] = \"editorQueryOptions\"\n    [(ngModel)] = \"querys\">\n  </ngx-codemirror>\n</div>\n\n<div id = \"separador1\"></div>\n\n<div id = \"inferior\">\n  <div id = \"izquierda\">\n    <ngx-codemirror\n      [options] = \"editorXMLEntradaOptions\"\n      [(ngModel)] = \"xmlEntrada\">\n    </ngx-codemirror>\n  </div>\n  <div id = \"separador2\"></div>\n  <div id = \"derecha\">\n    <ngx-codemirror\n      [options] = \"editorXMLSalidaOptions\"\n      [(ngModel)] = \"xmlSalida\">\n    </ngx-codemirror>\n  </div> \n</div>";
+    __webpack_exports__["default"] = "<div id = \"barra\">\n  <mat-toolbar color = \"warn\">\n    <span>Tytus X</span>\n\n    <div class = \"spacer\"></div>\n\n    <button mat-raised-button color = \"accent\" [matMenuTriggerFor] = \"archivo\">Archivo</button>\n    <mat-menu #archivo = \"matMenu\">\n        <button mat-menu-item>\n            <mat-icon>attach_file</mat-icon>\n            <label for = \"file\">Abrir XML</label>\n            <input type = \"file\"\n            id = \"file\"\n            class = \"hidend\"\n            (change) = \"abrirXML($event.target.files)\">\n        </button>\n        <button mat-menu-item>\n            <mat-icon>attach_file</mat-icon>\n            <span>Abrir XPath</span>\n        </button>\n        <button mat-menu-item>\n            <mat-icon>delete</mat-icon>\n            <span>Limpiar</span>\n        </button>\n    </mat-menu>\n\n    <button mat-raised-button color = \"accent\" [matMenuTriggerFor] = \"ejecutar\">Ejecutar</button>\n    <mat-menu #ejecutar = \"matMenu\">\n        <button mat-menu-item (click) = \"ejecutarAscendente()\">\n            <mat-icon>keyboard_arrow_up</mat-icon>\n            <span>Ascendete</span>\n        </button>\n        <button mat-menu-item (click) = \"ejecutarDescendente()\"> \n            <mat-icon>keyboard_arrow_down</mat-icon>\n            <span>Descendente</span>\n        </button>\n    </mat-menu>\n\n    <button mat-raised-button color = \"accent\" [matMenuTriggerFor] = \"reporte\">Reportes</button>\n    <mat-menu #reporte = \"matMenu\">\n        <button mat-menu-item (click) = \"reporteTablaSimbolosXML()\">\n            <span>Tabla de simbolos XML</span>\n        </button>\n        <button mat-menu-item (click) = \"reporteCSTXML()\">\n          <span>CST XML</span>\n        </button>\n        <button mat-menu-item (click) = \"reporteASTXPATH()\">\n          <span>AST XPATH</span>\n        </button>\n        <button mat-menu-item (click) = \"reporteCSTXPATH()\">\n          <span>CST XPATH</span>\n        </button>\n        <button mat-menu-item (click) = \"reporteBNFXML()\">\n          <span>BNF XML</span>\n        </button>  \n        <button mat-menu-item (click) = \"reporteBNFXPATH()\">\n          <span>BNF XPATH</span>\n        </button>  \n      </mat-menu>\n</mat-toolbar>\n</div>\n\n<div id = \"superior\">\n  <ngx-codemirror\n    [options] = \"editorQueryOptions\"\n    [(ngModel)] = \"querys\">\n  </ngx-codemirror>\n</div>\n\n<div id = \"separador1\"></div>\n\n<div id = \"inferior\">\n  <div id = \"izquierda\">\n    <ngx-codemirror\n      [options] = \"editorXMLEntradaOptions\"\n      [(ngModel)] = \"xmlEntrada\">\n    </ngx-codemirror>\n  </div>\n  <div id = \"separador2\"></div>\n  <div id = \"derecha\">\n    <ngx-codemirror\n      [options] = \"editorXMLSalidaOptions\"\n      [(ngModel)] = \"xmlSalida\">\n    </ngx-codemirror>\n  </div> \n</div>\n\n<div id = \"grafo\" *ngIf=\"grafo == true\">\n  <app-grafico></app-grafico>\n</div>\n\n<div id = \"tablaS\" *ngIf = \"tabla == true\">\n  <app-tabla-xml></app-tabla-xml>\n</div>\n\n<div id = \"bnf\" *ngIf = \"bnf == true\">\n  <app-bnf></app-bnf>\n</div>";
     /***/
   },
 
@@ -615,6 +615,46 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
   },
 
   /***/
+  "./src/analizadorXML/Expresiones/tError.ts":
+  /*!*************************************************!*\
+    !*** ./src/analizadorXML/Expresiones/tError.ts ***!
+    \*************************************************/
+
+  /*! exports provided: tError */
+
+  /***/
+  function srcAnalizadorXMLExpresionesTErrorTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "tError", function () {
+      return tError;
+    });
+
+    var tError =
+    /**
+     * @constructor creamos un nuevo primitivo
+     * @param tipo hace referencia al tipo de error
+     * @param texto hace referencia al contenido del mensaje del error
+     * @param linea idica la linea donde se encuentra
+     * @param columna indica la columna donde se encuentra
+     */
+    function tError(tipo, texto, linea, columna) {
+      _classCallCheck(this, tError);
+
+      this.columna = columna;
+      this.linea = linea;
+      this.texto = texto;
+      this.tipo = tipo;
+    };
+    /***/
+
+  },
+
+  /***/
   "./src/analizadorXML/Gramatica/gramatica.js":
   /*!**************************************************!*\
     !*** ./src/analizadorXML/Gramatica/gramatica.js ***!
@@ -873,9 +913,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                 break;
 
               case 3:
-                /*listaErrores.push(
-                                                                                                                 new Error('Sintactico',`Token inesperado: ${yytext}`,_$[$0-1].first_line,_$[$0-1].first_column )
-                                                                                                             );*/
+                listaErrores.push(new tError('Sintactico', "Token inesperado: ".concat(yytext), _$[$0 - 1].first_line, _$[$0 - 1].first_column));
                 break;
 
               case 4:
@@ -916,9 +954,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                 break;
 
               case 10:
-                /*listaErrores.push(
-                                                                                                     new Error('Sintactico',`Token inesperado: ${yytext}`,_$[$0-1].first_line,_$[$0-1].first_column )
-                                                                                                 );*/
+                listaErrores.push(new tError('Sintactico', "Token inesperado: ".concat(yytext), _$[$0 - 1].first_line, _$[$0 - 1].first_column));
                 break;
 
               case 11:
@@ -956,9 +992,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
               case 16:
               case 17:
-                /*listaErrores.push(
-                                                                     new Error('Sintactico',`Token inesperado: ${yytext}`,_$[$0-1].first_line,_$[$0-1].first_column )
-                                                                 );*/
+                listaErrores.push(new tError('Sintactico', "Token inesperado: ".concat(yytext), _$[$0 - 1].first_line, _$[$0 - 1].first_column));
                 break;
 
               case 18:
@@ -997,9 +1031,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                 break;
 
               case 29:
-                /*listaErrores.push(
-                                                     new Error('Sintactico',`Token inesperado: ${yytext}`,_$[$0].first_line,_$[$0].first_column )
-                                                 );*/
+                listaErrores.push(new tError('Sintactico', "Token inesperado: ".concat(yytext), _$[$0].first_line, _$[$0].first_column));
                 break;
 
               case 30:
@@ -1498,8 +1530,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         var _webpack_require__3 = __webpack_require__(
         /*! ../AST/SalidaGramatica */
         "./src/analizadorXML/AST/SalidaGramatica.ts"),
-            SalidaGramatica = _webpack_require__3.SalidaGramatica; // const {Error} = require("../Errores/Error");
+            SalidaGramatica = _webpack_require__3.SalidaGramatica;
 
+        var _webpack_require__4 = __webpack_require__(
+        /*! ../Expresiones/tError */
+        "./src/analizadorXML/Expresiones/tError.ts"),
+            tError = _webpack_require__4.tError;
 
         var listaErrores = [];
         var reportBNF = [];
@@ -2020,8 +2056,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
                   break;
 
                 case 46:
-                  listaErrores.push(new Error('Léxico', "Simbolo inesperado: ".concat(yy_.yytext), yy_.yylloc.first_line, yy_.yylloc.first_column));
-                  console.error('Este es un error léxico: ' + yy_.yytext + ', en la linea: ' + yy_.yylloc.first_line + ', en la columna: ' + yy_.yylloc.first_column);
+                  listaErrores.push(new tError('Léxico', "Simbolo inesperado: ".concat(yy_.yytext), yy_.yylloc.first_line, yy_.yylloc.first_column)); //console.error('Este es un error léxico: ' + yy_.yytext + ', en la linea: ' + yy_.yylloc.first_line + ', en la columna: ' + yy_.yylloc.first_column);
+
                   break;
 
                 case 47:
@@ -3019,20 +3055,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           }
         };
 
-        var _webpack_require__4 = __webpack_require__(
+        var _webpack_require__5 = __webpack_require__(
         /*! ../Expresiones/Objeto */
         "./src/analizadorXML/Expresiones/Objeto.ts"),
-            Objeto = _webpack_require__4.Objeto;
-
-        var _webpack_require__5 = __webpack_require__(
-        /*! ../Expresiones/Atributo */
-        "./src/analizadorXML/Expresiones/Atributo.ts"),
-            Atributo = _webpack_require__5.Atributo;
+            Objeto = _webpack_require__5.Objeto;
 
         var _webpack_require__6 = __webpack_require__(
+        /*! ../Expresiones/Atributo */
+        "./src/analizadorXML/Expresiones/Atributo.ts"),
+            Atributo = _webpack_require__6.Atributo;
+
+        var _webpack_require__7 = __webpack_require__(
         /*! ../AST/SalidaGramatica */
         "./src/analizadorXML/AST/SalidaGramatica.ts"),
-            SalidaGramatica = _webpack_require__6.SalidaGramatica;
+            SalidaGramatica = _webpack_require__7.SalidaGramatica;
 
         var reportBNF = [];
         var reportBNF2 = [];
@@ -3827,13 +3863,28 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.dot = "digraph AST{\n";
           this.dot += "\"raiz\" [label = \"Raiz\"]\n";
 
-          if (this.objetos.length > 1) {} else {
+          if (this.objetos.length > 1) {
+            var i = 0;
+
+            while (i < this.objetos.length) {
+              this.dot += "\"".concat(i, "\" [label = \"|\"]\n");
+              this.dot += "\"raiz\" -> \"".concat(i, "\"\n");
+              this.dot += this.generarNodoAST(this.objetos[i], "".concat(i));
+
+              if (i + 1 < this.objetos.length) {
+                this.dot += this.generarNodoAST(this.objetos[i + 1], "".concat(i));
+              }
+
+              i += 2;
+            }
+          } else {
             this.objetos.forEach(function (objeto) {
               _this5.dot += _this5.generarNodoAST(objeto, 'raiz');
             });
           }
 
           this.dot += "}";
+          console.log(this.dot);
           return this.dot;
         }
       }, {
@@ -3861,7 +3912,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.dot = "digraph AST {\n";
           this.dot += "\"raiz\" [label = \"Raiz\"]\n";
 
-          if (this.objetos.length > 1) {} else {
+          if (this.objetos.length > 1) {
+            var i = 0;
+
+            while (i < this.objetos.length) {
+              this.dot += "\"".concat(i, "S\" [label = \"Separador\"]\n");
+              this.dot += "\"".concat(i, "\" [label = \"|\"]\n");
+              this.dot += "\"raiz\" -> \"".concat(i, "S\"\n");
+              this.dot += "\"".concat(i, "S\" -> \"").concat(i, "\"\n");
+              this.dot += this.generarNodoCST(this.objetos[i], "".concat(i));
+
+              if (i + 1 < this.objetos.length) {
+                this.dot += this.generarNodoCST(this.objetos[i + 1], "".concat(i));
+              }
+
+              i += 2;
+            }
+          } else {
             this.objetos.forEach(function (objeto) {
               _this6.dot += _this6.generarNodoCST(objeto, 'raiz');
             });
@@ -3895,10 +3962,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function ejecutarArbol() {
           this.dot = "";
 
-          if (this.objetos.length > 1) {} else {
+          if (this.objetos.length > 1) {
+            for (var i = 0; i < this.objetos.length; i++) {
+              this.dot += this.ejecutarNodoArbol(this.objetos[i]);
+
+              if (i != this.objetos.length - 1) {
+                this.dot += "|";
+              }
+            }
+          } else {
             this.dot += this.ejecutarNodoArbol(this.objetos[0]);
           }
 
+          console.log(this.dot);
           return this.dot;
         }
       }, {
@@ -4494,14 +4570,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           console.log(salidaG.objetos);
           var reporteBNF = gramBnf.getBNFReport();
           var reporteAST = arbol.crearGrafoAST();
-          var reporteCST = arbol.crearGrafoCST(); //let resultado = arbol.ejecutarArbol();
-
+          var reporteCST = arbol.crearGrafoCST();
+          var resultado = arbol.ejecutarArbol();
           return {
             objetos: salidaG.objetos,
             bnfRep: reporteBNF,
             astRep: reporteAST,
             cstRep: reporteCST,
-            ejecutado: "resultado"
+            ejecutado: resultado
           };
         }
       }]);
@@ -5888,15 +5964,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           }
         };
 
-        var _webpack_require__7 = __webpack_require__(
+        var _webpack_require__8 = __webpack_require__(
         /*! ./AST/SalidaGramatica */
         "./src/analizadores/AST/SalidaGramatica.ts"),
-            SalidaGramatica = _webpack_require__7.SalidaGramatica;
+            SalidaGramatica = _webpack_require__8.SalidaGramatica;
 
-        var _webpack_require__8 = __webpack_require__(
+        var _webpack_require__9 = __webpack_require__(
         /*! ./Expresiones/Nodo */
         "./src/analizadores/Expresiones/Nodo.ts"),
-            Nodo = _webpack_require__8.Nodo;
+            Nodo = _webpack_require__9.Nodo;
 
         var Primitivo = __webpack_require__(
         /*! ./Expresiones/Primitivo */
@@ -5914,10 +5990,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         /*! ./Operaciones/Logica */
         "./src/analizadores/Operaciones/Logica.ts");
 
-        var _webpack_require__9 = __webpack_require__(
+        var _webpack_require__10 = __webpack_require__(
         /*! ./Expresiones/Predicate */
         "./src/analizadores/Expresiones/Predicate.ts"),
-            Predicate = _webpack_require__9.Predicate; //const { Atributo } = require('./Expresiones/Atributo');
+            Predicate = _webpack_require__10.Predicate; //const { Atributo } = require('./Expresiones/Atributo');
 
 
         var produccion = [];
@@ -7938,15 +8014,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           }
         };
 
-        var _webpack_require__10 = __webpack_require__(
+        var _webpack_require__11 = __webpack_require__(
         /*! ./AST/SalidaGramatica */
         "./src/analizadores/AST/SalidaGramatica.ts"),
-            SalidaGramatica = _webpack_require__10.SalidaGramatica;
+            SalidaGramatica = _webpack_require__11.SalidaGramatica;
 
-        var _webpack_require__11 = __webpack_require__(
+        var _webpack_require__12 = __webpack_require__(
         /*! ./Expresiones/Nodo */
         "./src/analizadores/Expresiones/Nodo.ts"),
-            Nodo = _webpack_require__11.Nodo;
+            Nodo = _webpack_require__12.Nodo;
 
         var Primitivo = __webpack_require__(
         /*! ./Expresiones/Primitivo */
@@ -7964,10 +8040,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         /*! ./Operaciones/Logica */
         "./src/analizadores/Operaciones/Logica.ts");
 
-        var _webpack_require__12 = __webpack_require__(
+        var _webpack_require__13 = __webpack_require__(
         /*! ./Expresiones/Predicate */
         "./src/analizadores/Expresiones/Predicate.ts"),
-            Predicate = _webpack_require__12.Predicate; //const { Atributo } = require('./Expresiones/Atributo');
+            Predicate = _webpack_require__13.Predicate; //const { Atributo } = require('./Expresiones/Atributo');
 
 
         var produccion = [];
@@ -9069,7 +9145,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "#barra {\n    height: 06vh;\n}\n\n.spacer {\n    flex: 1 1 auto;\n}\n\n#superior { \n    height: 24vh;\n}\n\n#separador1 {\n    height: 01vh;\n    background-color: #f44336;\n}\n\n#inferior {\n    height: 69vh;\n    width: 100vw;\n    display: flex;\n}\n\n#izquierda {\n    width: 49.50vw;\n}\n\n#separador2 {\n    width: 01vw;\n    background-color: #f44336;\n}\n\n#derecha {\n    width: 49.50vw;\n}\n\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcGFnaW5hcy9wcmluY2lwYWwvaG9tZS5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksWUFBWTtBQUNoQjs7QUFFQTtJQUNJLGNBQWM7QUFDbEI7O0FBRUE7SUFDSSxZQUFZO0FBQ2hCOztBQUVBO0lBQ0ksWUFBWTtJQUNaLHlCQUF5QjtBQUM3Qjs7QUFFQTtJQUNJLFlBQVk7SUFDWixZQUFZO0lBQ1osYUFBYTtBQUNqQjs7QUFFQTtJQUNJLGNBQWM7QUFDbEI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gseUJBQXlCO0FBQzdCOztBQUVBO0lBQ0ksY0FBYztBQUNsQiIsImZpbGUiOiJzcmMvYXBwL3BhZ2luYXMvcHJpbmNpcGFsL2hvbWUuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIiNiYXJyYSB7XG4gICAgaGVpZ2h0OiAwNnZoO1xufVxuXG4uc3BhY2VyIHtcbiAgICBmbGV4OiAxIDEgYXV0bztcbn1cblxuI3N1cGVyaW9yIHsgXG4gICAgaGVpZ2h0OiAyNHZoO1xufVxuXG4jc2VwYXJhZG9yMSB7XG4gICAgaGVpZ2h0OiAwMXZoO1xuICAgIGJhY2tncm91bmQtY29sb3I6ICNmNDQzMzY7XG59XG5cbiNpbmZlcmlvciB7XG4gICAgaGVpZ2h0OiA2OXZoO1xuICAgIHdpZHRoOiAxMDB2dztcbiAgICBkaXNwbGF5OiBmbGV4O1xufVxuXG4jaXpxdWllcmRhIHtcbiAgICB3aWR0aDogNDkuNTB2dztcbn1cblxuI3NlcGFyYWRvcjIge1xuICAgIHdpZHRoOiAwMXZ3O1xuICAgIGJhY2tncm91bmQtY29sb3I6ICNmNDQzMzY7XG59XG5cbiNkZXJlY2hhIHtcbiAgICB3aWR0aDogNDkuNTB2dztcbn1cblxuIl19 */";
+    __webpack_exports__["default"] = "#barra {\n    height: 06vh;\n}\n\n.spacer {\n    flex: 1 1 auto;\n}\n\n#superior { \n    height: 24vh;\n}\n\n#separador1 {\n    height: 01vh;\n    background-color: #f44336;\n}\n\n#inferior {\n    height: 69vh;\n    width: 100vw;\n    display: flex;\n}\n\n#izquierda {\n    width: 49.50vw;\n}\n\n#separador2 {\n    width: 01vw;\n    background-color: #f44336;\n}\n\n#derecha {\n    width: 49.50vw;\n}\n\n#grafo {\n    width: 100%;\n    height: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcGFnaW5hcy9wcmluY2lwYWwvaG9tZS5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksWUFBWTtBQUNoQjs7QUFFQTtJQUNJLGNBQWM7QUFDbEI7O0FBRUE7SUFDSSxZQUFZO0FBQ2hCOztBQUVBO0lBQ0ksWUFBWTtJQUNaLHlCQUF5QjtBQUM3Qjs7QUFFQTtJQUNJLFlBQVk7SUFDWixZQUFZO0lBQ1osYUFBYTtBQUNqQjs7QUFFQTtJQUNJLGNBQWM7QUFDbEI7O0FBRUE7SUFDSSxXQUFXO0lBQ1gseUJBQXlCO0FBQzdCOztBQUVBO0lBQ0ksY0FBYztBQUNsQjs7QUFFQTtJQUNJLFdBQVc7SUFDWCxZQUFZO0FBQ2hCIiwiZmlsZSI6InNyYy9hcHAvcGFnaW5hcy9wcmluY2lwYWwvaG9tZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI2JhcnJhIHtcbiAgICBoZWlnaHQ6IDA2dmg7XG59XG5cbi5zcGFjZXIge1xuICAgIGZsZXg6IDEgMSBhdXRvO1xufVxuXG4jc3VwZXJpb3IgeyBcbiAgICBoZWlnaHQ6IDI0dmg7XG59XG5cbiNzZXBhcmFkb3IxIHtcbiAgICBoZWlnaHQ6IDAxdmg7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogI2Y0NDMzNjtcbn1cblxuI2luZmVyaW9yIHtcbiAgICBoZWlnaHQ6IDY5dmg7XG4gICAgd2lkdGg6IDEwMHZ3O1xuICAgIGRpc3BsYXk6IGZsZXg7XG59XG5cbiNpenF1aWVyZGEge1xuICAgIHdpZHRoOiA0OS41MHZ3O1xufVxuXG4jc2VwYXJhZG9yMiB7XG4gICAgd2lkdGg6IDAxdnc7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogI2Y0NDMzNjtcbn1cblxuI2RlcmVjaGEge1xuICAgIHdpZHRoOiA0OS41MHZ3O1xufVxuXG4jZ3JhZm8ge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGhlaWdodDogMTAwJTtcbn0iXX0= */";
     /***/
   },
 
@@ -9149,7 +9225,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this._router = _router;
         this.title = 'interfaz'; //editor query
 
-        this.querys = "Ingrese una query";
+        this.querys = "/bookstore/book";
         this.editorQueryOptions = {
           theme: 'gruvbox-dark',
           mode: "application/xquery",
@@ -9195,7 +9271,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.queryMod = "";
         this.bnfXpath = [];
         this.astXpath = "";
-        this.cstXpath = "";
+        this.cstXpath = ""; //reportesVisualizacion
+
+        this.grafo = false;
+        this.bnf = false;
+        this.tabla = false;
       }
 
       _createClass(HomeComponent, [{
@@ -9221,17 +9301,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "ejecutarAscendente",
         value: function ejecutarAscendente() {
+          this.botarReportes();
           localStorage.clear();
           var ascXML = new _analizadorXML_index__WEBPACK_IMPORTED_MODULE_2__["AnalizadorASCXML"]();
           var ascXpath = new _analizadores_index__WEBPACK_IMPORTED_MODULE_4__["AnalizadosAscXpath"]();
           var ret = ascXML.ejecutarCodigo(this.xmlEntrada);
           var ret1 = ascXpath.ejecutarCodigo(this.querys);
-          this.queryMod = ret1.ejecutado;
-          console.log(this.queryMod);
           this.tablaXML = ret.tablaRep;
           this.cstXML = ret.cstRep;
           this.bnfXML = ret.bnfRep;
           this.encodingXML = ret.encoding;
+          this.queryMod = ret1.ejecutado;
           this.bnfXpath = ret1.bnfRep;
           this.astXpath = ret1.astRep;
           this.cstXpath = ret1.cstRep;
@@ -9240,62 +9320,73 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "ejecutarDescendente",
         value: function ejecutarDescendente() {
+          this.botarReportes();
           localStorage.clear();
           var descXML = new _analizadorXML_indexDesc__WEBPACK_IMPORTED_MODULE_3__["AnalizadorASCXML"]();
           var descXPATH = new _analizadores_indexDesc__WEBPACK_IMPORTED_MODULE_5__["AnalizadosAscXpath"]();
           var ret = descXML.ejecutarCodigo(this.xmlEntrada);
           var ret1 = descXPATH.ejecutarCodigo(this.querys);
-          this.queryMod = ret1.ejecutado;
-          console.log(this.queryMod);
           this.tablaXML = ret.tablaRep;
           this.cstXML = ret.cstRep;
           this.bnfXML = ret.bnfRep;
+          this.queryMod = ret1.ejecutado;
           this.bnfXpath = ret1.bnfRep;
           this.astXpath = ret1.astRep;
           this.cstXpath = ret1.cstRep;
           alert("Analisis concluido");
         }
       }, {
+        key: "botarReportes",
+        value: function botarReportes() {
+          this.grafo = this.bnf = this.tabla = false;
+        }
+      }, {
         key: "reporteTablaSimbolosXML",
         value: function reporteTablaSimbolosXML() {
+          this.botarReportes();
           localStorage.clear();
           localStorage.setItem('tablaXML', JSON.stringify(this.tablaXML));
-          window.open("tablaSimbolosXML", "_blank");
+          this.tabla = true; //window.open("tablaSimbolosXML", "_blank")
         }
       }, {
         key: "reporteCSTXML",
         value: function reporteCSTXML() {
+          this.botarReportes();
           localStorage.clear();
           localStorage.setItem('grafo', this.cstXML);
-          window.open("grafico", "_blank");
+          this.grafo = true; //window.open("grafico", "_blank")
         }
       }, {
         key: "reporteBNFXML",
         value: function reporteBNFXML() {
+          this.botarReportes();
           localStorage.clear();
           localStorage.setItem('bnf', JSON.stringify(this.bnfXML));
-          window.open("bnf", "_blank");
+          this.bnf = true; //window.open("bnf", "_blank")
         }
       }, {
         key: "reporteBNFXPATH",
         value: function reporteBNFXPATH() {
+          this.botarReportes();
           localStorage.clear();
           localStorage.setItem('bnf', JSON.stringify(this.bnfXpath));
-          window.open("bnf", "_blank");
+          this.bnf = true; //window.open("bnf", "_blank")
         }
       }, {
         key: "reporteASTXPATH",
         value: function reporteASTXPATH() {
+          this.botarReportes();
           localStorage.clear();
           localStorage.setItem('grafo', this.astXpath);
-          window.open("grafico", "_blank");
+          this.grafo = true; //window.open("grafico", "_blank")
         }
       }, {
         key: "reporteCSTXPATH",
         value: function reporteCSTXPATH() {
+          this.botarReportes();
           localStorage.clear();
           localStorage.setItem('grafo', this.cstXpath);
-          window.open("grafico", "_blank");
+          this.grafo = true; // window.open("grafico", "_blank")
         }
       }]);
 
@@ -9728,4 +9819,4 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     /***/
   }
 }, [[0, "runtime", "vendor"]]]);
-//# sourceMappingURL=main-es5.f5af2377a473add00d1b.js.map
+//# sourceMappingURL=main-es5.d94c7f0010244e79b58f.js.map
