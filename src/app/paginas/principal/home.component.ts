@@ -76,6 +76,8 @@ export class HomeComponent {
   cstXML: string = "";
   bnfXML: any[] = [];
   encodingXML: any = "";
+  erroresXML: any[] = [];
+  erroresXPATH: any[] = [];
 
   queryMod: string = "";
 
@@ -87,6 +89,7 @@ export class HomeComponent {
   grafo:boolean = false;
   bnf: boolean = false;
   tabla: boolean = false;
+  error: boolean = false;
 
   //tabla de simbolos
   simbolos:any;
@@ -119,10 +122,12 @@ export class HomeComponent {
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
     this.encodingXML = ret.encoding;
+    this.erroresXML = ret.errores;
     this.queryMod = ret1.ejecutado;
     this.bnfXpath = ret1.bnfRep;
     this.astXpath = ret1.astRep;
     this.cstXpath = ret1.cstRep;
+    this.erroresXPATH = ret1.errores;
 
     this.obtenerConsulta(this.queryMod, this.simbolos);
 
@@ -159,10 +164,12 @@ export class HomeComponent {
     this.tablaXML = ret.tablaRep;
     this.cstXML = ret.cstRep;
     this.bnfXML = ret.bnfRep;
+    this.erroresXML = ret.errores;
     this.queryMod = ret1.ejecutado;
     this.bnfXpath = ret1.bnfRep;
     this.astXpath = ret1.astRep;
     this.cstXpath = ret1.cstRep;
+    this.erroresXPATH = ret1.errores;
 
     this.obtenerConsulta(this.queryMod, this.simbolos);
 
@@ -170,7 +177,7 @@ export class HomeComponent {
   }
 
   botarReportes() {
-    this.grafo = this.bnf = this.tabla = false;
+    this.grafo = this.bnf = this.tabla = this.error = false;
   }
 
   reporteTablaSimbolosXML() {
@@ -220,4 +227,19 @@ export class HomeComponent {
     this.grafo= true;
     // window.open("grafico", "_blank")
   }
+
+  reporteErroresXML() {
+    this.botarReportes();
+    localStorage.clear()
+    localStorage.setItem('errores', JSON.stringify(this.erroresXML));
+    this.error = true;
+  }
+
+  reporteErroresXPATH() {
+    this.botarReportes();
+    localStorage.clear()
+    localStorage.setItem('errores', JSON.stringify(this.erroresXPATH));
+    this.error = true;
+  }
+
 }

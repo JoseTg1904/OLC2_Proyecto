@@ -55,7 +55,13 @@
         </button>  
         <button mat-menu-item (click) = "reporteBNFXPATH()">
           <span>BNF XPATH</span>
-        </button>  
+        </button>
+        <button mat-menu-item (click) = "reporteErroresXPATH()">
+          <span>Errores XPATH</span>
+        </button>
+        <button mat-menu-item (click) = "reporteErroresXML()">
+          <span>Errores XML</span>
+        </button>
       </mat-menu>
 </mat-toolbar>
 </div>
@@ -95,4 +101,8 @@
 
 <div id = "bnf" *ngIf = "bnf == true">
   <app-bnf></app-bnf>
+</div>
+
+<div id = "bnf" *ngIf = "error == true">
+  <app-tabla-errores></app-tabla-errores>
 </div>

@@ -2,6 +2,7 @@ import { SalidaGramatica } from './AST/SalidaGramatica';
 import { Nodo } from './Expresiones/Nodo';
 import { GramaticaBNF } from './AST/GramaticaBNF';
 import { Arbol } from './AST/Arbol';
+import { ListaErrores } from './Errores/ListaErrores';
 import Primitivo from './Expresiones/Primitivo';
 import Aritmetica from './Operaciones/Aritmeticas';
 import Relacional from './Operaciones/Relacional';
@@ -14,7 +15,8 @@ interface retorno {
     bnfRep: any,
     astRep: any,
     cstRep: any,
-    ejecutado: any
+    ejecutado: any,
+    errores: any
 }
 
 export class AnalizadosAscXpath {
@@ -24,6 +26,7 @@ export class AnalizadosAscXpath {
         const salidaG = gramatica.parse(entrada);
         const gramBnf = new GramaticaBNF(salidaG.reporteBNF, salidaG.reporteBNF2);
         const arbol = new Arbol(salidaG.objetos);
+        const Listaerrores = new ListaErrores();
 
         console.log(salidaG.objetos)
 
@@ -31,13 +34,16 @@ export class AnalizadosAscXpath {
         let reporteAST = arbol.crearGrafoAST();
         let reporteCST = arbol.crearGrafoCST();
         let resultado = arbol.ejecutarArbol();
+        //Errores
+        let errores = Listaerrores.generateHtmlBody(salidaG.reportError, Listaerrores.validateEtiquetas(salidaG.objetos));
 
         return {
             objetos: salidaG.objetos,
             bnfRep: reporteBNF,
             astRep: reporteAST,
             cstRep: reporteCST,
-            ejecutado: resultado
+            ejecutado: resultado,
+            errores: errores
         };
     }
 }

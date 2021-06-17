@@ -17,6 +17,7 @@ import { TablaXMLComponent } from './paginas/tabla-xml/tabla-xml.component';
 import { MatTableModule } from '@angular/material/table';
 import { GraficoComponent } from './paginas/grafico/grafico.component';
 import { BnfComponent } from './paginas/bnf/bnf.component';
+import { TablaErroresComponent } from './paginas/tabla-errores/tabla-errores.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BnfComponent } from './paginas/bnf/bnf.component';
     TablaXMLComponent,
     HomeComponent,
     GraficoComponent,
-    BnfComponent
+    BnfComponent,
+    TablaErroresComponent
   ],
   imports: [
     BrowserModule,
