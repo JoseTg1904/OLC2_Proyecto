@@ -4,7 +4,9 @@ import * as XMLasc from '../../../analizadorXML/index';
 import * as XMLdesc from '../../../analizadorXML/indexDesc';
 import * as XPATHasc from '../../../analizadores/index';
 import * as XPATHdesc from '../../../analizadores/indexDesc';
+import * as XQUERYasc from '../../../analizadorXQUERY/index';
 import { ReporteService } from '../../reporte.service';
+
 import { Router } from '@angular/router';
 import { xpathBusqueda } from '../../../analizadorXML/Instrucciones/Busqueda/xpathBusqueda';
 
@@ -112,6 +114,8 @@ export class HomeComponent {
 
   ngOnInit(){
     localStorage.clear();
+    let ascXquery = new XQUERYasc.AnalizadorXquery();
+    ascXquery.ejecutarCodigo("");
   }
 
   abrirXML(files: FileList) {
