@@ -8,6 +8,8 @@ import { ReporteService } from '../../reporte.service';
 import { Router } from '@angular/router';
 import { xpathBusqueda } from '../../../analizadorXML/Instrucciones/Busqueda/xpathBusqueda';
 
+declare const Buffer
+
 @Component({
   selector: 'home-root',
   templateUrl: './home.component.html',
@@ -15,6 +17,7 @@ import { xpathBusqueda } from '../../../analizadorXML/Instrucciones/Busqueda/xpa
 })
 export class HomeComponent {
 
+  
   constructor(public _servicio: ReporteService, private _router: Router) { }
 
   title = 'interfaz';
@@ -137,18 +140,22 @@ export class HomeComponent {
   obtenerConsulta(query: string, tabla: any){
     var buscador: xpathBusqueda = new xpathBusqueda();
 
+    var texto: string = ""
     if(query.includes("|")) {
       var multiple = buscador.getNodesByFilters("3", query, tabla);
       this.xmlSalida = ""
       for (let i = 0; i < multiple.length; i++){
-        this.xmlSalida += multiple[i]
-        this.xmlSalida += "\n"
+        texto += multiple[i]
+        texto += "\n"
       }
     }else if(query[0] !== "/" && query[0] !== "//"){
-      this.xmlSalida = buscador.getNodesByFilters("1", query, tabla)
+      texto = buscador.getNodesByFilters("1", query, tabla)
     }else{
-      this.xmlSalida = buscador.getNodesByFilters("2", query, tabla)
+      texto = buscador.getNodesByFilters("2", query, tabla)
     }
+
+    var buf = Buffer.from(texto);
+    this.xmlSalida = buf.toString(this.encoding()); 
   }
 
   ejecutarDescendente() {
@@ -170,6 +177,7 @@ export class HomeComponent {
     this.astXpath = ret1.astRep;
     this.cstXpath = ret1.cstRep;
     this.erroresXPATH = ret1.errores;
+    this.encodingXML = ret.encoding;
 
     this.obtenerConsulta(this.queryMod, this.simbolos);
 
@@ -240,6 +248,26 @@ export class HomeComponent {
     localStorage.clear()
     localStorage.setItem('errores', JSON.stringify(this.erroresXPATH));
     this.error = true;
+  }
+
+  encoding(): string {
+    this.encodingXML = this.encodingXML.toLowerCase();
+    if (this.encodingXML.includes("utf8")){
+      return "utf8"
+    }else if(this.encodingXML.includes("ascii")){
+      return "ascii"
+    }else if(this.encodingXML.includes("utf16")){
+      return "utf16"
+    }else if(this.encodingXML.includes("ucs")){
+      return "ucs2"
+    }else if(this.encodingXML.includes("base")){
+      return "base64"
+    }else if(this.encodingXML.includes("binary")){
+      return "binary"
+    }else if(this.encodingXML.includes("hex")){
+      return "hex"
+    }
+    return "utf8"
   }
 
 }

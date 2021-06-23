@@ -32,7 +32,7 @@ export class AnalizadosAscXpath {
         let reporteCST = arbol.crearGrafoCST();
         let resultado = arbol.ejecutarArbol();
         //Errores
-        let errores = Listaerrores.generateHtmlBody(salidaG.reportError, Listaerrores.validateEtiquetas(salidaG.objetos));
+        let errores = Listaerrores.generateHtmlBody(salidaG.reportError, []);
 
         return {
             objetos: salidaG.objetos,
