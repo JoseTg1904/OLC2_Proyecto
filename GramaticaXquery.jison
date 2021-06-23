@@ -132,7 +132,7 @@ pero todo esto se ignora*/
 %left tk_and
 %left tk_barra
 %left tk_igual tk_distinto
-%left tk_mayorIgual tk_mayor tk_menorIgual  tk_menor tk_lt tk_
+%left tk_mayorIgual tk_mayor tk_menorIgual  tk_menor tk_lt tk_gt
 %left tk_diagonal
 %left tk_llaveA tk_llaveC
 %left tk_div tk_asterisco
@@ -141,13 +141,7 @@ pero todo esto se ignora*/
 
 %start INICIO_XQUERY
 %%
-INICIO_XQUERY : INSTRUCCIONES 
-
-|EOF
-
-
-
-
+INICIO_XQUERY : INSTRUCCIONES EOF
 ;
 FUNCION:
 tk_declare tk_function MENU_LOCAL tk_dosPuntos
@@ -206,7 +200,7 @@ DECLARACION_GLOBAL
 |IF
 |FOR    
 |LLAMADA_FUNCION
-|START_XML
+|ST
 
 
 
@@ -219,7 +213,6 @@ DECLARACION_GLOBAL
 */
 XPATH :
 INICIO_XPATH 
-| EOF
 ;
 
 FOR :
@@ -241,13 +234,13 @@ tk_identificadorXQUERY XPATH
 
 ;
 IF : tk_if  CONDICION  tk_then valor_if  ELSE ;
+
 ELSE :
+tk_else IF
 tk_else valor_if
-| tk_else IF
 | 
 
 ;
-
 
 valor_if:
 EXPRESION
@@ -256,14 +249,14 @@ EXPRESION
 
 
 LLAMADA_FUNCION:
-tk_local tk_dosPuntos tk_identificador  EXPRESION  
+tk_local tk_dosPuntos tk_identificador  EXPRESIONQUERY  
 ;
 CONDICION : tk_parA EXPRESION tk_parC 
 
 ;
 
 DECLARACION_GLOBAL :
-tk_let tk_identificadorXQUERY  tk_igualXQUERY EXPRESION {console.log($2+"--val"+$4) }
+tk_let tk_identificadorXQUERY  tk_igualXQUERY EXPRESIONQUERY {console.log($2+"--val"+$4) }
 
 ;
 
@@ -278,16 +271,11 @@ LISTA_ID : LISTA_ID tk_coma tk_identificadorXQUERY
 
 
 START_XML : RAICES    
-|EOF   
     ;
 
 RAICES:
     RAICES OBJETO          
-	| OBJETO               
-     ;
-     
-RAIZ: OBJETO              
-;
+	| OBJETO ;
 
 OBJETO:
       tk_menor tk_identificador  tk_mayor OBJETOS           tk_menor tk_diagonal tk_identificador tk_mayor      
@@ -343,10 +331,7 @@ esta parte llama al xpath
 
 
 INICIO_XPATH :
-    INICIO 
-    |EOF
-   
-      ;
+    INICIO ;
 
 INICIO : 
     INICIO tk_barra INICIALES 
@@ -475,11 +460,14 @@ EXPRESION :
     | tk_identificadorXQUERY
         
     | tk_parA EXPRESION tk_parC
-    |LLAMADA_FUNCION
-    |START_XML
 
 
         ;
+
+EXPRESIONQUERY: 
+    EXPRESION
+    | LLAMADA_FUNCION
+    | START_XML;
 
 ATRIBUTO :
     tk_asterisco 
