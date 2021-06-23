@@ -84,10 +84,19 @@
   </div>
   <div id = "separador2"></div>
   <div id = "derecha">
-    <ngx-codemirror
+    <div id = "superior2">
+      <ngx-codemirror
       [options] = "editorXMLSalidaOptions"
       [(ngModel)] = "xmlSalida">
     </ngx-codemirror>
+    </div>
+    <div id = "separador3"></div>
+    <div id = "inferior2">
+      <ngx-codemirror
+      [options] = "editor3DSalidaOptions"
+      [(ngModel)] = "salida3D">
+    </ngx-codemirror>
+    </div>  
   </div> 
 </div>
 

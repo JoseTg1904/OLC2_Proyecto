@@ -74,6 +74,19 @@ export class HomeComponent {
     lint: true
   }
 
+  salida3D: string = "Salida del codigo de tres direcciones";
+  editor3DSalidaOptions: any = {
+    theme: 'gruvbox-dark',
+    mode: "text/x-csrc",
+    lineNumbers: true,
+    lineWrapping: true,
+    foldGutter: true,
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
+    autoCloseBrackets: true,
+    matchBrackets: true,
+    lint: true
+  };
+
   //reportes
   tablaXML: any[] = [];
   cstXML: string = "";

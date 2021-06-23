@@ -14,6 +14,7 @@ import 'codemirror/addon/lint/lint';
 import 'codemirror/addon/lint/json-lint';
 import 'codemirror/mode/xquery/xquery';
 import 'codemirror/mode/xml/xml';
+import 'codemirror/mode/clike/clike';
 
 if (environment.production) {
   enableProdMode();
