@@ -4,10 +4,21 @@ export class AnalizadorXquery {
 
     public ejecutarCodigo(entrada: string) {
         entrada = `
-        for $x in /bookstore/book
-return if ($x/@category="children")
-then <child>{data($x/title)}</child>
-else <adult>{data($x/title)}</adult>
+        declare function local:minPrice($p as xs:decimal?,$d as xs:decimal?) as xs:decimal? {
+
+    let $alv  := 2
+    
+
+ if  ($efe gt 1) then $integer  local:factorial($integer -1 )  else 1
+
+
+
+(:
+"!"12122321
+$$$  :)
+
+    let $efe :=2
+ };
         `
         console.log(gramatica.parse(entrada));
     }

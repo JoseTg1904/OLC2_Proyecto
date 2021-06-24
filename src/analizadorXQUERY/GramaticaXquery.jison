@@ -134,7 +134,7 @@ pero todo esto se ignora*/
 %left tk_and
 %left tk_barra
 %left tk_igual tk_distinto
-%left tk_mayorIgual tk_mayor tk_menorIgual  tk_menor tk_lt tk_gt
+%left tk_mayorIgual tk_mayor tk_menorIgual tk_menor tk_lt tk_gt
 %left tk_diagonal
 %left tk_llaveA tk_llaveC
 %left tk_div tk_asterisco
@@ -143,77 +143,56 @@ pero todo esto se ignora*/
 
 %start INICIO_XQUERY
 %%
-INICIO_XQUERY : INSTRUCCIONES EOF
-;
+INICIO_XQUERY : INSTRUCCIONES EOF;
+
 FUNCION:
 tk_declare tk_function MENU_LOCAL tk_dosPuntos
 tk_identificador tk_parA LISTA_DECLARACION_FUNCION 
 tk_parC  tk_as  tk_xs     tk_dosPuntos TIPO_DATO MENU_INTERROGA
-llaveA  INSTRUCCIONES llaveC tk_punto_coma
-
-;
+llaveA  INSTRUCCIONES llaveC tk_punto_coma;
 
 
 MENU_INTERROGA : tk_Interroga 
-| 
-;
+| ;
 
 /*
 $p as xs:decimal?
 */
-LISTA_DECLARACION_FUNCION :  LISTA_DECLARACION_FUNCION  tk_coma DECLARACION_FUNCION
-| DECLARACION_FUNCION
+LISTA_DECLARACION_FUNCION :  
+    LISTA_DECLARACION_FUNCION  tk_coma DECLARACION_FUNCION
+    | DECLARACION_FUNCION ;
 
-;
 DECLARACION_FUNCION:
     tk_identificadorXQUERY tk_as tk_xs  tk_dosPuntos TIPO_DATO
-    MENU_INTERROGA
-
-;
+    MENU_INTERROGA;
 
 
-MENU_LOCAL:
-tk_local
+MENU_LOCAL: tk_local
 //aqui voy a meter mas pero no se si solo se pueden declarar funciones localres 
-
 ;
 
 TIPO_DATO:
-tk_int
-|tk_string
-|tk_double
-|tk_DECIMAL
-|tk_integer
+    tk_int
+    | tk_string
+    | tk_double
+    | tk_DECIMAL
+    | tk_integer;
 
-;
-
-INSTRUCCIONES : INSTRUCCIONES INSTRUCCION 
-|INSTRUCCION
-
-;
+INSTRUCCIONES : 
+    INSTRUCCIONES INSTRUCCION 
+    | INSTRUCCION;
 
 INSTRUCCION :
-DECLARACION_GLOBAL
-|FUNCION
-|ComentarioM
-|IF
-|FOR    
-|LLAMADA_FUNCION
-|START_XML
-|WHERE
-|RETURN_CICLO
+    DECLARACION_GLOBAL
+    | FUNCION
+    | ComentarioM
+    | IF
+    | FOR    
+    | LLAMADA_FUNCION
+    | WHERE
+    | RETURN_CICLO;
 
-
-
-
-;
-
-/*
-*/
-XPATH :
-INICIO_XPATH 
-;
-
+XPATH : INICIO_XPATH ;
 
 /*
 
@@ -222,34 +201,24 @@ return <test>x={$x} and y={$y}</test>
 
 */
 FOR :
- tk_for  DECLARACIONES_FOR OPCIONES_FOR
-
-;
+    tk_for  DECLARACIONES_FOR OPCIONES_FOR;
 
 DECLARACIONES_FOR:
+    DECLARACIONES_FOR tk_coma DECLARACION_FOR
+    |DECLARACION_FOR;
 
-DECLARACIONES_FOR tk_coma DECLARACION_FOR
-|DECLARACION_FOR
-;
 DECLARACION_FOR:
- tk_identificadorXQUERY  OPCION_AT tk_in    FOR_REC
+    tk_identificadorXQUERY OPCION_AT tk_in FOR_REC;
 
-
-;
 OPCION_AT:
-tk_at  tk_identificadorXQUERY
-|
-;
+    tk_at  tk_identificadorXQUERY
+    |;
 
 FOR_REC:
-
-XPATH
-|EXPRESION 
-|CORDERNADA
-
-;
+    XPATH
+    |EXPRESION 
+    |CORDERNADA;
 //111111111+1111
-
 
 OPCIONES_FOR:
 OPCIONES_FOR OPCION_FOR 
@@ -275,34 +244,21 @@ ORDER : tk_order  tk_by LISTA_ORDER
 ;
 
 LISTA_ORDER:
-LISTA_ORDER tk_coma ORDER_ 
-|ORDER_
+    LISTA_ORDER tk_coma ORDER_ 
+    | ORDER_ ;
 
-
-
-
-;
-
-ORDER_ :  tk_identificadorXQUERY XPATH
-| tk_identificadorXQUERY 
-
-;
+ORDER_ :  
+    tk_identificadorXQUERY XPATH
+    | tk_identificadorXQUERY ;
 
 RETURN_CICLO:
-tk_return
-tk_identificadorXQUERY XPATH
-|tk_return
-INSTRUCCIONES
-|tk_return EXPRESION
-;
-
-
+    tk_return tk_identificadorXQUERY XPATH
+    | tk_return INSTRUCCIONES
+    | tk_return EXPRESION ;
 
 LISTA_ASIGNACION:
-LISTA_ASIGNACION tk_and ASIGNACION_SIMPLE
-|ASIGNACION_SIMPLE
-
-;
+    LISTA_ASIGNACION tk_and ASIGNACION_SIMPLE
+    | ASIGNACION_SIMPLE ;
 
 ASIGNACION_SIMPLE :
 tk_identificador tk_igual  valor_if
@@ -330,7 +286,7 @@ EXPRESION
 
 
 LLAMADA_FUNCION:
-tk_local tk_dosPuntos tk_identificador  EXPRESIONQUERY  
+tk_local tk_dosPuntos tk_identificador  EXPRESION
 ;
 CONDICION : tk_parA OPCIONES_CONDICION tk_parC 
 
@@ -343,7 +299,7 @@ EXPRESION
 ;
 
 DECLARACION_GLOBAL :
-tk_let tk_identificadorXQUERY  tk_igualXQUERY EXPRESIONQUERY {console.log($2+"--val"+$4) }
+tk_let tk_identificadorXQUERY  tk_igualXQUERY EXPRESION {console.log($2+"--val"+$4) }
 
 ;
 
@@ -351,95 +307,9 @@ tk_let tk_identificadorXQUERY  tk_igualXQUERY EXPRESIONQUERY {console.log($2+"--
 LISTA_ID : LISTA_ID tk_coma tk_identificadorXQUERY
 | tk_identificadorXQUERY;
 
-
-
-
-
-
-
-START_XML : RAICES    
-    ;
-
-RAICES:
-    RAICES OBJETO          
-	| OBJETO ;
-
-OBJETO:
-      tk_menor LATRIBUTOS tk_identificador  tk_mayor OBJETOS           tk_menor tk_diagonal tk_identificador tk_mayor      
-    | tk_menor LATRIBUTOS tk_identificador tk_mayor LISTA_ID_OBJETO   tk_menor tk_diagonal tk_identificador tk_mayor  {console.log($7)}     
-    | tk_menor LATRIBUTOS tk_diagonal tk_identificador  tk_mayor                                       
-    ;
-LATRIBUTOS: ATRIBUTOS                            
-           |                                     
-;
-
-ATRIBUTOS:
-    ATRIBUTOS ATRIBUTO                           
-    | ATRIBUTO                                   
-;
-
-ATRIBUTO: 
-   tk_identificador tk_igual tk_string              
-;
-
-
-
-LISTA_ID_OBJETO: LISTA_ID_OBJETO Listavalor    { $$ = $1 + "" + $2; }   
-        | Listavalor                           { $$ = $1; }     
-;
-
-OBJETOS:
-      OBJETOS OBJETO       
-	| OBJETO               
-    ;
-
-    
- Listavalor 
-        :  tk_stringTexto      {$$=$1}        
-        |   tk_identificador          {$$=$1}         
-        |   tk_decimal    {$$=$1}        
-        | VALORES
-        |tk_entero
-        |LISTA_ASIGNACION
-        | valor
-     
-
-   
-;
-VALORES:
-VALORES tk_punto VALOR
-|VALOR
-
-;
-
-VALOR:
-    llaveA  INSTRUCCIONES llaveC
-    
-        |   llaveA  EXPRESION llaveC
-
-
-;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 esta parte llama al xpath 
 */
-
-
 
 INICIO_XPATH :
     INICIO ;
@@ -528,11 +398,7 @@ PREDICATE :
 
 EXPRESION :
     EXPRESION tk_mas EXPRESION
-      
     | EXPRESION tk_menos EXPRESION
-       
-
-       
     | EXPRESION tk_div EXPRESION
         
       
@@ -592,11 +458,6 @@ CORDERNADA:
 tk_parA   EXPRESION tk_coma EXPRESION tk_parC
 
 ;
-
-EXPRESIONQUERY: 
-    EXPRESION
-    | LLAMADA_FUNCION
-    | START_XML;
 
 ATRIBUTO :
     tk_asterisco 
