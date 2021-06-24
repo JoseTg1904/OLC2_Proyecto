@@ -30,6 +30,8 @@
 "AS"                      {return "tk_AS"}
 "as"                      {return "tk_as"}
 "xs"                      {return "tk_xs"}
+"to"                      {return "tk_to"}
+"at"                      {return "tk_at"}
 "local"               {return "tk_local";}
 
 
@@ -157,9 +159,6 @@ MENU_INTERROGA : tk_Interroga
 ;
 
 /*
-
-
-
 $p as xs:decimal?
 */
 LISTA_DECLARACION_FUNCION :  LISTA_DECLARACION_FUNCION  tk_coma DECLARACION_FUNCION
@@ -200,44 +199,123 @@ DECLARACION_GLOBAL
 |IF
 |FOR    
 |LLAMADA_FUNCION
-|ST
+|START_XML
+|WHERE
+|RETURN_CICLO
+
 
 
 
 ;
 
 /*
-
-
-
 */
 XPATH :
 INICIO_XPATH 
 ;
 
-FOR :
- tk_for tk_identificadorXQUERY tk_in XPATH WHERE ORDER RETURN_CICLO
 
+/*
+
+for $x in (10,20), $y in (100,200)
+return <test>x={$x} and y={$y}</test>
+
+*/
+FOR :
+ tk_for  DECLARACIONES_FOR OPCIONES_FOR
+
+;
+
+DECLARACIONES_FOR:
+
+DECLARACIONES_FOR tk_coma DECLARACION_FOR
+|DECLARACION_FOR
+;
+DECLARACION_FOR:
+ tk_identificadorXQUERY  OPCION_AT tk_in    FOR_REC
+
+
+;
+OPCION_AT:
+tk_at  tk_identificadorXQUERY
+|
+;
+
+FOR_REC:
+
+XPATH
+|EXPRESION 
+|CORDERNADA
+
+;
+//111111111+1111
+
+
+OPCIONES_FOR:
+OPCIONES_FOR OPCION_FOR 
+|OPCION_FOR
+;
+OPCION_FOR:
+WHERE
+|ORDER
+|RETURN_CICLO
 ;
 WHERE :
-tk_where tk_identificadorXQUERY XPATH
-| 
+  tk_where EXPRESION
 
 ;
-ORDER : tk_order  tk_by TK tk_identificadorXQUERY XPATH
-|
+
+CONDITIONES_WHERE:
+CONDITIONES_WHERE tk_and EXPRESION
+|EXPRESION
+;
+
+
+ORDER : tk_order  tk_by LISTA_ORDER
+;
+
+LISTA_ORDER:
+LISTA_ORDER tk_coma ORDER_ 
+|ORDER_
+
+
+
+
+;
+
+ORDER_ :  tk_identificadorXQUERY XPATH
+| tk_identificadorXQUERY 
+
 ;
 
 RETURN_CICLO:
 tk_return
 tk_identificadorXQUERY XPATH
+|tk_return
+INSTRUCCIONES
+|tk_return EXPRESION
+;
+
+
+
+LISTA_ASIGNACION:
+LISTA_ASIGNACION tk_and ASIGNACION_SIMPLE
+|ASIGNACION_SIMPLE
 
 ;
+
+ASIGNACION_SIMPLE :
+tk_identificador tk_igual  valor_if
+|TK tk_identificadorXQUERY tk_igual valor_if
+;
+
+
 IF : tk_if  CONDICION  tk_then valor_if  ELSE ;
 
 ELSE :
-tk_else IF
 tk_else valor_if
+|tk_else IF
+
 | 
 
 ;
@@ -245,13 +323,22 @@ tk_else valor_if
 valor_if:
 EXPRESION
 | INSTRUCCION
+|VALOR
+|
+     
 ;
 
 
 LLAMADA_FUNCION:
 tk_local tk_dosPuntos tk_identificador  EXPRESIONQUERY  
 ;
-CONDICION : tk_parA EXPRESION tk_parC 
+CONDICION : tk_parA OPCIONES_CONDICION tk_parC 
+
+;
+
+OPCIONES_CONDICION:
+EXPRESION
+|tk_identificadorXQUERY XPATH
 
 ;
 
@@ -278,10 +365,22 @@ RAICES:
 	| OBJETO ;
 
 OBJETO:
-      tk_menor tk_identificador  tk_mayor OBJETOS           tk_menor tk_diagonal tk_identificador tk_mayor      
-    | tk_menor tk_identificador tk_mayor LISTA_ID_OBJETO   tk_menor tk_diagonal tk_identificador tk_mayor  {console.log($7)}     
-    | tk_menor tk_diagonal tk_identificador  tk_mayor                                       
+      tk_menor LATRIBUTOS tk_identificador  tk_mayor OBJETOS           tk_menor tk_diagonal tk_identificador tk_mayor      
+    | tk_menor LATRIBUTOS tk_identificador tk_mayor LISTA_ID_OBJETO   tk_menor tk_diagonal tk_identificador tk_mayor  {console.log($7)}     
+    | tk_menor LATRIBUTOS tk_diagonal tk_identificador  tk_mayor                                       
     ;
+LATRIBUTOS: ATRIBUTOS                            
+           |                                     
+;
+
+ATRIBUTOS:
+    ATRIBUTOS ATRIBUTO                           
+    | ATRIBUTO                                   
+;
+
+ATRIBUTO: 
+   tk_identificador tk_igual tk_string              
+;
 
 
 
@@ -299,13 +398,26 @@ OBJETOS:
         :  tk_stringTexto      {$$=$1}        
         |   tk_identificador          {$$=$1}         
         |   tk_decimal    {$$=$1}        
-        |   llaveA  INSTRUCCIONES llaveC
-
+        | VALORES
         |tk_entero
+        |LISTA_ASIGNACION
         | valor
      
 
    
+;
+VALORES:
+VALORES tk_punto VALOR
+|VALOR
+
+;
+
+VALOR:
+    llaveA  INSTRUCCIONES llaveC
+    
+        |   llaveA  EXPRESION llaveC
+
+
 ;
 
 
@@ -324,7 +436,6 @@ OBJETOS:
 
 
 /*
-
 esta parte llama al xpath 
 */
 
@@ -420,9 +531,10 @@ EXPRESION :
       
     | EXPRESION tk_menos EXPRESION
        
-    | EXPRESION tk_asterisco EXPRESION
+
        
     | EXPRESION tk_div EXPRESION
+        
       
     | EXPRESION tk_mod EXPRESION
        
@@ -441,8 +553,10 @@ EXPRESION :
     | EXPRESION tk_distinto EXPRESION
        
     | EXPRESION tk_or EXPRESION
+       | EXPRESION tk_to EXPRESION
        
     | EXPRESION tk_and EXPRESION
+
        
     | tk_entero 
       
@@ -457,12 +571,27 @@ EXPRESION :
     | tk_last tk_parA tk_parC
        
     | tk_stringTexto
-    | tk_identificadorXQUERY
+    | tk_identificadorXQUERY OPCION_IDQ
         
     | tk_parA EXPRESION tk_parC
+    | EXPRESION tk_parA EXPRESION tk_parC
+    |LLAMADA_FUNCION
+  
 
 
         ;
+
+
+
+ OPCION_IDQ:
+ XPATH
+ |;       
+
+CORDERNADA:
+
+tk_parA   EXPRESION tk_coma EXPRESION tk_parC
+
+;
 
 EXPRESIONQUERY: 
     EXPRESION
