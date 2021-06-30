@@ -1,40 +1,15 @@
 %lex
-%s Comentario
+
 %%
 
-[\s+\r\t\f]={}
-//Expresion Regular para manejar comentarios en el XQUERY
-[(][:][^:]*[:]+([^()*][^)]*[:]+)*[)]   {return 'ComentarioM'}
+//Expresiones regulares para la aceptacion de numeros enteros y decimales
+[0-9]+("."[0-9]+)\b {return "tk_decimal";}
+[0-9]+\b            {return "tk_entero";}
+
 //Palabras reservadas
-"node"     {return "tk_node";}
-"for"      {return "tk_for";}
-"in"       {return "tk_in";}
-"where"    {return "tk_where";}
-"order"    {return "tk_order";}
-"by"       {return "tk_by";}
-"return"   {return "tk_return";}
-"if"       {return "tk_if";}
-"else"     {return "tk_else";}
-"then"     {return "tk_then";}
-"return"   {return "tk_return";}
-"and"      {return "tk_and";}
-"let"      {return "tk_let";}
-"int"      {return "tk_int";}
-"integer"  {return "tk_integer";}
-"string"   {return "tk_string";}
-"decimal"  {return "tk_DECIMAL";}
-"double"   {return "tk_double";}
-"declare"  {return "tk_declare";}
-"function" {return "tk_function";}
-"AS"       {return "tk_AS"}
-"as"       {return "tk_as"}
-"xs"       {return "tk_xs"}
-"to"       {return "tk_to"}
-"at"       {return "tk_at"}
-"local"    {return "tk_local";}
-
-
+"node"               {return "tk_node";}
 "child"              {return "tk_child";}
+"let"                {console.log(yytext+"--");return "tk_let";}
 "descendant"         {return "tk_descendant";}
 "descendant-or-self" {return "tk_descendatOr"}
 "ancestor"           {return "tk_ancestor";}
@@ -54,31 +29,57 @@
 "or"                 {return "tk_or"}
 "mod"                {return "tk_mod"}
 
+"for"      {console.log(yytext+"--"); return "tk_for";}
+"in"       {console.log(yytext+"--"); return "tk_in";}
+"where"    {console.log(yytext+"--"); return "tk_where";}
+"order"    {console.log(yytext+"--"); return "tk_order";}
+"by"       {console.log(yytext+"--"); return "tk_by";}
+"return"   {console.log(yytext+"--"); return "tk_return";}
+
+"if"       {console.log(yytext+"--");return "tk_if";}
+"else"     {console.log(yytext+"--");return "tk_else";}
+"then"     {console.log(yytext+"--");return "tk_then";}
+
+"int"      {console.log(yytext+"--");return "tk_int";}
+"integer"  {console.log(yytext+"--");return "tk_integer";}
+"string"   {console.log(yytext+"--");return "tk_string";}
+"decimal"  {console.log(yytext+"--");return "tk_DECIMAL";}
+"double"   {console.log(yytext+"--");return "tk_double";}
+"declare"  {console.log(yytext+"--");return "tk_declare";}
+"function" {console.log(yytext+"--");return "tk_function";}
+"AS"       {console.log(yytext+"--");return "tk_AS"}
+"as"       {console.log(yytext+"--");return "tk_as"}
+"xs"       {console.log(yytext+"--");return "tk_xs"}
+"to"       {console.log(yytext+"--");return "tk_to"}
+"at"       {console.log(yytext+"--");return "tk_at"}
+"local"    {console.log(yytext+"--");return "tk_local";}
+"gt"       {console.log(yytext+"--"); return "tk_gt"}
+"lt"       {console.log(yytext+"--"); return "tk_lt"}
+
 //conjunto de simbolos aceptados
 "|"  {return "tk_barra"}
-"{"  {return "llaveA"}
-"}"  {return "llaveC"}
-";"  {return "tk_punto_coma"}
 "."  {return "tk_punto"}
+";"  {return "tk_punto_coma"}
 ","  {return "tk_coma"}
 "/"  {return "tk_diagonal"}
 "*"  {return "tk_asterisco"}
-"?"  {return "tk_Interroga"}
+"?" {return "tk_Interroga"}
 "+"  {return "tk_mas"}
 "-"  {return "tk_menos"}
+
 "<=" {return "tk_menorIgual"}
 ">=" {return "tk_mayorIgual"}
-"gt" { return "tk_gt"}
-"lt" { return "tk_lt"}
 "<"  {return "tk_menor"}
 ">"  {return "tk_mayor"}
 "!=" {return "tk_distinto"}
-":=" {return "tk_igualXQUERY"}
+":=" {console.log(yytext+"--");return "tk_igualXQUERY"}
 ":"  {return "tk_dosPuntos"}
 "="  {return "tk_igual"}
 "["  {return "tk_llaveA"}
 "]"  {return "tk_llaveC"}
 "@"  {return "tk_arroba"}
+"{"  {console.log(yytext+"--");return "llaveA"}
+"}"  {console.log(yytext+"--");return "llaveC"}
 "("  {return "tk_parA"}
 ")"  {return "tk_parC"}
 
@@ -87,58 +88,88 @@
 \“[^\“]*\“  {return "tk_stringTexto";}
 \'[^\']*\'  {return "tk_stringTexto";}
 \‘[^\‘]*\‘  {return "tk_stringTexto";}
-[0-9]+("."[0-9]+)\b {return "tk_decimal";}
-[0-9]+\b            {return "tk_entero";}
 
 //Expresion para un identificador
-[a-zA-Z]([a-zA-Z0-9_])* {return "tk_identificador";
-console.log("identificador normal")
-}
-//Expresion para un identificador de xquery
-
+[a-zA-Z]([a-zA-Z0-9_])* {return "tk_identificador";}
 
 [$]([a-zA-Z0-9_])* {return "tk_identificadorXQUERY";
 console.log("indentificador papa")
 }
-
-//IDENTIFICADOR PARA QUE ACEPTE LO QUE SEA
-[^<]+                          return 'valor';
-    
 //Final del archivo
 <<EOF>> return "EOF";
 
 /*Espacios en blanco, tabulados, saltos de linea, salto de carro, el otro no se que es equis de
 pero todo esto se ignora*/
-
+[ \t\r\n\f] {}
 
 //Estado sumidero donde van a caer todos los errores
 . {         
     console.log('Léxico',yytext,yylloc.first_line,yylloc.first_column );
 }
-    
+
 /lex
 
 %{
-  
+    const { Tree } = require('../Simbolos/Tree');
+    const { Tipo, tipos, esEntero } = require('../Varios/tipo');
+    const { Primitivo } = require('../Expresiones/Primitivo');
+    const { Error } = require('../Varios/Error');
+    const {Identificador} = require('../Expresiones/Identificador');
+    //const {Vector} = require('../Expresiones/Vector');
+    //const {Lista} = require('../Expresiones/Lista');
+    //Instrucciones
+    //const {Print} = require('../Instrucciones/Print');
+   // const {Declaracion, defal} = require('../Instrucciones/Declaracion');
+   // const {DeclaracionArray} = require('../Instrucciones/DeclaracionArray');
+    //const {DeclaracionLista} = require('../Instrucciones/DeclaracionLista');
+    //const {Asignacion} = require('../Instrucciones/Asignacion');
+    //const {AsignacionVector} = require('../Instrucciones/AsignacionVector');
+   // const {AsignacionLista} = require('../Instrucciones/AsignacionLista');
+    /*const {AddLista} = require('../Instrucciones/AddLista');
+    const {If} = require('../Instrucciones/If');
+    const {Switch} = require('../Instrucciones/Switch');
+    const {Case} = require('../Instrucciones/Case');
+    const {While} = require('../Instrucciones/While');
+    const {DoWhile} = require('../Instrucciones/DoWhile');
+    const {For} = require('../Instrucciones/For');
+    const {DeclaracionMetodo} = require('../Instrucciones/DeclaracionMetodo');
+    const {LlamadaMetodo} = require('../Instrucciones/LlamadaMetodo');
+    const {Continue} = require('../Expresiones/Continue');
+    const {Break} = require('../Expresiones/Break');
+    const {Retorno} = require('../Instrucciones/Retorno');
+    *///Expresion
+    const {Aritmetica} = require('../Expresiones/Aritmetica');
+    const {Relacional} = require('../Expresiones/Relacional');
+    /*const {Logico} = require('../Expresiones/Logico');
+    const {Ternario} = require('../Expresiones/Ternario');
+    const {Casteo} = require('../Expresiones/Casteo');
+    const {InDecrement} = require('../Expresiones/InDecrement');
+    const {Length} = require('../Expresiones/Length');
+    const {ToLower} = require('../Expresiones/ToLower');
+    const {ToUpper} = require('../Expresiones/ToUpper');
+    const {Truncate} = require('../Expresiones/Truncate');
+    const {Round} = require('../Expresiones/Round');
+    const {TypeOf} = require('../Expresiones/TypeOf');
+    const {ToString} = require('../Expresiones/ToString');
+    const {ToCharArray} = require('../Expresiones/ToCharArray');*/
 %}
 
-//Precedencia de operadores
+
 %left tk_mod
 %left tk_or
 %left tk_and
 %left tk_barra
-%left tk_igual tk_distinto
-%left tk_mayorIgual tk_mayor tk_menorIgual tk_menor tk_lt tk_gt
+%left tk_igual tk_distinto tk_igualXQUERY
+%left tk_mayorIgual tk_menorIgual tk_mayor tk_menor tk_lt tk_gt
 %left tk_diagonal
 %left tk_llaveA tk_llaveC
-%left tk_div 
-%left tk_asterisco
-%left tk_mas 
-%left tk_menos
+%left tk_div tk_asterisco
+%left tk_mas tk_menos
 %left tk_parA tk_parC
 
 %start INICIO_XQUERY
 %%
+
 INICIO_XQUERY : INSTRUCCIONES EOF;
 
 FUNCION:
@@ -180,23 +211,19 @@ INSTRUCCIONES :
     | INSTRUCCION;
 
 INSTRUCCION :
-    DECLARACION_GLOBAL
+    DECLARACION_GLOBAL{console.log($1)}
     | FUNCION
-    | ComentarioM
     | IF
-    | FOR    
-    | LLAMADA_FUNCION
-    | WHERE
-    | RETURN_CICLO;
+    |WHERE
+    |FOR
+    |LLAMADA_FUNCION
+    |RETURN_CICLO
 
-XPATH : INICIO_XPATH ;
 
-/*
 
-for $x in (10,20), $y in (100,200)
-return <test>x={$x} and y={$y}</test>
+;
 
-*/
+
 FOR :
     tk_for  DECLARACIONES_FOR OPCIONES_FOR;
 
@@ -213,7 +240,7 @@ OPCION_AT:
 
 FOR_REC:
     XPATH
-    | EXPRESION 
+    | EXP_XQUERY 
     | CORDERNADA;
 //111111111+1111
 
@@ -224,14 +251,15 @@ OPCIONES_FOR:
 OPCION_FOR:
     WHERE
     | ORDER
-    | RETURN_CICLO ;
+    | RETURN_CICLO 
+    |ComentarioM ;
 
 WHERE :
-    tk_where EXPRESION ;
+    tk_where EXP_XQUERY ;
 
 CONDITIONES_WHERE:
-    CONDITIONES_WHERE tk_and EXPRESION
-    | EXPRESION ;
+    CONDITIONES_WHERE tk_and EXP_XQUERY
+    | EXP_XQUERY ;
 
 ORDER : 
     tk_order  tk_by LISTA_ORDER ;
@@ -247,88 +275,229 @@ ORDER_ :
 RETURN_CICLO:
     tk_return tk_identificadorXQUERY XPATH
     | tk_return INSTRUCCIONES
-    | tk_return EXPRESION ;
+    | tk_return EXP_XQUERY ;
 
 LISTA_ASIGNACION:
     LISTA_ASIGNACION tk_and ASIGNACION_SIMPLE
     | ASIGNACION_SIMPLE ;
 
 ASIGNACION_SIMPLE :
-    tk_identificador tk_igual  valor_if
-    | TK tk_identificadorXQUERY tk_igual valor_if ;
+    tk_identificador tk_igual  valores_if
+    | TK tk_identificadorXQUERY tk_igual valores_if ;
 
 IF: 
-    tk_if  CONDICION  tk_then valor_if  ELSE ;
+    tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if  ELSE ;
 
 ELSE:
     tk_else valor_if
     | tk_else IF
     | ;
 
+valores_if:
+valores_if valor_if
+|valor_if
+
+;    
+
 valor_if:
-    EXPRESION
-    | INSTRUCCION
-    | VALOR
-    | ;
+    EXP_XQUERY { $$ = $1}
+    | INSTRUCCIONES
+ 
+
+    |ComentarioM
+   
+     ;
 
 
 LLAMADA_FUNCION:
-    tk_local tk_dosPuntos tk_identificador  EXPRESION ;
+    tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4} ;
 
 CONDICION : 
     tk_parA OPCIONES_CONDICION tk_parC ;
 
 OPCIONES_CONDICION:
-    EXPRESION
+    EXP_XQUERY
     | tk_identificadorXQUERY XPATH ;
 
+/*
+$p as xs:decimal?
+*/
+
+
+
+
+
+
 DECLARACION_GLOBAL :
-    tk_let tk_identificadorXQUERY  tk_igualXQUERY EXPRESION {console.log($2+"--val"+$4) } ;
+    tk_let LISTA_ID  tk_igualXQUERY EXP_XQUERY {$$=$1+$2+$3+$4 } ;
 
 
 LISTA_ID : 
-    LISTA_ID tk_coma tk_identificadorXQUERY
-    | tk_identificadorXQUERY;
+    LISTA_ID tk_coma tk_identificadorXQUERY {$$=$1+$2+$3}
+    | tk_identificadorXQUERY {$$=$1}
+    ;
 
-/*
-esta parte llama al xpath 
-*/
+EXP_XQUERY:
+    EXP_XQUERY tk_menos EXP_XQUERY
+        {
+            $$ = new Aritmetica($1, $3, '-', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_mas EXP_XQUERY  
+        {
+            $$ = new Aritmetica($1, $3, '+', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_div EXP_XQUERY
+        {
+            $$ = new Aritmetica($1, $3, '/', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_mod EXP_XQUERY 
+        {
+            $$ = new Aritmetica($1, $3, '%', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_asterisco EXP_XQUERY
+        {
+            $$ = new Aritmetica($1, $3, '*', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_menor EXP_XQUERY
+        {
+            $$ = new Relacional($1, $3, '<', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_gt EXP_XQUERY
+        {
+            $$ = new Relacional($1, $3, '>', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_lt EXP_XQUERY
+        {
+            $$ = new Relacional($1, $3, '<', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_mayor EXP_XQUERY
+        {
+            $$ = new Relacional($1, $3, '>', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_menorIgual EXP_XQUERY
+        {
+            $$ = new Relacional($1, $3, '<=', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_mayorIgual EXP_XQUERY
+        {
+            $$ = new Relacional($1, $3, '>=', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_igual EXP_XQUERY
+        {
+            $$ = new Relacional($1, $3, '==', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_distinto EXP_XQUERY
+        {
+            $$ = new Relacional($1, $3, '!=', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_or EXP_XQUERY 
+        {
+            $$ = new Logico($1, $3, '||', @1.first_line, @1.first_column);
+        }
+    | EXP_XQUERY tk_to EXP_XQUERY{$$=$1+$2+$3}
+    | EXP_XQUERY tk_and EXP_XQUERY
+        {
+            $$ = new Logico($1, $3, '&&', @1.first_line, @1.first_column);
+        }
+    | tk_entero 
+        {
+            $$ = new Primitivo(new Tipo(esEntero(Number($1))), Number($1), @1.first_line, @1.first_column);
+        }         
+    | tk_decimal
+        {
+            $$ = new Primitivo(new Tipo(esEntero(Number($1))), Number($1), @1.first_line, @1.first_column);
+        }
+    | tk_stringTexto
+        {
+            $$ = new Primitivo(new Tipo(tipos.STRING), $1, @1.first_line, @1.first_column);
+        }          
+    | tk_identificador 
+        {
+            $$ = new Identificador($1, @1.first_line, @1.first_column);
+        }
+    | tk_identificadorXQUERY OPCION_IDQ{$$=$1+$2}
+    | tk_parA EXP_XQUERY tk_parC
+        {
+            $$ = $2
+        }
+    |   tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6} 
+    //| EXP_XQUERY tk_parA EXP_XQUERY tk_parC
 
-INICIO_XPATH :
-    INICIO ;
+
+
+;
+OPCION_IDQ:
+    XPATH
+    |;       
+
+CORDERNADA:
+    tk_parA EXP_XQUERY tk_coma EXP_XQUERY tk_parC ;
+
+
+
+
+
+
+
+XPATH :
+    INICIO
+        | EOF 
+       ;
 
 INICIO : 
     INICIO tk_barra INICIALES 
-    | INICIALES ;
+        
+    | INICIALES 
+      ;
 
 INICIALES : 
     tk_punto DIAGONALES DERIVADOSLIMITADO DERIVACIONDIAGONAL
+     
     | tk_identificador PREDICATE DERIVACIONDIAGONAL
+       
     | tk_diagonal DERIVADOS DERIVACIONDIAGONAL 
+        
     | tk_diagonal tk_diagonal DERIVADOS DERIVACIONDIAGONAL 
+                
     | tk_asterisco PREDICATE DERIVACIONDIAGONAL
-    | tk_node tk_parA tk_parC PREDICATE DERIVACIONDIAGONAL ;
+       
+    | tk_node tk_parA tk_parC PREDICATE DERIVACIONDIAGONAL
+       ;
 
 DIAGONALES : 
     tk_diagonal 
+      
     | tk_diagonal tk_diagonal 
-    | error tk_diagonal ;
+        
+    |   error tk_diagonal                                                                            
+       
+        ;
 
 DERIVACIONDIAGONAL : 
     DIAGONALES DERIVADOS DERIVACIONDIAGONAL 
-    | ;
+      
+    |  ;
 
 DERIVADOSLIMITADO :
     tk_identificador PREDICATE 
+       
     | tk_asterisco PREDICATE 
+      
     | tk_node tk_parA tk_parC PREDICATE 
+        
     | tk_arroba ATRIBUTO
-    | AXES ;
+      
+    
+    | AXES 
+       ;
 
 DERIVADOS : 
     tk_punto 
+       
     | tk_punto tk_punto 
-    | DERIVADOSLIMITADO ;
+      
+    | DERIVADOSLIMITADO 
+       ;
 
 AXES :
     tk_child tk_dosPuntos tk_dosPuntos NODETEST
@@ -352,7 +521,9 @@ NODETEST :
 
 PREDICATE : 
     tk_llaveA EXPRESION tk_llaveC
-    | ;
+       
+    | 
+       ;
 
 EXPRESION :
     EXPRESION tk_mas EXPRESION
@@ -360,8 +531,7 @@ EXPRESION :
     | EXPRESION tk_div EXPRESION
     | EXPRESION tk_mod EXPRESION
     | EXPRESION tk_menor EXPRESION
-    | EXPRESION tk_lt EXPRESION
-    | EXPRESION tk_gt EXPRESION
+
     | EXPRESION tk_mayor EXPRESION
     | EXPRESION tk_menorIgual EXPRESION
     | EXPRESION tk_mayorIgual EXPRESION
@@ -378,19 +548,19 @@ EXPRESION :
     | tk_position tk_parA tk_parC
     | tk_last tk_parA tk_parC
     | tk_stringTexto
-    | tk_identificadorXQUERY OPCION_IDQ
+
     | tk_parA EXPRESION tk_parC
     //| EXPRESION tk_parA EXPRESION tk_parC
-    | LLAMADA_FUNCION;
 
-OPCION_IDQ:
-    XPATH
-    |;       
-
-CORDERNADA:
-    tk_parA EXPRESION tk_coma EXPRESION tk_parC ;
+    ;
+       
 
 ATRIBUTO :
     tk_asterisco 
+        
     | tk_identificador 
-    | tk_node tk_parA tk_ParC ;
+       
+    | tk_node tk_parA tk_ParC 
+        ;
+
+ 
