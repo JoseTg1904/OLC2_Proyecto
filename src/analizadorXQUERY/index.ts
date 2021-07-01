@@ -11,6 +11,8 @@ export class AnalizadorXquery {
         };
         `
         console.log(gramatica.parse(entrada));
+
+        console.log("aaalv")
     }
 
 }

@@ -84,7 +84,76 @@ export class Relacional extends Nodo {
                 // tree.consola.push(error.toString());
                 return error;
             }
-        }else if (this.operador === '<=') {
+        }
+        
+        
+        
+        
+        else if (this.operador === 'lt') {
+            if (this.operadorIzq.tipo.tipo === tipos.ENTERO) {
+                if (this.operadorDer.tipo.tipo === tipos.ENTERO) {
+                    return resultadoIzq < resultadoDer;
+                } else if (this.operadorDer.tipo.tipo === tipos.DECIMAL) {
+                    return resultadoIzq < resultadoDer;
+                } else {
+                    const error = new Error('Semantico',
+                        `El operador relacional MENOR QUE se esta tratando de operar con los tipos ${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                        this.line, this.column);
+                    tree.errores.push(error);
+                    // tree.consola.push(error.toString());
+                    return error;
+                }
+            } else if (this.operadorIzq.tipo.tipo === tipos.DECIMAL) {
+                if (this.operadorDer.tipo.tipo === tipos.ENTERO) {
+                    return resultadoIzq < resultadoDer;
+                } else if (this.operadorDer.tipo.tipo === tipos.DECIMAL) {
+                    return resultadoIzq < resultadoDer;
+                } else {
+                    const error = new Error('Semantico',
+                        `El operador relacional MENOR QUE se esta tratando de operar con los tipos ${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                        this.line, this.column);
+                    tree.errores.push(error);
+                    // tree.consola.push(error.toString());
+                    return error;
+                }
+            } else if (this.operadorIzq.tipo.tipo === tipos.BOOLEANO) {
+                if (this.operadorDer.tipo.tipo === tipos.BOOLEANO) {
+                    return resultadoIzq < resultadoDer;
+                } else {
+                    const error = new Error('Semantico',
+                        `El operador relacional MENOR QUE se esta tratando de operar con los tipos${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                        this.line, this.column);
+                    tree.errores.push(error);
+                    // tree.consola.push(error.toString());
+                    return error;
+                }
+            } else if (this.operadorIzq.tipo.tipo === tipos.STRING) {
+                if (this.operadorDer.tipo.tipo === tipos.STRING) {
+                    return resultadoIzq < resultadoDer;
+                } else {
+                    const error = new Error('Semantico',
+                        `El operador relacional MENOR QUE se esta tratando de operar con los tipos ${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                        this.line, this.column);
+                    tree.errores.push(error);
+                    // tree.consola.push(error.toString());
+                    return error;
+                }
+            } else {
+                const error = new Error('Semantico',
+                    `El operador relacional MENOR QUE se esta tratando de operar con los tipos ${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                    this.line, this.column);
+                tree.errores.push(error);
+                // tree.consola.push(error.toString());
+                return error;
+            }
+        }
+        
+        
+        
+        
+        
+        
+        else if (this.operador === '<=') {
             if (this.operadorIzq.tipo.tipo === tipos.ENTERO) {
                 if (this.operadorDer.tipo.tipo === tipos.ENTERO) {
                     return resultadoIzq <= resultadoDer;
@@ -141,7 +210,80 @@ export class Relacional extends Nodo {
                 // tree.consola.push(error.toString());
                 return error;
             }
-        } else if (this.operador === '>') {
+        }
+        
+        else if (this.operador === 'gt') {
+            if (this.operadorIzq.tipo.tipo === tipos.ENTERO) {
+                if (this.operadorDer.tipo.tipo === tipos.ENTERO) {
+                    return resultadoIzq > resultadoDer;
+                } else if (this.operadorDer.tipo.tipo === tipos.DECIMAL) {
+                    return resultadoIzq > resultadoDer;
+                } else {
+                    const error = new Error('Semantico',
+                        `El operador relacional MAYOR QUE se esta tratando de operar con los tipos ${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                        this.line, this.column);
+                    tree.errores.push(error);
+                    // tree.consola.push(error.toString());
+                    return error;
+                }
+            } else if (this.operadorIzq.tipo.tipo === tipos.DECIMAL) {
+                if (this.operadorDer.tipo.tipo === tipos.ENTERO) {
+                    return resultadoIzq > resultadoDer;
+                } else if (this.operadorDer.tipo.tipo === tipos.DECIMAL) {
+                    return resultadoIzq > resultadoDer;
+                } else {
+                    const error = new Error('Semantico',
+                        `El operador relacional MAYOR QUE se esta tratando de operar con los tipos ${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                        this.line, this.column);
+                    tree.errores.push(error);
+                    // tree.consola.push(error.toString());
+                    return error;
+                }
+            } else if (this.operadorIzq.tipo.tipo === tipos.BOOLEANO) {
+                if (this.operadorDer.tipo.tipo === tipos.BOOLEANO) {
+                    return resultadoIzq > resultadoDer;
+                } else {
+                    const error = new Error('Semantico',
+                        `El operador relacional MAYOR QUE se esta tratando de operar con los tipos ${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                        this.line, this.column);
+                    tree.errores.push(error);
+                    // tree.consola.push(error.toString());
+                    return error;
+                }
+            } else if (this.operadorIzq.tipo.tipo === tipos.STRING) {
+                if (this.operadorDer.tipo.tipo === tipos.STRING) {
+                    return resultadoIzq > resultadoDer;
+                } else {
+                    const error = new Error('Semantico',
+                        `El operador relacional MAYOR QUE se esta tratando de operar con los tipos ${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                        this.line, this.column);
+                    tree.errores.push(error);
+                    // tree.consola.push(error.toString());
+                    return error;
+                }
+            }else {
+                const error = new Error('Semantico',
+                    `El operador relacional MAYOR QUE se esta tratando de operar con los tipos ${this.operadorIzq.tipo} y ${this.operadorDer.tipo}`,
+                    this.line, this.column);
+                tree.errores.push(error);
+                // tree.consola.push(error.toString());
+                return error;
+            }
+        } 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        else if (this.operador === '>') {
             if (this.operadorIzq.tipo.tipo === tipos.ENTERO) {
                 if (this.operadorDer.tipo.tipo === tipos.ENTERO) {
                     return resultadoIzq > resultadoDer;

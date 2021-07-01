@@ -110,23 +110,23 @@ pero todo esto se ignora*/
 /lex
 
 %{
-    const { Tree } = require('../Simbolos/Tree');
-    const { Tipo, tipos, esEntero } = require('../Varios/tipo');
-    const { Primitivo } = require('../Expresiones/Primitivo');
-    const { Error } = require('../Varios/Error');
-    const {Identificador} = require('../Expresiones/Identificador');
+    const { Tree } = require('./Simbolos/Tree');
+    const { Tipo, tipos, esEntero } = require('./Varios/tipo');
+    const { Primitivo } = require('./Expresiones/Primitivo');
+    const { Error } = require('./Varios/Error');
+    const {Identificador} = require('./Expresiones/Identificador');
     //const {Vector} = require('../Expresiones/Vector');
     //const {Lista} = require('../Expresiones/Lista');
     //Instrucciones
     //const {Print} = require('../Instrucciones/Print');
-   // const {Declaracion, defal} = require('../Instrucciones/Declaracion');
+    const {Declaracion} = require('./Instrucciones/Declaracion');
    // const {DeclaracionArray} = require('../Instrucciones/DeclaracionArray');
     //const {DeclaracionLista} = require('../Instrucciones/DeclaracionLista');
     //const {Asignacion} = require('../Instrucciones/Asignacion');
     //const {AsignacionVector} = require('../Instrucciones/AsignacionVector');
    // const {AsignacionLista} = require('../Instrucciones/AsignacionLista');
     /*const {AddLista} = require('../Instrucciones/AddLista');
-    const {If} = require('../Instrucciones/If');
+    
     const {Switch} = require('../Instrucciones/Switch');
     const {Case} = require('../Instrucciones/Case');
     const {While} = require('../Instrucciones/While');
@@ -138,8 +138,10 @@ pero todo esto se ignora*/
     const {Break} = require('../Expresiones/Break');
     const {Retorno} = require('../Instrucciones/Retorno');
     *///Expresion
-    const {Aritmetica} = require('../Expresiones/Aritmetica');
-    const {Relacional} = require('../Expresiones/Relacional');
+    const {If} = require('./Instrucciones/If');
+      const {Retorno} = require('./Instrucciones/Retorno');
+    const {Aritmetica} = require('./Expresiones/Aritmetica');
+    const {Relacional} = require('./Expresiones/Relacional');
     /*const {Logico} = require('../Expresiones/Logico');
     const {Ternario} = require('../Expresiones/Ternario');
     const {Casteo} = require('../Expresiones/Casteo');
@@ -272,10 +274,16 @@ ORDER_ :
     tk_identificadorXQUERY XPATH
     | tk_identificadorXQUERY ;
 
+
 RETURN_CICLO:
-    tk_return tk_identificadorXQUERY XPATH
-    | tk_return INSTRUCCIONES
-    | tk_return EXP_XQUERY ;
+
+     tk_return Lista_Ciclo {$$=new Retorno($2, @1.first_line, @1.first_column)}   ;
+Lista_Ciclo:
+Lista_Ciclo tk_and valor_if {$1.push($3);$$=$1;}
+|valor_if {$$=$1;}
+
+
+;
 
 LISTA_ASIGNACION:
     LISTA_ASIGNACION tk_and ASIGNACION_SIMPLE
@@ -285,8 +293,20 @@ ASIGNACION_SIMPLE :
     tk_identificador tk_igual  valores_if
     | TK tk_identificadorXQUERY tk_igual valores_if ;
 
+
 IF: 
-    tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if  ELSE ;
+    tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if  {$$=new If($3,$6,[], @1.first_line, @1.first_column);}
+    
+   | tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if      tk_else valores_if {$$=new If($3,$6,$8, @1.first_line, @1.first_column);}
+    
+    |    tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if     tk_else IF
+    
+    
+    
+    {$$ = new If($3, $6, [$8], @1.first_line, @1.first_column);} 
+    
+    
+    ;
 
 ELSE:
     tk_else valor_if
@@ -329,11 +349,11 @@ $p as xs:decimal?
 
 
 DECLARACION_GLOBAL :
-    tk_let LISTA_ID  tk_igualXQUERY EXP_XQUERY {$$=$1+$2+$3+$4 } ;
+    tk_let LISTA_ID  tk_igualXQUERY EXP_XQUERY {$$=new Declaracion(new Tipo(tipos.VARIABLE),$2,$4, @1.first_line, @1.first_column ) } ;
 
 
 LISTA_ID : 
-    LISTA_ID tk_coma tk_identificadorXQUERY {$$=$1+$2+$3}
+    LISTA_ID tk_coma tk_identificadorXQUERY {$1.push($3); $$=$1;  }
     | tk_identificadorXQUERY {$$=$1}
     ;
 
@@ -395,6 +415,9 @@ EXP_XQUERY:
             $$ = new Logico($1, $3, '||', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_to EXP_XQUERY{$$=$1+$2+$3}
+
+    |  EXP_XQUERY tk_coma EXP_XQUERY{$$=$1+$2+$3}
+    |XPATH
     | EXP_XQUERY tk_and EXP_XQUERY
         {
             $$ = new Logico($1, $3, '&&', @1.first_line, @1.first_column);
@@ -422,6 +445,9 @@ EXP_XQUERY:
         }
     |   tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6} 
     //| EXP_XQUERY tk_parA EXP_XQUERY tk_parC
+    | EXP_XQUERY tk_parA EXP_XQUERY tk_parC
+ |
+  
 
 
 
