@@ -111,10 +111,10 @@ pero todo esto se ignora*/
 
 %{
     const { Tree } = require('./Simbolos/Tree');
-    const { Tipo, tipos, esEntero } = require('./Varios/tipo');
+    const { Tipo, tipos } = require('./Varios/Tipo');
     const { Primitivo } = require('./Expresiones/Primitivo');
     const { Error } = require('./Varios/Error');
-    const {Identificador} = require('./Expresiones/Identificador');
+    const { Identificador } = require('./Expresiones/identificador');
     //const {Vector} = require('../Expresiones/Vector');
     //const {Lista} = require('../Expresiones/Lista');
     //Instrucciones
@@ -139,7 +139,7 @@ pero todo esto se ignora*/
     const {Retorno} = require('../Instrucciones/Retorno');
     *///Expresion
     const {If} = require('./Instrucciones/If');
-      const {Retorno} = require('./Instrucciones/Retorno');
+    const {Retorno} = require('./Instrucciones/Retorno');
     const {Aritmetica} = require('./Expresiones/Aritmetica');
     const {Relacional} = require('./Expresiones/Relacional');
     /*const {Logico} = require('../Expresiones/Logico');
@@ -158,6 +158,8 @@ pero todo esto se ignora*/
 
 
 %left tk_mod
+%left tk_to
+%left tk_coma
 %left tk_or
 %left tk_and
 %left tk_barra
@@ -276,8 +278,12 @@ ORDER_ :
 
 
 RETURN_CICLO:
+    tk_return Lista_Ciclo 
+        { 
+            $$ = new Retorno($2, @1.first_line, @1.first_column)
+        }
+    ;
 
-     tk_return Lista_Ciclo {$$=new Retorno($2, @1.first_line, @1.first_column)}   ;
 Lista_Ciclo:
 Lista_Ciclo tk_and valor_if {$1.push($3);$$=$1;}
 |valor_if {$$=$1;}
@@ -295,17 +301,19 @@ ASIGNACION_SIMPLE :
 
 
 IF: 
-    tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if  {$$=new If($3,$6,[], @1.first_line, @1.first_column);}
+    tk_if tk_parA EXP_XQUERY tk_parC tk_then valores_if  
+        {
+            $$ = new If($3, $6, [], @1.first_line, @1.first_column);
+        }
+    | tk_if tk_parA EXP_XQUERY tk_parC tk_then valores_if tk_else valores_if 
+        {
+            $$ = new If($3, $6, $8, @1.first_line, @1.first_column);
+        }
     
-   | tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if      tk_else valores_if {$$=new If($3,$6,$8, @1.first_line, @1.first_column);}
-    
-    |    tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if     tk_else IF
-    
-    
-    
-    {$$ = new If($3, $6, [$8], @1.first_line, @1.first_column);} 
-    
-    
+    | tk_if tk_parA EXP_XQUERY tk_parC tk_then valores_if tk_else IF
+        {
+            $$ = new If($3, $6, [$8], @1.first_line, @1.first_column);
+        }
     ;
 
 ELSE:
@@ -320,7 +328,7 @@ valores_if valor_if
 ;    
 
 valor_if:
-    EXP_XQUERY { $$ = $1}
+    EXP_XQUERY { $$ = $1 }
     | INSTRUCCIONES
  
 
@@ -424,11 +432,11 @@ EXP_XQUERY:
         }
     | tk_entero 
         {
-            $$ = new Primitivo(new Tipo(esEntero(Number($1))), Number($1), @1.first_line, @1.first_column);
+            $$ = new Primitivo(new Tipo(tipos.ENTERO), Number($1), @1.first_line, @1.first_column);
         }         
     | tk_decimal
         {
-            $$ = new Primitivo(new Tipo(esEntero(Number($1))), Number($1), @1.first_line, @1.first_column);
+            $$ = new Primitivo(new Tipo(tipos.DECIMAL), Number($1), @1.first_line, @1.first_column);
         }
     | tk_stringTexto
         {
@@ -443,14 +451,9 @@ EXP_XQUERY:
         {
             $$ = $2
         }
-    |   tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6} 
-    //| EXP_XQUERY tk_parA EXP_XQUERY tk_parC
+    | tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6} 
     | EXP_XQUERY tk_parA EXP_XQUERY tk_parC
- |
-  
-
-
-
+    |
 ;
 OPCION_IDQ:
     XPATH
@@ -465,10 +468,7 @@ CORDERNADA:
 
 
 
-XPATH :
-    INICIO
-        | EOF 
-       ;
+XPATH : INICIO;
 
 INICIO : 
     INICIO tk_barra INICIALES 
@@ -489,6 +489,9 @@ INICIALES :
        
     | tk_node tk_parA tk_parC PREDICATE DERIVACIONDIAGONAL
        ;
+  INICIO -> .INICIO tk_barra INICIALES
+  INICIO -> .INICIALES
+  INICIALES -> .tk_punto DIAGONALES DERIVADOSLIMITADO DERIVACIONDIAGONAL
 
 DIAGONALES : 
     tk_diagonal 
@@ -557,14 +560,12 @@ EXPRESION :
     | EXPRESION tk_div EXPRESION
     | EXPRESION tk_mod EXPRESION
     | EXPRESION tk_menor EXPRESION
-
     | EXPRESION tk_mayor EXPRESION
     | EXPRESION tk_menorIgual EXPRESION
     | EXPRESION tk_mayorIgual EXPRESION
     | EXPRESION tk_igual EXPRESION
     | EXPRESION tk_distinto EXPRESION
     | EXPRESION tk_or EXPRESION
-    | EXPRESION tk_to EXPRESION
     | EXPRESION tk_and EXPRESION
     | EXPRESION tk_asterisco EXPRESION
     | tk_entero 
@@ -574,12 +575,8 @@ EXPRESION :
     | tk_position tk_parA tk_parC
     | tk_last tk_parA tk_parC
     | tk_stringTexto
-
     | tk_parA EXPRESION tk_parC
-    //| EXPRESION tk_parA EXPRESION tk_parC
-
     ;
-       
 
 ATRIBUTO :
     tk_asterisco 
