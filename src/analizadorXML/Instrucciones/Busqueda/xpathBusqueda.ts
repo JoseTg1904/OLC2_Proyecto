@@ -1,6 +1,8 @@
 
 export class xpathBusqueda {
 
+    public listNodosName: any = [];
+
     constructor() {
     }
 
@@ -193,6 +195,7 @@ export class xpathBusqueda {
             });
         } else {
             texto += `<${nodeList.identificador}>${nodeList.texto}</${nodeList.cierre}>\n`;
+            this.listNodosName.push({ id: nodeList.identificador, val: nodeList.texto, tipo: 'O' });
         }
         // console.log('TEXTO ', texto);
         return texto;
@@ -204,6 +207,7 @@ export class xpathBusqueda {
             nodeList.listaAtributos.forEach((obj: any) => {
                 if (obj.identificador === param.substring(1)) {
                     texto += `- ${obj.valor}\n`;
+                    this.listNodosName.push({ id: obj.identificador, val: obj.valor, tipo: 'A' });
                 }
             });
         }
@@ -215,9 +219,17 @@ export class xpathBusqueda {
         if (nodeList.listaAtributos.length !== 0) {
             nodeList.listaAtributos.forEach((obj: any) => {
                 texto += `- ${obj.valor}\n`;
+                this.listNodosName.push({ id: obj.identificador, val: obj.valor, tipo: 'A'});
             });
         }
         return texto;
     }
 
+    returnListValues(): any {
+        //SALIDA 3D
+        /*for(let i = 0; i < this.listNodosName.length; i ++){
+            console.log(this.listNodosName[i]);
+        }*/
+        return this.listNodosName;
+    }
 }
