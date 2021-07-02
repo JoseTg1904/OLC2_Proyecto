@@ -9,6 +9,7 @@ import { ReporteService } from '../../reporte.service';
 
 import { Router } from '@angular/router';
 import { xpathBusqueda } from '../../../analizadorXML/Instrucciones/Busqueda/xpathBusqueda';
+import { xml3D } from '../../../analizadorXML/Codigo3D/xml3D';
 
 declare const Buffer
 
@@ -169,10 +170,12 @@ export class HomeComponent {
       texto = buscador.getNodesByFilters("1", query, tabla)
     }else{
       texto = buscador.getNodesByFilters("2", query, tabla)
-    }
 
-    var buf = Buffer.from(texto);
-    this.xmlSalida = buf.toString(this.encoding()); 
+    }
+    const dir = new xml3D();
+    this.salida3D = dir.getNodesByFilters(tabla, 0, buscador.returnListValues());
+    //var buf = Buffer.from(texto);
+    this.xmlSalida = texto//buf.toString(this.encoding()); 
   }
 
   ejecutarDescendente() {

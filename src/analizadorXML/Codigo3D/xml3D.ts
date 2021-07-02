@@ -1,4 +1,4 @@
-const fs = require('fs');
+//const fs = require('fs');
 
 export class xml3D {
 
@@ -192,11 +192,13 @@ ${this.getXpath3D(xpath)}
         this.salida3D += `\n}`;
 
         //Crear archivo 3d .c
-        fs.appendFile('codigo3D.c', this.salida3D, (error: any) => {
-            if (error) {
-                throw error;
-            }
-        });
+       // fs.appendFile('codigo3D.c', this.salida3D, (error: any) => {
+         //   if (error) {
+           //     throw error;
+            //}
+        //});
+        console.log(this.salida3D)
+        return this.salida3D;
     }
 
     //Recorrer objetos obtenidos del analisis, para crear lista de 1d

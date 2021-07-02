@@ -10,7 +10,7 @@ export class AnalizadorXquery {
         let $efe := 2
         };
         `
-        console.log(gramatica.parse(entrada));
+ //       console.log(gramatica.parse(entrada));
 
         console.log("aaalv")
     }
