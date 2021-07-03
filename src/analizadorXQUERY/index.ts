@@ -16,8 +16,7 @@ export class AnalizadorXquery {
 
     public ejecutarCodigo(entrada: string) {
         entrada = `
-        for $x in /bookstore/book
-        return $x
+        let $alv:=2
         `
         console.log(gramatica.parse(entrada));
 

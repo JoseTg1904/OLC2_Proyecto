@@ -2,6 +2,7 @@
 export class xpathBusqueda {
 
     public listNodosName: any = [];
+    public listObjects: any = [];
 
     constructor() {
     }
@@ -196,6 +197,7 @@ export class xpathBusqueda {
         } else {
             texto += `<${nodeList.identificador}>${nodeList.texto}</${nodeList.cierre}>\n`;
             this.listNodosName.push({ id: nodeList.identificador, val: nodeList.texto, tipo: 'O' });
+            this.listObjects.push(nodeList); //para el for
         }
         // console.log('TEXTO ', texto);
         return texto;
@@ -208,6 +210,7 @@ export class xpathBusqueda {
                 if (obj.identificador === param.substring(1)) {
                     texto += `- ${obj.valor}\n`;
                     this.listNodosName.push({ id: obj.identificador, val: obj.valor, tipo: 'A' });
+                    this.listObjects.push(nodeList); //para el for
                 }
             });
         }
@@ -219,7 +222,8 @@ export class xpathBusqueda {
         if (nodeList.listaAtributos.length !== 0) {
             nodeList.listaAtributos.forEach((obj: any) => {
                 texto += `- ${obj.valor}\n`;
-                this.listNodosName.push({ id: obj.identificador, val: obj.valor, tipo: 'A'});
+                this.listNodosName.push({ id: obj.identificador, val: obj.valor, tipo: 'A' });
+                this.listObjects.push(nodeList); //para el for
             });
         }
         return texto;
@@ -231,5 +235,12 @@ export class xpathBusqueda {
             console.log(this.listNodosName[i]);
         }*/
         return this.listNodosName;
+    }
+
+    returnListObjects(): any {
+        /*for (let i = 0; i < this.listObjects.length; i++) {
+            console.log(this.listObjects[i]);
+        }*/
+        return this.listObjects;
     }
 }

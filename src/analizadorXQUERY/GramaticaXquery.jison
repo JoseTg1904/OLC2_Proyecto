@@ -119,7 +119,7 @@ pero todo esto se ignora*/
     //const {Lista} = require('../Expresiones/Lista');
     //Instrucciones
     //const {Print} = require('../Instrucciones/Print');
-   // const {Declaracion} = require('./Instrucciones/Declaracion');
+    const {Declaracion} = require('./Instrucciones/Declaracion');
   // // const {DeclaracionArray} = require('../Instrucciones/DeclaracionArray');
     //const {DeclaracionLista} = require('../Instrucciones/DeclaracionLista');
     //const {Asignacion} = require('../Instrucciones/Asignacion');
@@ -138,6 +138,8 @@ pero todo esto se ignora*/
     const {Break} = require('../Expresiones/Break');
     const {Retorno} = require('../Instrucciones/Retorno');
     *///Expresion
+      const {DeclaracionMetodo} = require('./Instrucciones/DeclaracionMetodo');
+    const {LlamadaMetodo} = require('./Instrucciones/LlamadaMetodo');
     const { If } = require('./Instrucciones/If');
     const { Retorno } = require('./Instrucciones/Retorno');
     const { Aritmetica } = require('./Expresiones/Aritmetica');
@@ -173,32 +175,41 @@ pero todo esto se ignora*/
 
 %start INICIO_XQUERY
 %%
-
-INICIO_XQUERY : INSTRUCCIONES EOF;
+INICIO_XQUERY : INSTRUCCIONES
+| EOF;
 
 FUNCION:
     tk_declare tk_function MENU_LOCAL tk_dosPuntos
     tk_identificador tk_parA LISTA_DECLARACION_FUNCION 
-    tk_parC tk_as tk_xs tk_dosPuntos TIPO_DATO MENU_INTERROGA
-    llaveA  INSTRUCCIONES llaveC tk_punto_coma;
+    tk_parC  tk_as  tk_xs     tk_dosPuntos TIPO_DATO MENU_INTERROGA
+    llaveA  INSTRUCCIONES llaveC tk_punto_coma
+    {$$ = new DeclaracionMetodo($12 ,$5, $7, $15, @1.first_line, @1.first_column);}
+    
+    
+    
+    ;
 
 
 MENU_INTERROGA : 
-    tk_Interroga 
-    | ;
+    tk_Interroga {$$=$1}
+    |  {$$=''};
 
 /*
 $p as xs:decimal?
 */
 LISTA_DECLARACION_FUNCION :  
-    LISTA_DECLARACION_FUNCION  tk_coma DECLARACION_FUNCION
-    | DECLARACION_FUNCION ;
+    LISTA_DECLARACION_FUNCION  tk_coma DECLARACION_FUNCION {$1.push($3); $$=$1;}
+    | DECLARACION_FUNCION {$$=$1} ;
 
 DECLARACION_FUNCION:
-    tk_identificadorXQUERY tk_as tk_xs tk_dosPuntos TIPO_DATO
-    MENU_INTERROGA;
+    tk_identificadorXQUERY tk_as tk_xs  tk_dosPuntos TIPO_DATO 
+    MENU_INTERROGA 
+    
+    {$$ new Declaracion($4, $1, null,@1.first_line, @1.first_column);}   
+     ;
 
-MENU_LOCAL: tk_local
+
+MENU_LOCAL: tk_local {$$=$1;}
 //aqui voy a meter mas pero no se si solo se pueden declarar funciones localres 
 ;
 
@@ -230,6 +241,7 @@ INSTRUCCION :
     | FOR {$$=$1}
     | LLAMADA_FUNCION {$$=$1}
     | RETURN_CICLO {$$=$1}
+    |EOF
     ;
 
 FOR :
@@ -327,17 +339,29 @@ valores_if valor_if {$1.push($2); $$=$1;}
 
 valor_if:
     EXP_XQUERY { $$ = $1}
-    | INSTRUCCIONES { $$ = $1};
+    | INSTRUCCIONES { $$ = $1}
+    |EOF;
+    
+
 
 
 LLAMADA_FUNCION:
-    tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4} ;
+    tk_local tk_dosPuntos tk_identificador tk_parA  Parametros_llamada tk_parC
+   {$$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);}
+   ;
 
 
 /*
 $p as xs:decimal?
 */
 
+
+Parametros_llamada:
+Parametros_llamada EXP_XQUERY { $1.push($2)  ;  $$=$1;  } 
+|EXP_XQUERY {$$=$1}
+
+
+;
 
 
 
