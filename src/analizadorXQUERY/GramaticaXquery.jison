@@ -138,7 +138,7 @@ pero todo esto se ignora*/
     const {Break} = require('../Expresiones/Break');
     const {Retorno} = require('../Instrucciones/Retorno');
     *///Expresion
-      const {DeclaracionMetodo} = require('./Instrucciones/DeclaracionMetodo');
+    const {DeclaracionMetodo} = require('./Instrucciones/DeclaracionMetodo');
     const {LlamadaMetodo} = require('./Instrucciones/LlamadaMetodo');
     const { If } = require('./Instrucciones/If');
     const { Retorno } = require('./Instrucciones/Retorno');
@@ -205,7 +205,7 @@ DECLARACION_FUNCION:
     tk_identificadorXQUERY tk_as tk_xs  tk_dosPuntos TIPO_DATO 
     MENU_INTERROGA 
     
-    {$$ new Declaracion($4, $1, null,@1.first_line, @1.first_column);}   
+    {$$ = new Declaracion($4, $1, null,@1.first_line, @1.first_column);}   
      ;
 
 
@@ -367,12 +367,16 @@ Parametros_llamada EXP_XQUERY { $1.push($2)  ;  $$=$1;  }
 
 
 DECLARACION_GLOBAL :
-    tk_let LISTA_ID  tk_igualXQUERY EXP_XQUERY {$$=new Declaracion(new Tipo(tipos.VARIABLE),$2,$4, @1.first_line, @1.first_column ) } ;
+    tk_let LISTA_ID  tk_igualXQUERY EXP_XQUERY 
+        {
+         //   console.log($1, $2, $3, $4);
+            $$ = new Declaracion(new Tipo(tipos.VARIABLE), $2, $4, @1.first_line, @1.first_column);
+        };
 
 
 LISTA_ID : 
     LISTA_ID tk_coma tk_identificadorXQUERY {$1.push($3); $$=$1;  }
-    | tk_identificadorXQUERY {$$=$1}
+    | tk_identificadorXQUERY {$$ = $1}
     ;
 
 EXP_XQUERY:

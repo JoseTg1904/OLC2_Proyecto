@@ -86,7 +86,7 @@ switch (yystate) {
 case 3:
 this.$ = new DeclaracionMetodo($$[$0-5] ,$$[$0-12], $$[$0-10], $$[$0-2], _$[$0-16].first_line, _$[$0-16].first_column);
 break;
-case 4: case 7: case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 59: case 65: case 68:
+case 4: case 7: case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 59: case 65:
 this.$=$$[$0]
 break;
 case 5:
@@ -96,7 +96,7 @@ case 6:
 $$[$0-2].push($$[$0]); this.$=$$[$0-2];
 break;
 case 8:
-this.$ new Declaracion($$[$0-2], $$[$0-5], null,_$[$0-5].first_line, _$[$0-5].first_column);
+this.$ = new Declaracion($$[$0-2], $$[$0-5], null,_$[$0-5].first_line, _$[$0-5].first_column);
 break;
 case 9:
 this.$=$$[$0];
@@ -155,10 +155,16 @@ case 64:
  $$[$0-1].push($$[$0])  ;  this.$=$$[$0-1];  
 break;
 case 66:
-this.$=new Declaracion(new Tipo(tipos.VARIABLE),$$[$0-2],$$[$0], _$[$0-3].first_line, _$[$0-3].first_column ) 
+
+         //   console.log($$[$0-3], $$[$0-2], $$[$0-1], $$[$0]);
+            this.$ = new Declaracion(new Tipo(tipos.VARIABLE), $$[$0-2], $$[$0], _$[$0-3].first_line, _$[$0-3].first_column);
+        
 break;
 case 67:
 $$[$0-2].push($$[$0]); this.$=$$[$0-2];  
+break;
+case 68:
+this.$ = $$[$0]
 break;
 case 69:
 
@@ -265,6 +271,7 @@ case 98:
 
             let query = new EjecucionXpath($$[$0], "");
             console.log(query.ejecutarArbol())
+            this.$ = query.ejecutarArbol();
         
 break;
 case 99:
@@ -643,7 +650,7 @@ _handle_error:
     const {Break} = require('../Expresiones/Break');
     const {Retorno} = require('../Instrucciones/Retorno');
     *///Expresion
-      const {DeclaracionMetodo} = require('./Instrucciones/DeclaracionMetodo');
+    const {DeclaracionMetodo} = require('./Instrucciones/DeclaracionMetodo');
     const {LlamadaMetodo} = require('./Instrucciones/LlamadaMetodo');
     const { If } = require('./Instrucciones/If');
     const { Retorno } = require('./Instrucciones/Retorno');

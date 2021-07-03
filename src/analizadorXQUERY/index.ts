@@ -9,15 +9,15 @@ import { Tipo, tipos, esEntero } from './Varios/Tipo';
 import { Primitivo } from './Expresiones/Primitivo';
 import { Error } from './Varios/Error';
 import { Identificador } from './Expresiones/identificador';
+import { Declaracion } from './Instrucciones/Declaracion';
+import { DeclaracionMetodo } from './Instrucciones/DeclaracionMetodo';
 
 import * as gramatica from './GramaticaXquery';
 
 export class AnalizadorXquery {
 
     public ejecutarCodigo(entrada: string) {
-        entrada = `
-        let $alv:=2
-        `
+        entrada = `let $alv:=2`
         console.log(gramatica.parse(entrada));
 
         console.log("aaalv")
