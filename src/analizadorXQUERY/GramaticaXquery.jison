@@ -455,6 +455,7 @@ XPATH :
         {
             let query = new EjecucionXpath($1, "");
             console.log(query.ejecutarArbol())
+            $$ = query.ejecutarArbol();
         }
     ;
 
