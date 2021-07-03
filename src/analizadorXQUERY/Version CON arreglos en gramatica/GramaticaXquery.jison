@@ -138,6 +138,8 @@ pero todo esto se ignora*/
     const {Break} = require('../Expresiones/Break');
     const {Retorno} = require('../Instrucciones/Retorno');
     *///Expresion
+
+      const {DeclaracionMetodo} = require('./Instrucciones/DeclaracionMetodo');
     const {If} = require('./Instrucciones/If');
       const {Retorno} = require('./Instrucciones/Retorno');
     const {Aritmetica} = require('./Expresiones/Aritmetica');
@@ -172,32 +174,41 @@ pero todo esto se ignora*/
 %start INICIO_XQUERY
 %%
 
-INICIO_XQUERY : INSTRUCCIONES EOF;
+INICIO_XQUERY : INSTRUCCIONES
+| EOF;
 
 FUNCION:
     tk_declare tk_function MENU_LOCAL tk_dosPuntos
     tk_identificador tk_parA LISTA_DECLARACION_FUNCION 
     tk_parC  tk_as  tk_xs     tk_dosPuntos TIPO_DATO MENU_INTERROGA
-    llaveA  INSTRUCCIONES llaveC tk_punto_coma;
+    llaveA  INSTRUCCIONES llaveC tk_punto_coma
+    {$$ = new DeclaracionMetodo($12 ,$5, $7, $15, @1.first_line, @1.first_column);}
+    
+    
+    
+    ;
 
 
 MENU_INTERROGA : 
-    tk_Interroga 
-    | ;
+    tk_Interroga {$$=$1}
+    |  {$$=''};
 
 /*
 $p as xs:decimal?
 */
 LISTA_DECLARACION_FUNCION :  
-    LISTA_DECLARACION_FUNCION  tk_coma DECLARACION_FUNCION
-    | DECLARACION_FUNCION ;
+    LISTA_DECLARACION_FUNCION  tk_coma DECLARACION_FUNCION {$1.push($3); $$=$1;}
+    | DECLARACION_FUNCION {$$=$1} ;
 
 DECLARACION_FUNCION:
-    tk_identificadorXQUERY tk_as tk_xs  tk_dosPuntos TIPO_DATO
-    MENU_INTERROGA;
+    tk_identificadorXQUERY tk_as tk_xs  tk_dosPuntos TIPO_DATO 
+    MENU_INTERROGA 
+    
+    {$$ new Declaracion($4, $1, null,@1.first_line, @1.first_column);}   
+     ;
 
 
-MENU_LOCAL: tk_local
+MENU_LOCAL: tk_local {$$=$1;}
 //aqui voy a meter mas pero no se si solo se pueden declarar funciones localres 
 ;
 
@@ -214,13 +225,14 @@ INSTRUCCIONES :
     | INSTRUCCION  {$$=$1};
 
 INSTRUCCION :
-    DECLARACION_GLOBAL{$$=$1}
-    | FUNCION {$$=$1}
+    DECLARACION_GLOBAL {$$=$1}
+    | FUNCION  {$$=$1}
     | IF {$$=$1}
-    |WHERE {$$=$1}
+    |WHERE  {$$=$1}
     |FOR {$$=$1}
-    |LLAMADA_FUNCION {$$=$1}
+    |LLAMADA_FUNCION {$$=$1} 
     |RETURN_CICLO {$$=$1}
+    |EOF{$$=$1}
 
 
 
@@ -294,7 +306,9 @@ LISTA_ASIGNACION:
 
 ASIGNACION_SIMPLE :
     tk_identificador tk_igual  valores_if
-    | TK tk_identificadorXQUERY tk_igual valores_if ;
+    | TK tk_identificadorXQUERY tk_igual valores_if
+    
+     ;
 
 
 IF: 
@@ -302,11 +316,7 @@ IF:
     
    | tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if      tk_else valores_if {$$=new If($3,$6,$8, @1.first_line, @1.first_column);}
     
-    |    tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if     tk_else IF
-    
-    
-    
-    {$$ = new If($3, $6, [$8], @1.first_line, @1.first_column);} 
+    |    tk_if tk_parA EXP_XQUERY tk_parC  tk_then valores_if     tk_else IF {$$ = new If($3, $6, [$8], @1.first_line, @1.first_column);} 
     
     
     ;
@@ -314,13 +324,14 @@ IF:
 
 valores_if:
 valores_if valor_if {$1.push($2); $$=$1;}
-|valor_if $$=$1;
+|valor_if {$$=$1};
 
-;    
+
 
 valor_if:
     EXP_XQUERY { $$ = $1}
     | INSTRUCCIONES { $$ = $1}
+    |EOF
  
 
     |ComentarioM { $$ = $1}
@@ -329,7 +340,8 @@ valor_if:
 
 
 LLAMADA_FUNCION:
-    tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4} ;
+    tk_local tk_dosPuntos tk_identificador tk_parA  Parametros_llamada tk_parC
+     {  $$ = $1+$2+$3+$4} ;
 
 
 /*
@@ -337,7 +349,12 @@ $p as xs:decimal?
 */
 
 
+Parametros_llamada:
+Parametros_llamada EXP_XQUERY { $1.push($2)  ;  $$=$1;  } 
+|EXP_XQUERY {$$=$1}
 
+
+;
 
 
 
@@ -440,7 +457,7 @@ EXP_XQUERY:
         {
             $$ = $2
         }
-    |   tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6} 
+    |   tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6  } 
     //| EXP_XQUERY tk_parA EXP_XQUERY tk_parC
     | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
  |

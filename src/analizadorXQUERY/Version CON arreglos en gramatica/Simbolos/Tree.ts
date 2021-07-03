@@ -7,6 +7,7 @@ export class Tree {
     errores: Array<Error>
     consola: Array<String>
     Variables: Array<Simbolo>;
+    
 
     constructor(instrucciones: Array<Nodo>) {
         this.instrucciones = instrucciones;
