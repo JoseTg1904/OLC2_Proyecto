@@ -1,7 +1,7 @@
 import { Nodo } from "../Arbol/Nodo"
 import { Table } from "../Simbolos/Table";
 import { Tree } from "../Simbolos/Tree";
-import { Excepcion } from "../Varios/Exepciones";
+import { Error } from "../Varios/Error";
 import { Tipo, tipos } from "../Varios/Tipo";
 import { Simbolo } from "../Simbolos/Simbolo";
 import { Primitivo } from "../Expresiones/Primitivo";
@@ -41,13 +41,11 @@ export class Declaracion extends Nodo {
         simbolo = new Simbolo(this.tipo, this.id, result, new Tipo(tipos.VARIABLE), this.line, this.column);
         const res = table.setVariable(simbolo);
         tree.Variables.push(simbolo);
-        // if (res != null) {
-        // const error = new Excepcion('Semantico',
-        // res,
-        // this.line, this.column);
-        // tree.excepciones.push(error);
-        // tree.consola.push(error.toString());
-        // }
+        if (res != null) {
+            const error = new Error('Semantico', res, this.line, this.column);
+            tree.errores.push(error);
+            tree.consola.push(error.toString());
+        }
         return null;
     }
 
