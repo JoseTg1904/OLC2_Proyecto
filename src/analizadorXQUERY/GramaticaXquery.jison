@@ -2,11 +2,12 @@
 %s comment
 %%
 
-"//".*                              /* skip comments */
-"(:"                              this.begin('comment');
-<comment>":)"                      this.popState();
-<comment>.                          /* skip comment content*/
-\s+                                 /* skip whitespace */
+"//".*        /* skip comments */
+"(:"          this.begin('comment');
+<comment>":)" this.popState();
+<comment>.    /* skip comment content*/
+\s+           /* skip whitespace */
+
 //Expresiones regulares para la aceptacion de numeros enteros y decimales
 [0-9]+("."[0-9]+)\b {return "tk_decimal";}
 [0-9]+\b            {return "tk_entero";}
@@ -112,9 +113,10 @@ pero todo esto se ignora*/
 [ \t\r\n\f] {}
 
 //Estado sumidero donde van a caer todos los errores
-. {         
-    console.log('Léxico',yytext,yylloc.first_line,yylloc.first_column );
-}
+. 
+    {         
+        console.log('Léxico',yytext,yylloc.first_line,yylloc.first_column );
+    }
 
 /lex
 
@@ -170,6 +172,8 @@ pero todo esto se ignora*/
     const {ToCharArray} = require('../Expresiones/ToCharArray');*/
     const { AnalizadorASCXML } = require('../analizadorXML/index');
     const { xpathBusqueda } = require('../analizadorXML/Instrucciones/Busqueda/xpathBusqueda');
+    var produccion = [];
+    var accion = [];
 %}
 
 %left tk_local
@@ -189,7 +193,12 @@ pero todo esto se ignora*/
 
 INICIO_XQUERY : INSTRUCCIONES  EOF
     {
-        return new Tree($1); 
+        produccion.push(`<INICIO_XQUERY> ::= <INSTRUCCIONES> EOF`);
+        accion.push(`INICIO_XQUERY.Val ::= new Tree()`);
+        let arbol = new Tree($1);
+        arbol.accion = accion;
+        arbol.produccion = produccion;
+        return arbol;
     };
 
 FUNCION:
@@ -198,6 +207,8 @@ FUNCION:
     tk_parC  tk_as  tk_xs     tk_dosPuntos TIPO_DATO MENU_INTERROGA
     llaveA  INSTRUCCIONES llaveC tk_punto_coma
         {
+            produccion.push(`<FUNCION> ::= declare function <MENU_LOCAL> : identificador ( <LISTA_DECLARACION_FUNCION> ) as xs : <TIPO_DATO> <MENU_INTERROGA> { <INSTRUCCIONES>  } ;`);
+            accion.push(`FUNCION.Val ::= new Declaracion()`);
             $$ = new DeclaracionMetodo($12, $5, $7, $15, @1.first_line, @1.first_column);
         }
     ;
@@ -206,10 +217,14 @@ FUNCION:
 MENU_INTERROGA : 
     tk_Interroga 
         {
+            produccion.push(`<MENU_INTERROGA> ::= ?`);
+            accion.push(`MENU_INTERROGA.Val ::= ?`);
             $$ = $1
         }
     |  
-        { 
+        {
+            produccion.push(`<MENU_INTERROGA> ::= epsilon`);
+            accion.push(`MENU_INTERROGA.Val ::= vacio`);
             $$ = ''
         }
     ;
@@ -219,11 +234,15 @@ $p as xs:decimal?
 */
 LISTA_DECLARACION_FUNCION :  
     LISTA_DECLARACION_FUNCION tk_coma DECLARACION_FUNCION 
-        { 
+        {
+            produccion.push(`<LISTA_DECLARACION_FUNCION> ::= <LISTA_DECLARACION_FUNCION> , <DECLARACION_FUNCION>`);
+            accion.push(`LISTA_DECLARACION_FUNCION.Val.push(DECLARACION_FUNCION.Val)`);
             $$.push($3);
         }
     | DECLARACION_FUNCION 
         {
+            produccion.push(`<LISTA_DECLARACION_FUNCION> ::= <DECLARACION_FUNCION>`);
+            accion.push(`LISTA_DECLARACION_FUNCION.Val = [DECLARACION_FUNCION.Val]`);
             $$ = [$1]
         } 
     ;
@@ -231,45 +250,105 @@ LISTA_DECLARACION_FUNCION :
 DECLARACION_FUNCION:
     tk_identificadorXQUERY tk_as tk_xs tk_dosPuntos TIPO_DATO MENU_INTERROGA
         {
+            produccion.push(`<DECLARACION_FUNCION> ::= identificador as xs : <TIPO_DATO> <MENU_INTERROGA>`);
+            accion.push(`DECLARACION_FUNCION.Val = new Declaracion()`);
             $$ = new Declaracion($5, $1, null, @1.first_line, @1.first_column);
         }   
     ;
 
 
-MENU_LOCAL: tk_local {$$=$1;}
+MENU_LOCAL: tk_local 
+    {
+        produccion.push(`<LMENU_LOCAL> ::= local`);
+        accion.push(`MENU_LOCAL.Val = local`);
+        $$ = $1;
+    }
 //aqui voy a meter mas pero no se si solo se pueden declarar funciones localres 
 ;
 
 TIPO_DATO:
     tk_int 
-        {$$ = new Tipo(tipos.ENTERO);}
+        {
+            produccion.push(`<TIPO_DATO> ::= int`);
+            accion.push(`TIPO_DATO.Val = new Tipo()`);
+            $$ = new Tipo(tipos.ENTERO);
+        }
     | tk_string  
-        {$$ = new Tipo(tipos.STRING);}
+        {
+            produccion.push(`<TIPO_DATO> ::= string`);
+            accion.push(`TIPO_DATO.Val = new Tipo()`);
+            $$ = new Tipo(tipos.STRING);
+        }
     | tk_double  
-        {$$ = new Tipo(tipos.DECIMAL);}
+        {
+            produccion.push(`<TIPO_DATO> ::= double`);
+            accion.push(`TIPO_DATO.Val = new Tipo()`);
+            $$ = new Tipo(tipos.DECIMAL);
+        }
     | tk_DECIMAL 
-        {$$ = new Tipo(tipos.DECIMAL);}
+        {
+            produccion.push(`<TIPO_DATO> ::= decimal`);
+            accion.push(`TIPO_DATO.Val = new Tipo()`);
+            $$ = new Tipo(tipos.DECIMAL);
+        }
     | tk_integer 
-        {$$ = new Tipo(tipos.ENTERO);}
+        {
+            produccion.push(`<TIPO_DATO> ::= integer`);
+            accion.push(`TIPO_DATO.Val = new Tipo()`);
+            $$ = new Tipo(tipos.ENTERO);
+        }
     ;
 
 INSTRUCCIONES : 
     INSTRUCCIONES INSTRUCCION 
-        { $$.push($2); }
+        { 
+            produccion.push(`<INSTRUCCIONES> ::= <INSTRUCCIONES> <INSTRUCCION>`);
+            accion.push(`INSTRUCCIONES.Val.push(INSTRUCCION.Val)`);
+            $$.push(...$2); 
+        }
     | INSTRUCCION  
-        { $$ = [$1] }
+        { 
+            produccion.push(`<INSTRUCCIONES> ::= <INSTRUCCION>`);
+            accion.push(`INSTRUCCIONES.Val = [INSRUCCION.Val]`);
+            $$ = [...$1] 
+        }
     ;
 
 INSTRUCCION :
-    DECLARACION_GLOBAL{$$=$1}
-    | FUNCION {$$=$1}
-    | IF {$$=$1}
-    | WHERE {$$=$1}
+    DECLARACION_GLOBAL
+        {
+            produccion.push(`<INSTRUCCION> ::= <DECLARACION_GLOBAL>`);
+            accion.push(`INSTRUCCION.Val = DECLARACION_GLOBAL.Val`);
+            $$ = $1
+        }
+    | FUNCION 
+        {
+            produccion.push(`<INSTRUCCION> ::= <FUNCION>`);
+            accion.push(`INSTRUCCION.Val = Funcion.Val`);
+            $$ = [$1]
+        }
+    | IF 
+        {
+            produccion.push(`<INSTRUCCION> ::= <IF>`);
+            accion.push(`INSTRUCCION.Val = IF.Val`);
+            $$ = [$1]
+        }
+    //| WHERE { $$=$1 }
     //| FOR {$$=$1}
-    | LLAMADA_FUNCION {$$=$1}
-    | RETURN_CICLO {$$=$1}
+    | LLAMADA_FUNCION 
+        {
+            produccion.push(`<INSTRUCCION> ::= <LLAMDA_FUNCION>`);
+            accion.push(`INSTRUCCION.Val = LLAMDA_FUNCION.Val`);
+            $$ = [$1]
+        }
+    | RETURN_CICLO 
+        {
+            produccion.push(`<INSTRUCCION> ::= <RETURN_CICLO>`);
+            accion.push(`INSTRUCCION.Val = RETURN_CICLO.Val`);
+            $$ = [$1]
+        }
     ;
-
+/*
 FOR :
     tk_for DECLARACIONES_FOR OPCIONES_FOR;
 
@@ -320,11 +399,14 @@ LISTA_ORDER:
 ORDER_ :  
     tk_identificadorXQUERY XPATH
     | tk_identificadorXQUERY ;
-
+*/
 
 RETURN_CICLO:
     tk_return EXP_XQUERY//Lista_Ciclo 
         {
+            produccion.push(`<RETURN_CICLO> ::= return <EXP_QUERY>`);
+            accion.push(`RETURN_CICLO.Val = new Retorno()`);
+            console.log($2)
             $$ = new Retorno($2, @1.first_line, @1.first_column)
         }
     ;
@@ -334,30 +416,32 @@ Lista_Ciclo:
     |valor_if { $$ = $1;}
     ;
 
-
-
 valor_if:
     EXP_XQUERY { $$ = $1}
     | INSTRUCCIONES { $$ = $1}
 ;*/
-
+/*
 LISTA_ASIGNACION:
     LISTA_ASIGNACION tk_and ASIGNACION_SIMPLE
     | ASIGNACION_SIMPLE ;
 
 ASIGNACION_SIMPLE :
     tk_identificador tk_igual  valores_if
-    | TK tk_identificadorXQUERY tk_igual valores_if ;
+    | TK tk_identificadorXQUERY tk_igual valores_if ;*/
 
 IF: 
     tk_if tk_parA EXP_XQUERY tk_parC tk_then EXP_XQUERY
         {
+            produccion.push(`<IF> ::= if ( <EXP_QUERY> ) then <EXP_QUERY>`);
+            accion.push(`IF.Val = new If()`);
             $$ = new If($3, 
                     [new Retorno($6, @1.first_line, @1.first_column)], 
                     [], @1.first_line, @1.first_column);
         }
     | tk_if tk_parA EXP_XQUERY tk_parC tk_then EXP_XQUERY tk_else EXP_XQUERY 
         {
+            produccion.push(`<IF> ::= if ( <EXP_QUERY> ) then <EXP_QUERY> else <EXP_QUERY>`);
+            accion.push(`IF.Val = new If()`);
             $$ = new If($3, 
                     [new Retorno($6, @1.first_line, @1.first_column)], 
                     [new Retorno($8, @1.first_line, @1.first_column)], 
@@ -365,6 +449,8 @@ IF:
         }
     | tk_if tk_parA EXP_XQUERY tk_parC tk_then EXP_XQUERY tk_else IF
         {
+            produccion.push(`<IF> ::= if ( <EXP_QUERY> ) then <EXP_QUERY> else <If>`);
+            accion.push(`IF.Val = new If()`);
             $$ = new If($3, 
                 [new Retorno($6, @1.first_line, @1.first_column)], 
                 [$8], 
@@ -372,7 +458,7 @@ IF:
         } 
     ;
 
-
+/*
 valores_if:
     valores_if EXP_XQUERY 
         {
@@ -382,11 +468,13 @@ valores_if:
         { 
             $$ = [$1]
         }
-    ;
+    ;*/
 
 LLAMADA_FUNCION:
     tk_local tk_dosPuntos tk_identificador tk_parA  Parametros_llamada tk_parC
         {
+            produccion.push(`<LLAMADA_FUNCION> ::= local : identificador ( <PARAMETROS_LLAMADA> )`);
+            accion.push(`LLAMADA_FUNCION.Val = new LlamadaMetodo()`);
             $$ = new Print(new LlamadaMetodo($3, $5, @1.first_line, @1.first_column), @1.first_line, @1.first_column)
         }
     ;
@@ -397,11 +485,15 @@ $p as xs:decimal?
 
 Parametros_llamada:
     Parametros_llamada tk_coma XPATH 
-        { 
+        {
+            produccion.push(`<PARAMETROS_LLAMADA> ::= <PARAMETROS_LLAMADA> , <XPATH>`);
+            accion.push(`PARAMETROS_LLAMDA.Val.push(XPATH.Val)`);
             $$.push($3); 
         } 
     | XPATH 
         {
+            produccion.push(`<PARAMETROS_LLAMADA> ::= <XPATH>`);
+            accion.push(`PARAMETROS_LLAMADA.Val = [XPATH.Val]`);
             $$ = [$1]
         }
     ;
@@ -409,120 +501,186 @@ Parametros_llamada:
 Parametros_funcion:
     Parametros_funcion tk_coma EXP_XQUERY
         {
+            produccion.push(`<PARAMETROS_FUNCION> ::= <PARAMETROS_FUNCION> , <EXP_QUERY>`);
+            accion.push(`PARAMETROS_FUNCION.Val.push(EXP_QUERY.Val)`);
             $$.push($3)
         }
     | EXP_XQUERY
         {
+            produccion.push(`<PARAMETROS_FUNCION> ::= <EXP_QUERY>`);
+            accion.push(`PARAMETROS_FUNCION.Val = [EXP_QUERY.Val]`);
             $$ = [$1]
         }
     ;
 
 DECLARACION_GLOBAL :
-    tk_let LISTA_ID  tk_igualXQUERY EXP_XQUERY 
+    tk_let LISTA_ID
         {
-            $$ = new Declaracion(new Tipo(tipos.VARIABLE), $2, $4, @1.first_line, @1.first_column);
+            produccion.push(`<DECLARACION_GLOBAL> ::= let <LISTA_ID>`);
+            accion.push(`DECLARACION_GLOBAL.Val = LISTA_ID.Val`);
+            $$ = $2
         };
 
 
 LISTA_ID : 
-    LISTA_ID tk_coma tk_identificadorXQUERY {$1.push($3); $$=$1;  }
-    | tk_identificadorXQUERY {$$ = $1}
+    LISTA_ID tk_coma DECLARACION_INDIVIDUAL 
+        {
+            produccion.push(`<LISTA_ID> ::= <LISTA_ID> , <DECLARACION_INDIVIDUAL>`);
+            accion.push(`LISTA_ID.Val.push(DECLARACION_INDIVIDUAL.Val)`);
+            $$.push($3); 
+        }
+    | DECLARACION_INDIVIDUAL 
+        {
+            produccion.push(`<LISTA_ID> ::= <DECLARACION_INDIVIDUAL>`);
+            accion.push(`LISTA_ID.Val = [DECLARACION_INDIVIDUAL.Val]`);
+            $$ = [$1]
+        }
+    ;
+
+DECLARACION_INDIVIDUAL:
+    tk_identificadorXQUERY tk_igualXQUERY EXP_XQUERY 
+        {
+            produccion.push(`<DECLARACION_INDIVIDUAL> ::= identificador igual <EXP_QUERY>`);
+            accion.push(`DECLARACION_INDIVIDUAL.Val = new Declaracion()`);
+            $$ = new Declaracion($3.tipo, $1, $3, @1.first_line, @1.first_column);
+        }
     ;
 
 EXP_XQUERY:
     EXP_XQUERY tk_menos EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> - <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Aritmetica()`);
             $$ = new Aritmetica($1, $3, '-', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_mas EXP_XQUERY  
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> + <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Aritmetica()`);
             $$ = new Aritmetica($1, $3, '+', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_div EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> div <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Aritmetica()`);
             $$ = new Aritmetica($1, $3, '/', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_mod EXP_XQUERY 
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> mod <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Aritmetica()`);
             $$ = new Aritmetica($1, $3, '%', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_asterisco EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> * <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Aritmetica()`);
             $$ = new Aritmetica($1, $3, '*', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_menor EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> < <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Relacional()`);
             $$ = new Relacional($1, $3, '<', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_mayor EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> > <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Relacional()`);
             $$ = new Relacional($1, $3, '>', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_menorIgual EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> <= <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Relacional()`);
             $$ = new Relacional($1, $3, '<=', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_mayorIgual EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> >= <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Relacional()`);
             $$ = new Relacional($1, $3, '>=', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_igual EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> = <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Relacional()`);
             $$ = new Relacional($1, $3, '==', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_distinto EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> != <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Relacional()`);
             $$ = new Relacional($1, $3, '!=', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_or EXP_XQUERY 
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> or <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Logico()`);
             $$ = new Logico($1, $3, '||', @1.first_line, @1.first_column);
         }
   //  | EXP_XQUERY tk_to EXP_XQUERY{$$=$1+$2+$3}
   //  | XPATH
     | EXP_XQUERY tk_and EXP_XQUERY
         {
+            produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> and <EXP_QUERY>`);
+            accion.push(`EXP_QUERY.Val = new Logico()`);
             $$ = new Logico($1, $3, '&&', @1.first_line, @1.first_column);
         }
     | tk_entero 
         {
+            produccion.push(`<EXP_QUERY> ::= entero`);
+            accion.push(`EXP_QUERY.Val = new Primitivo()`);
             $$ = new Primitivo(new Tipo(esEntero(Number($1))), Number($1), @1.first_line, @1.first_column);
         }         
     | tk_decimal
         {
+            produccion.push(`<EXP_QUERY> ::= decimal`);
+            accion.push(`EXP_QUERY.Val = new Primitivo()`);
             $$ = new Primitivo(new Tipo(esEntero(Number($1))), Number($1), @1.first_line, @1.first_column);
         }
     | tk_stringTexto
         {
+            produccion.push(`<EXP_QUERY> ::= string`);
+            accion.push(`EXP_QUERY.Val = new Primitivo()`);
             $$ = new Primitivo(new Tipo(tipos.STRING), $1, @1.first_line, @1.first_column);
         }          
     | tk_identificador 
         {
+            produccion.push(`<EXP_QUERY> ::= identificador`);
+            accion.push(`EXP_QUERY.Val = new Identificador()`);
             $$ = new Identificador($1, @1.first_line, @1.first_column);
         }
     | tk_identificadorXQUERY //OPCION_IDQ
         {
+            produccion.push(`<EXP_QUERY> ::= identificador`);
+            accion.push(`EXP_QUERY.Val = new Identificador()`);
             $$ = new Identificador($1, @1.first_line, @1.first_column);
         }
     | tk_parA EXP_XQUERY tk_parC
         {
+            produccion.push(`<EXP_QUERY> ::= ( <EXP_QUERY> )`);
+            accion.push(`EXP_QUERY.Val = EXP_QUERY.Val`);
             $$ = $2
         }
     | tk_local tk_dosPuntos tk_identificador tk_parA Parametros_funcion tk_parC 
         {
+            produccion.push(`<EXP_QUERY> ::= local : identificador ( <Parametros_funcion> )`);
+            accion.push(`EXP_QUERY.Val = new LlamdaMetodo()`);
             $$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);
         } 
  //   | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
     ;
-
+/*
 OPCION_IDQ:
     XPATH { $$ = $1}
-    | {$$ = []};       
+    | {$$ = []};       */
 
 XPATH :
     INICIO
         {
-            console.log($1)
+            produccion.push('<XPATH> ::= <INICIO>');
+            accion.push('XPATH.Val = INICIO.val');
             let analizador = new AnalizadorASCXML();
             let buscador = new xpathBusqueda();
             let ejecu = new EjecucionXpath($1, "");
@@ -531,7 +689,9 @@ XPATH :
             let tabla = ret.objetos;
             let query = ejecu.ejecutarArbol();
 
-            if(query[0] !== "/" && query[0] !== "//"){
+            if(query.includes("|")) {
+                buscador.getNodesByFilters("3", query, tabla);
+            }else if(query[0] !== "/" && query[0] !== "//"){
                 buscador.getNodesByFilters("1", query, tabla)
             }else{
                 buscador.getNodesByFilters("2", query, tabla)
@@ -553,17 +713,19 @@ XPATH :
 
             $$ = new Primitivo(tipoR, valor, @1.first_line, @1.first_column);
         }
-
-
     ;
 
 INICIO:
     INICIO tk_barra INICIALES
         {
+            produccion.push('<INICIO> ::= <INICIO> | <INICIALES>');
+            accion.push('INICIO.Val = INICIO.push(INICIALES)');
             $$.push($3)
         }
     | INICIALES
         {
+            produccion.push('<INICIO> ::= <INICIALES>');
+            accion.push('INICIO.Val = INICIALES.Val');
             $$ = [$1]
         }
     ;
@@ -571,30 +733,44 @@ INICIO:
 INICIALES : 
     tk_punto DIAGONALES DERIVADOSLIMITADO DERIVACIONDIAGONAL
         {
+            produccion.push(`<INICIALES> ::= punto <DIAGONALES> <DERIVADOSLIMITADO> <DERIVAIONDIAGONAL>`);
+            accion.push('INICIALES.Val = new NodoX();'); 
             $$ = new NodoX("", ".", [new NodoX($2, $3.val, [...$4])]);
         }
     | tk_identificador DERIVACIONDIAGONAL 
         {
+            produccion.push(`<INICIALES> ::= identificador <DERIVAIONDIAGONAL>`);
+            accion.push('INICIALES.Val = new NodoX();'); 
             $$ = new NodoX("", $1, [...$2]);
         }
     | tk_diagonal DERIVADOS DERIVACIONDIAGONAL
         {
+            produccion.push(`<INICIALES> ::= diagonal <DERIVADOS> <DERIVAIONDIAGONAL>`);
+            accion.push('INICIALES.Val = new NodoX();'); 
             $$ = new NodoX($1, $2.val, [...$3]);
         }
     | tk_diagonal tk_diagonal DERIVADOS DERIVACIONDIAGONAL
         {
+            produccion.push(`<INICIALES> ::= diagonal diagonal <DERIVADOSLIMITADO> <DERIVAIONDIAGONAL>`);
+            accion.push('INICIALES.Val = new NodoX();'); 
             $$ = new NodoX("//", $3.val, [...$4]);
         }
     | tk_asterisco DERIVACIONDIAGONAL
         {
+            produccion.push(`<INICIALES> ::= asterisco <DERIVAIONDIAGONAL>`);
+            accion.push('INICIALES.Val = new NodoX();'); 
             $$ = new NodoX("", $1, [...$2]);
         }
     | tk_node tk_parA tk_parC DERIVACIONDIAGONAL
         {
+            produccion.push(`<INICIALES> ::= node() <DERIVAIONDIAGONAL>`);
+            accion.push('INICIALES.Val = new NodoX();'); 
             $$ = new NodoX("", "node()", [...$4]);
         }
     | tk_identificadorXQUERY DERIVACIONDIAGONAL
         {
+            produccion.push(`<INICIALES> ::= identificador <DERIVAIONDIAGONAL>`);
+            accion.push('INICIALES.Val = new NodoX();'); 
             $1 = $1.substring(1, $1.length)
             $$ = new NodoX("", $1, [...$2]);
         }
@@ -603,23 +779,30 @@ INICIALES :
 DIAGONALES : 
     tk_diagonal
         {
+            produccion.push(`<DIAGONALES> ::= diagoanl`);
+            accion.push('DIAGONALES.Val = /;'); 
             $$ = $1
         }
     | tk_diagonal tk_diagonal
         {
+            produccion.push(`<DIAGONALES> ::= diagonal diagonal`);
+            accion.push('DIAGONALES.Val = //'); 
             $$ = "//"
         }
-    | error tk_diagonal
     ;
 
 DERIVACIONDIAGONAL : 
     DIAGONALES DERIVADOS DERIVACIONDIAGONAL
         {
+            produccion.push(`<DERIVACIONDIAGONAL> ::= <DIAGONALES> <DERIVADOS> <DERIVACIONDIAGONAL>`);
+            accion.push('DERIVACIONDIAGONAL.Val = []; DERIVACIONDIAGONAL.Val.push(new Nodo(tipo, id, predicado, fila, columna)); DERIVACIONDIAGONAL.push(DERIVACIONDIAGONAL)'); 
             $$ = new Array();
             $$.push(new NodoX($1, $2.val, [...$3])); 
         }
     |  
         {
+            produccion.push(`<DERIVACIONDIAGONAL> ::= epsilon`);
+            accion.push('DERIVACIONDIAGONAL.Val = [/*Vacio*/]');
             $$ = [];
         }
     ;
@@ -627,22 +810,32 @@ DERIVACIONDIAGONAL :
 DERIVADOSLIMITADO :
     tk_identificador
         {
+            produccion.push(`<DERIVADOSLIMIADO> ::= identificador <PREDICATE>`);
+            accion.push('DERIVADOSLIMITADO.Val = identificador + PREDICATE.Val'); 
             $$ = {val: $1, pre: null};
         }
     | tk_asterisco
         {
+            produccion.push(`<DERIVADOSLIMIADO> ::= asterisco <PREDICATE>`);
+            accion.push('DERIVADOSLIMITADO.Val = \"*\" + PREDICATE.Val'); 
             $$ = {val: $1, pre: null};
         }
     | tk_node tk_parA tk_parC
         {
+            produccion.push(`<DERIVADOSLIMIADO> ::= node() <PREDICATE>`);
+            accion.push('DERIVADOSLIMITADO.Val = \"@\" + ATRIBUTO.Val'); 
             $$ = {val: "node()", pre: null}
         }
     | tk_arroba ATRIBUTO
         {
+            produccion.push(`<DERIVADOSLIMIADO> ::= arroba <ATRIBUTO>`);
+            accion.push('DERIVADOSLIMITADO.Val = \"@\" + ATRIBUTO.Val'); 
             $$ = {val: $1 + "" + $2, pre: null};
         }
     | tk_identificadorXQUERY
         {
+produccion.push(`<DERIVADOSLIMIADO> ::= identificador <PREDICATE>`);
+            accion.push('DERIVADOSLIMITADO.Val = identificador + PREDICATE.Val');
             $1 = $1.substring(1, $1.length)
             $$ = {val: $1, pre: null}
         }
@@ -651,14 +844,20 @@ DERIVADOSLIMITADO :
 DERIVADOS : 
     tk_punto
         {
+            produccion.push(`<DERIVADOS> ::= punto`);
+            accion.push("DERIVADOS.Val = \".\" ");
             $$ = {val: $1, pre: null}; 
         }
     | tk_punto tk_punto
         {
+            produccion.push(`<DERIVADOS> ::= doblePunto`);
+            accion.push('DERIVADOS.Val = \"..\"');
             $$ = {val: "..", pre: null}; 
         }
     | DERIVADOSLIMITADO 
         {
+            produccion.push(`<DERIVADOS> ::= <DERIVADOSLIMITADO>`);
+            accion.push('DERIVADOS.Val = DERIVADOSLIMITADO.Val'); 
             $$ = $1; 
         }
     ;
@@ -666,18 +865,26 @@ DERIVADOS :
 ATRIBUTO :
     tk_asterisco 
         {
+            produccion.push(`<ATRIBUTO> ::= asterisco`);
+            accion.push('ATRIBUTO.Val = \"*\"'); 
             $$ = $1;
         }
     | tk_identificador
         {
+            produccion.push(`<ATRIBUTO> ::= identificador`);
+            accion.push('ATRIBUTO.Val = identificador');  
             $$ = $1;
         }
     | tk_node tk_parA tk_ParC
         {
+            produccion.push(`<ATRIBUTO> ::= node`);
+            accion.push('ATRIBUTO.Val = \"node()\"'); 
             $$ = "node()"
         }
     | tk_identificadorXQUERY
         {
+            produccion.push(`<ATRIBUTO> ::= identificador`);
+            accion.push('ATRIBUTO.Val = identificador');  
             $1 = $1.substring(1, $1.length)
             $$ = $1
         }
