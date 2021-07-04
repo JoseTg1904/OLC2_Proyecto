@@ -62,7 +62,6 @@ export class LlamadaMetodo extends Nodo {
         if (result) {
             for (let i = 0; i < result.length; i++) {
                 const res = result[i].execute(newtable, tree);
-               
 
                 if (simboloMetodo.tipo.tipo == tipos.VOID) {
                     if (res instanceof Retorno) {
@@ -105,14 +104,14 @@ export class LlamadaMetodo extends Nodo {
                     }
                 }
             }
-            if (simboloMetodo.tipo.tipo != tipos.VOID) {
+            /*if (simboloMetodo.tipo.tipo != tipos.VOID) {
                 const error = new Excepcion('Semantico',
                     `Se esperaba un retorno en esta Funcion`,
                     this.line, this.column);
                 tree.errores.push(error);
                 tree.consola.push(error.toString());
                 return error;
-            }
+            }*/
         }
         return null;
     }

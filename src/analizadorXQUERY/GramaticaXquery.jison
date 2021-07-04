@@ -29,32 +29,32 @@
 "or"                 {return "tk_or"}
 "mod"                {return "tk_mod"}
 
-"for"      {console.log(yytext+"--"); return "tk_for";}
-"in"       {console.log(yytext+"--"); return "tk_in";}
-"where"    {console.log(yytext+"--"); return "tk_where";}
-"order"    {console.log(yytext+"--"); return "tk_order";}
-"by"       {console.log(yytext+"--"); return "tk_by";}
-"return"   {console.log(yytext+"--"); return "tk_return";}
+"for"      {return "tk_for";}
+"in"       { return "tk_in";}
+"where"    { return "tk_where";}
+"order"    { return "tk_order";}
+"by"       { return "tk_by";}
+"return"   { return "tk_return";}
 
-"if"       {console.log(yytext+"--");return "tk_if";}
-"else"     {console.log(yytext+"--");return "tk_else";}
-"then"     {console.log(yytext+"--");return "tk_then";}
+"if"       {return "tk_if";}
+"else"     {return "tk_else";}
+"then"     {return "tk_then";}
 
-"int"      {console.log(yytext+"--");return "tk_int";}
-"integer"  {console.log(yytext+"--");return "tk_integer";}
-"string"   {console.log(yytext+"--");return "tk_string";}
-"decimal"  {console.log(yytext+"--");return "tk_DECIMAL";}
-"double"   {console.log(yytext+"--");return "tk_double";}
-"declare"  {console.log(yytext+"--");return "tk_declare";}
-"function" {console.log(yytext+"--");return "tk_function";}
-"AS"       {console.log(yytext+"--");return "tk_AS"}
-"as"       {console.log(yytext+"--");return "tk_as"}
-"xs"       {console.log(yytext+"--");return "tk_xs"}
-"to"       {console.log(yytext+"--");return "tk_to"}
-"at"       {console.log(yytext+"--");return "tk_at"}
-"local"    {console.log(yytext+"--");return "tk_local";}
-"gt"       {console.log(yytext+"--"); return "tk_gt"}
-"lt"       {console.log(yytext+"--"); return "tk_lt"}
+"int"      {return "tk_int";}
+"integer"  {return "tk_integer";}
+"string"   {return "tk_string";}
+"decimal"  {return "tk_DECIMAL";}
+"double"   {return "tk_double";}
+"declare"  {return "tk_declare";}
+"function" {return "tk_function";}
+"AS"       {return "tk_AS"}
+"as"       {return "tk_as"}
+"xs"       {return "tk_xs"}
+"to"       {return "tk_to"}
+"at"       {return "tk_at"}
+"local"    {return "tk_local";}
+"gt"       { return "tk_gt"}
+"lt"       { return "tk_lt"}
 
 //conjunto de simbolos aceptados
 "|"  {return "tk_barra"}
@@ -72,14 +72,14 @@
 "<"  {return "tk_menor"}
 ">"  {return "tk_mayor"}
 "!=" {return "tk_distinto"}
-":=" {console.log(yytext+"--");return "tk_igualXQUERY"}
+":=" {return "tk_igualXQUERY"}
 ":"  {return "tk_dosPuntos"}
 "="  {return "tk_igual"}
 "["  {return "tk_llaveA"}
 "]"  {return "tk_llaveC"}
 "@"  {return "tk_arroba"}
-"{"  {console.log(yytext+"--");return "llaveA"}
-"}"  {console.log(yytext+"--");return "llaveC"}
+"{"  {return "llaveA"}
+"}"  {return "llaveC"}
 "("  {return "tk_parA"}
 ")"  {return "tk_parC"}
 
@@ -221,7 +221,7 @@ LISTA_DECLARACION_FUNCION :
     ;
 
 DECLARACION_FUNCION:
-    tk_identificadorXQUERY tk_as tk_xs  tk_dosPuntos TIPO_DATO MENU_INTERROGA
+    tk_identificadorXQUERY tk_as tk_xs tk_dosPuntos TIPO_DATO MENU_INTERROGA
         {
             $$ = new Declaracion($5, $1, null, @1.first_line, @1.first_column);
         }   
@@ -335,34 +335,37 @@ ASIGNACION_SIMPLE :
     | TK tk_identificadorXQUERY tk_igual valores_if ;
 
 IF: 
-    tk_if tk_parA EXP_XQUERY tk_parC tk_then valores_if
+    tk_if tk_parA EXP_XQUERY tk_parC tk_then EXP_XQUERY
         {
-            $$ = new If($3, $6, [], @1.first_line, @1.first_column);
+            $$ = new If($3, 
+                    [new Retorno($6, @1.first_line, @1.first_column)], 
+                    [], @1.first_line, @1.first_column);
         }
-    | tk_if tk_parA EXP_XQUERY tk_parC tk_then valores_if tk_else valores_if 
+    | tk_if tk_parA EXP_XQUERY tk_parC tk_then EXP_XQUERY tk_else EXP_XQUERY 
         {
-            $$ = new If($3,$6,$8, @1.first_line, @1.first_column);
+            $$ = new If($3, 
+                    [new Retorno($6, @1.first_line, @1.first_column)], 
+                    [new Retorno($8, @1.first_line, @1.first_column)], 
+                    @1.first_line, @1.first_column);
         }
-    | tk_if tk_parA EXP_XQUERY tk_parC tk_then valores_if tk_else IF
+    | tk_if tk_parA EXP_XQUERY tk_parC tk_then EXP_XQUERY tk_else IF
         {
-            $$ = new If($3, $6, [$8], @1.first_line, @1.first_column);
+            $$ = new If($3, 
+                [new Retorno($6, @1.first_line, @1.first_column)], 
+                [$8], 
+                @1.first_line, @1.first_column);
         } 
     ;
 
 
 valores_if:
-valores_if valor_if {$1.push($2); $$=$1;}
-|valor_if {$$=$1};
-
-
-valor_if:
-    EXP_XQUERY 
-        { 
-            $$ = $1
+    valores_if EXP_XQUERY 
+        {
+            $$.push($2);
         }
-    | INSTRUCCIONES 
+    |EXP_XQUERY 
         { 
-            $$ = $1
+            $$ = [$1]
         }
     ;
 
@@ -383,6 +386,17 @@ Parametros_llamada:
             $$.push($3); 
         } 
     | XPATH 
+        {
+            $$ = [$1]
+        }
+    ;
+
+Parametros_funcion:
+    Parametros_funcion tk_coma EXP_XQUERY
+        {
+            $$.push($3)
+        }
+    | EXP_XQUERY
         {
             $$ = [$1]
         }
@@ -458,8 +472,7 @@ EXP_XQUERY:
             $$ = new Logico($1, $3, '||', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_to EXP_XQUERY{$$=$1+$2+$3}
-    | EXP_XQUERY tk_coma EXP_XQUERY{$$=$1+$2+$3}
-    |XPATH
+    | XPATH
     | EXP_XQUERY tk_and EXP_XQUERY
         {
             $$ = new Logico($1, $3, '&&', @1.first_line, @1.first_column);
@@ -488,7 +501,7 @@ EXP_XQUERY:
         {
             $$ = $2
         }
-    | tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC 
+    | tk_local tk_dosPuntos tk_identificador tk_parA Parametros_funcion tk_parC 
         {
             $$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);
         } 

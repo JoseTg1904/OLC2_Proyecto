@@ -26,8 +26,6 @@ export class If extends Nodo {
             return result;
         }
 
- 
-
         if (result) {
             for (let i = 0; i < this.listaIf.length; i++) {
                 const res = this.listaIf[i].execute(newtable, tree);

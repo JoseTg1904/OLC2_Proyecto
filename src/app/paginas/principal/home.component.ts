@@ -26,11 +26,13 @@ export class HomeComponent {
   title = 'interfaz';
 
   //editor query
-  querys: any = `declare function local:suma($m as xs:integer, $n as xs:integer ) as xs:integer {
-    return $m + $n
+  querys: any = `declare function local:ackerman($m as xs:integer, $n as xs:integer ) as xs:integer {
+  if ($m = 0) then $n+1
+  else if ($m gt 0 and $n = 0) then local:ackerman($m - 1, 1)
+  else local:ackerman ($m - 1, local:ackerman($m, $n - 1))
 };
   
-local:suma($/pruebas/m, $/pruebas/n)`;
+local:ackerman(/pruebas/m, /pruebas/n)`;
   editorQueryOptions: any = {
     theme: 'gruvbox-dark',
     mode: "application/xquery",
@@ -135,7 +137,7 @@ local:suma($/pruebas/m, $/pruebas/n)`;
     
     this.xmlSalida = "";
     for(let i = 0; i < ret.consola.length; i++){
-      this.xmlSalida += ret.consola[i];
+      this.xmlSalida += ret.consola[i] + "\n";
     }
   }
 
