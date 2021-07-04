@@ -28,11 +28,15 @@
     <mat-menu #ejecutar = "matMenu">
         <button mat-menu-item (click) = "ejecutarAscendente()">
             <mat-icon>keyboard_arrow_up</mat-icon>
-            <span>Ascendete</span>
+            <span>Ascendete XPATH</span>
         </button>
         <button mat-menu-item (click) = "ejecutarDescendente()"> 
             <mat-icon>keyboard_arrow_down</mat-icon>
-            <span>Descendente</span>
+            <span>Descendente XPATH</span>
+        </button>
+        <button mat-menu-item (click) = "ejecutarXquery()"> 
+          <mat-icon>keyboard_arrow_up</mat-icon>
+          <span>Ascendete XQUERY</span>
         </button>
     </mat-menu>
 

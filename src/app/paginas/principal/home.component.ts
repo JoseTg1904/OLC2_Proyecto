@@ -26,7 +26,11 @@ export class HomeComponent {
   title = 'interfaz';
 
   //editor query
-  querys: any = "/bookstore/book";
+  querys: any = `declare function local:suma($m as xs:integer, $n as xs:integer ) as xs:integer {
+    return $m + $n
+};
+  
+local:suma($/pruebas/m, $/pruebas/n)`;
   editorQueryOptions: any = {
     theme: 'gruvbox-dark',
     mode: "application/xquery",
@@ -42,16 +46,10 @@ export class HomeComponent {
   //editor XML entrada
   xmlEntrada: any = `<?xml version="1.0" encoding="UTF-8"?>
 
-<bookstore>
-  
-  <book category="COOKING">
-    <title lang="en">Everyday Italian</title>
-    <author>Giada De Laurentiis</author>
-    <year>2005</year>
-    <price>30.00</price>
-  </book>
-  
-</bookstore>`;
+<pruebas>
+  <m>2</m>
+  <n>1</n>
+</pruebas>`;
   editorXMLEntradaOptions: any = {
     theme: 'gruvbox-dark',
     mode: "application/xml",
@@ -116,9 +114,7 @@ export class HomeComponent {
 
   ngOnInit(){
     localStorage.clear();
-    localStorage.setItem("xml", this.xmlEntrada);
-    let ascXquery = new XQUERYasc.AnalizadorXquery();
-    ascXquery.ejecutarCodigo("");
+
   }
 
   abrirXML(files: FileList) {
@@ -129,6 +125,18 @@ export class HomeComponent {
       console.log(fileReader.result);
     }
     fileReader.readAsText(this.xmlEntrada);
+  }
+
+  ejecutarXquery() {
+    localStorage.clear();
+    localStorage.setItem("xml", this.xmlEntrada);
+    let ascXquery = new XQUERYasc.AnalizadorXquery();
+    let ret = ascXquery.ejecutarCodigo(this.querys);
+    
+    this.xmlSalida = "";
+    for(let i = 0; i < ret.consola.length; i++){
+      this.xmlSalida += ret.consola[i];
+    }
   }
 
   ejecutarAscendente(){

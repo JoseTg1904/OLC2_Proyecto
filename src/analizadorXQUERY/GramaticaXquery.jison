@@ -118,7 +118,7 @@ pero todo esto se ignora*/
     //const {Vector} = require('../Expresiones/Vector');
     //const {Lista} = require('../Expresiones/Lista');
     //Instrucciones
-    //const {Print} = require('../Instrucciones/Print');
+    const {Print} = require('./Instrucciones/Print');
     const {Declaracion} = require('./Instrucciones/Declaracion');
   // // const {DeclaracionArray} = require('../Instrucciones/DeclaracionArray');
     //const {DeclaracionLista} = require('../Instrucciones/DeclaracionLista');
@@ -138,12 +138,13 @@ pero todo esto se ignora*/
     const {Break} = require('../Expresiones/Break');
     const {Retorno} = require('../Instrucciones/Retorno');
     *///Expresion
-    const {DeclaracionMetodo} = require('./Instrucciones/DeclaracionMetodo');
-    const {LlamadaMetodo} = require('./Instrucciones/LlamadaMetodo');
+    const { DeclaracionMetodo } = require('./Instrucciones/DeclaracionMetodo');
+    const { LlamadaMetodo } = require('./Instrucciones/LlamadaMetodo');
     const { If } = require('./Instrucciones/If');
     const { Retorno } = require('./Instrucciones/Retorno');
     const { Aritmetica } = require('./Expresiones/Aritmetica');
     const { Relacional } = require('./Expresiones/Relacional');
+    const { Logico } = require('./Expresiones/Logico');
     const { NodoX } = require('./Expresiones/NodoX');
     const { EjecucionXpath } = require('./Arbol/Ejecucion');
     /*const {Logico} = require('../Expresiones/Logico');
@@ -177,38 +178,54 @@ pero todo esto se ignora*/
 
 %start INICIO_XQUERY
 %%
-INICIO_XQUERY : INSTRUCCIONES
-| EOF;
+
+INICIO_XQUERY : INSTRUCCIONES EOF 
+    {
+        return new Tree($1); 
+    };
 
 FUNCION:
     tk_declare tk_function MENU_LOCAL tk_dosPuntos
     tk_identificador tk_parA LISTA_DECLARACION_FUNCION 
     tk_parC  tk_as  tk_xs     tk_dosPuntos TIPO_DATO MENU_INTERROGA
     llaveA  INSTRUCCIONES llaveC tk_punto_coma
-    {$$ = new DeclaracionMetodo($12 ,$5, $7, $15, @1.first_line, @1.first_column);}
-    
-    
-    
+        {
+            $$ = new DeclaracionMetodo($12, $5, $7, $15, @1.first_line, @1.first_column);
+        }
     ;
 
 
 MENU_INTERROGA : 
-    tk_Interroga {$$=$1}
-    |  {$$=''};
+    tk_Interroga 
+        {
+            $$ = $1
+        }
+    |  
+        { 
+            $$ = ''
+        }
+    ;
 
 /*
 $p as xs:decimal?
 */
 LISTA_DECLARACION_FUNCION :  
-    LISTA_DECLARACION_FUNCION  tk_coma DECLARACION_FUNCION {$1.push($3); $$=$1;}
-    | DECLARACION_FUNCION {$$=$1} ;
+    LISTA_DECLARACION_FUNCION tk_coma DECLARACION_FUNCION 
+        { 
+            $$.push($3);
+        }
+    | DECLARACION_FUNCION 
+        {
+            $$ = [$1]
+        } 
+    ;
 
 DECLARACION_FUNCION:
-    tk_identificadorXQUERY tk_as tk_xs  tk_dosPuntos TIPO_DATO 
-    MENU_INTERROGA 
-    
-    {$$ = new Declaracion($4, $1, null,@1.first_line, @1.first_column);}   
-     ;
+    tk_identificadorXQUERY tk_as tk_xs  tk_dosPuntos TIPO_DATO MENU_INTERROGA
+        {
+            $$ = new Declaracion($5, $1, null, @1.first_line, @1.first_column);
+        }   
+    ;
 
 
 MENU_LOCAL: tk_local {$$=$1;}
@@ -243,7 +260,6 @@ INSTRUCCION :
     | FOR {$$=$1}
     | LLAMADA_FUNCION {$$=$1}
     | RETURN_CICLO {$$=$1}
-    |EOF
     ;
 
 FOR :
@@ -353,7 +369,7 @@ valor_if:
 LLAMADA_FUNCION:
     tk_local tk_dosPuntos tk_identificador tk_parA  Parametros_llamada tk_parC
         {
-            $$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);
+            $$ = new Print(new LlamadaMetodo($3, $5, @1.first_line, @1.first_column), @1.first_line, @1.first_column)
         }
     ;
 
@@ -472,7 +488,10 @@ EXP_XQUERY:
         {
             $$ = $2
         }
-    | tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6} 
+    | tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC 
+        {
+            $$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);
+        } 
     | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
     |
     ;

@@ -114,12 +114,12 @@ pero todo esto se ignora*/
     const { Tipo, tipos, esEntero } = require('./Varios/tipo');
     const { Primitivo } = require('./Expresiones/Primitivo');
     const { Error } = require('./Varios/Error');
-    const {Identificador} = require('./Expresiones/Identificador');
+    const { Identificador } = require('./Expresiones/Identificador');
     //const {Vector} = require('../Expresiones/Vector');
     //const {Lista} = require('../Expresiones/Lista');
     //Instrucciones
-    //const {Print} = require('../Instrucciones/Print');
-    const {Declaracion} = require('./Instrucciones/Declaracion');
+    const { Print } = require('./Instrucciones/Print');
+    const { Declaracion } = require('./Instrucciones/Declaracion');
    // const {DeclaracionArray} = require('../Instrucciones/DeclaracionArray');
     //const {DeclaracionLista} = require('../Instrucciones/DeclaracionLista');
     //const {Asignacion} = require('../Instrucciones/Asignacion');
