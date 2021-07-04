@@ -28,6 +28,12 @@
 "and"                {return "tk_and"}
 "or"                 {return "tk_or"}
 "mod"                {return "tk_mod"}
+"upper"               {return "tk_upper"}
+"case"                {return "tk_case"}
+"lower"                {return "tk_lower"}
+"toString"             {return "tk_toString"}
+"tonumber"             {return "tk_tonumber"}
+"substring"            {return "tk_substring"}
 
 "for"      {console.log(yytext+"--"); return "tk_for";}
 "in"       {console.log(yytext+"--"); return "tk_in";}
@@ -138,7 +144,7 @@ pero todo esto se ignora*/
     const {Break} = require('../Expresiones/Break');
     const {Retorno} = require('../Instrucciones/Retorno');
     *///Expresion
-      const {DeclaracionMetodo} = require('./Instrucciones/DeclaracionMetodo');
+    const {DeclaracionMetodo} = require('./Instrucciones/DeclaracionMetodo');
     const {LlamadaMetodo} = require('./Instrucciones/LlamadaMetodo');
     const { If } = require('./Instrucciones/If');
     const { Retorno } = require('./Instrucciones/Retorno');
@@ -146,6 +152,12 @@ pero todo esto se ignora*/
     const { Relacional } = require('./Expresiones/Relacional');
     const { NodoX } = require('./Expresiones/NodoX');
     const { EjecucionXpath } = require('./Arbol/Ejecucion');
+    const {ToUpper} = require('./Expresiones/uppercase');
+    const {ToLower} = require('./Expresiones/ToLower');
+    const {ToString} = require('./Expresiones/ToString');
+     const {Substrings} = require('./Expresiones/Substring');
+
+    const{ToNumber}=require('./Expresiones/ToNumber')
     /*const {Logico} = require('../Expresiones/Logico');
     const {Ternario} = require('../Expresiones/Ternario');
     const {Casteo} = require('../Expresiones/Casteo');
@@ -205,7 +217,7 @@ DECLARACION_FUNCION:
     tk_identificadorXQUERY tk_as tk_xs  tk_dosPuntos TIPO_DATO 
     MENU_INTERROGA 
     
-    {$$ new Declaracion($4, $1, null,@1.first_line, @1.first_column);}   
+    {$$ = new Declaracion($4, $1, null,@1.first_line, @1.first_column);}   
      ;
 
 
@@ -278,11 +290,11 @@ OPCION_FOR:
     ;
 
 WHERE :
-    tk_where EXP_XQUERY ;
+    tk_where CONDITIONES;
 
-CONDITIONES_WHERE:
-    CONDITIONES_WHERE tk_and EXP_XQUERY
-    | EXP_XQUERY ;
+CONDITIONES:
+    CONDITIONES tk_and EXP_XQUERY {$1.push($3); $$=$1;}
+    | EXP_XQUERY { $$=$1;} ;
 
 ORDER : 
     tk_order  tk_by LISTA_ORDER ;
@@ -317,15 +329,15 @@ ASIGNACION_SIMPLE :
     | TK tk_identificadorXQUERY tk_igual valores_if ;
 
 IF: 
-    tk_if tk_parA EXP_XQUERY tk_parC tk_then valores_if
+    tk_if tk_parA CONDITIONES tk_parC tk_then valores_if
         {
             $$ = new If($3, $6, [], @1.first_line, @1.first_column);
         }
-    | tk_if tk_parA EXP_XQUERY tk_parC tk_then valores_if tk_else valores_if 
+    | tk_if tk_parA CONDITIONES tk_parC tk_then valores_if tk_else valores_if 
         {
             $$ = new If($3,$6,$8, @1.first_line, @1.first_column);
         }
-    | tk_if tk_parA EXP_XQUERY tk_parC tk_then valores_if tk_else IF
+    | tk_if tk_parA CONDITIONES tk_parC tk_then valores_if tk_else IF
         {
             $$ = new If($3, $6, [$8], @1.first_line, @1.first_column);
         } 
@@ -367,12 +379,16 @@ Parametros_llamada EXP_XQUERY { $1.push($2)  ;  $$=$1;  }
 
 
 DECLARACION_GLOBAL :
-    tk_let LISTA_ID  tk_igualXQUERY EXP_XQUERY {$$=new Declaracion(new Tipo(tipos.VARIABLE),$2,$4, @1.first_line, @1.first_column ) } ;
+    tk_let LISTA_ID  tk_igualXQUERY EXP_XQUERY 
+        {
+         //       {$$ = new Declaracion($4, $1, null,@1.first_line, @1.first_column);}   console.log($1, $2, $3, $4);
+            $$ = new Declaracion(new Tipo(tipos.VARIABLE), $2, $4, @1.first_line, @1.first_column);
+        };
 
 
 LISTA_ID : 
     LISTA_ID tk_coma tk_identificadorXQUERY {$1.push($3); $$=$1;  }
-    | tk_identificadorXQUERY {$$=$1}
+    | tk_identificadorXQUERY {$$ = $1}
     ;
 
 EXP_XQUERY:
@@ -467,9 +483,21 @@ EXP_XQUERY:
         }
     | tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6} 
     | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
+    | tk_upper tk_menos  tk_case tk_parA EXP_XQUERY tk_ParC {$$= new ToUpper($5, @1.first_line, @1.first_column)}
+    | tk_lower tk_menos  tk_case tk_parA EXP_XQUERY tk_ParC {$$= new ToLower($5, @1.first_line, @1.first_column)}
+    | tk_toString tk_parA EXP_XQUERY tk_ParC {$$= new ToString($3, @1.first_line, @1.first_column)}
+    |  tk_tonumber tk_parA EXP_XQUERY tk_ParC {$$= new ToNumber($3, @1.first_line, @1.first_column)}
+    |  tk_substring tk_parA EXP_XQUERY tk_ParC {$$= new Substrings($3, @1.first_line, @1.first_column)}
+     
     |
+
     ;
 
+OPCION_MENOS:
+tk_menos
+|
+
+;
 OPCION_IDQ:
     XPATH { $$ = $1}
     | {$$ = []};       
@@ -479,6 +507,7 @@ XPATH :
         {
             let query = new EjecucionXpath($1, "");
             console.log(query.ejecutarArbol())
+            $$ = query.ejecutarArbol();
         }
     ;
 

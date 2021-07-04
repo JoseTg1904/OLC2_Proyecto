@@ -10,7 +10,7 @@ import { Retorno } from "./Retorno";
 import { Identificador } from "../Expresiones/identificador";
 import { Primitivo } from "../Expresiones/Primitivo";
 
-
+import { ToUpper } from "../Expresiones/uppercase";
 
 export class LlamadaMetodo extends Nodo {
     id: String;
