@@ -265,10 +265,9 @@ INSTRUCCION :
     | FUNCION {$$=$1}
     | IF {$$=$1}
     | WHERE {$$=$1}
-    | FOR {$$=$1}
+    //| FOR {$$=$1}
     | LLAMADA_FUNCION {$$=$1}
     | RETURN_CICLO {$$=$1}
-    | EOF
     ;
 
 FOR :
@@ -324,12 +323,12 @@ ORDER_ :
 
 
 RETURN_CICLO:
-    tk_return Lista_Ciclo 
+    tk_return EXP_XQUERY//Lista_Ciclo 
         {
             $$ = new Retorno($2, @1.first_line, @1.first_column)
         }
     ;
-
+/*
 Lista_Ciclo:
     Lista_Ciclo tk_and valor_if { $1.push($3); $$ = $1;}
     |valor_if { $$ = $1;}
@@ -340,8 +339,7 @@ Lista_Ciclo:
 valor_if:
     EXP_XQUERY { $$ = $1}
     | INSTRUCCIONES { $$ = $1}
-    |EOF
-;
+;*/
 
 LISTA_ASIGNACION:
     LISTA_ASIGNACION tk_and ASIGNACION_SIMPLE
@@ -515,7 +513,6 @@ EXP_XQUERY:
             $$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);
         } 
  //   | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
-    |
     ;
 
 OPCION_IDQ:
@@ -601,7 +598,6 @@ INICIALES :
             $1 = $1.substring(1, $1.length)
             $$ = new NodoX("", $1, [...$2]);
         }
-|EOF
     ;
 
 DIAGONALES : 
