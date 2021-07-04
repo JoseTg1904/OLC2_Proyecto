@@ -179,10 +179,12 @@ pero todo esto se ignora*/
 %start INICIO_XQUERY
 %%
 
-INICIO_XQUERY : INSTRUCCIONES EOF 
+INICIO_XQUERY : INSTRUCCIONES
     {
         return new Tree($1); 
-    };
+    }
+
+|EOf;
 
 FUNCION:
     tk_declare tk_function MENU_LOCAL tk_dosPuntos
@@ -260,6 +262,7 @@ INSTRUCCION :
     | FOR {$$=$1}
     | LLAMADA_FUNCION {$$=$1}
     | RETURN_CICLO {$$=$1}
+|EOF
     ;
 
 FOR :
