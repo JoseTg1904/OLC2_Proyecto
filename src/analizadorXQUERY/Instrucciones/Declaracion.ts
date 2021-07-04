@@ -34,13 +34,11 @@ export class Declaracion extends Nodo {
     }
 
     execute(table: Table, tree: Tree) {
-        const result = this.valor.execute(table, tree);
-
-        let simbolo: Simbolo;
-        simbolo = new Simbolo(this.tipo, this.id, result, new Tipo(tipos.VARIABLE), this.line, this.column);
-        const res = table.setVariable(simbolo);
-        tree.Variables.push(simbolo);
-   
+       const result = this.valor.execute(table, tree);
+        if (result instanceof Excepcion) {
+            return result;
+        }
+       
            let simbolo: Simbolo;
         simbolo = new Simbolo(this.tipo, this.id, result, new Tipo(tipos.VARIABLE), this.line, this.column);
         const res = table.setVariable(simbolo);
@@ -53,7 +51,7 @@ export class Declaracion extends Nodo {
         // tree.consola.push(error.toString());
         // }
         return null;
-    }
+    
     }
 
     getNodo() {
