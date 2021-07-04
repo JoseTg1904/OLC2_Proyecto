@@ -1,5 +1,6 @@
 import { Nodo } from "../Arbol/Nodo";
 import { NodoAST } from "../Arbol/NodoAST";
+import { NodoCST } from "../Arbol/NodoCST";
 import { Table } from "../Simbolos/Table";
 import { Tree } from "../Simbolos/Tree";
 import { Error } from "../Varios/Error";
@@ -298,7 +299,7 @@ export class Aritmetica extends Nodo {
     }
 
     getNodo(){
-        var nodo:NodoAST = new NodoAST("ARITMETICA");
+        var nodo:NodoAST = new NodoAST("");
         if(this.operadorIzq != null){
             nodo.agregarHijo(this.operadorIzq.getNodo());
             nodo.agregarHijo(this.operador + "");
@@ -307,6 +308,20 @@ export class Aritmetica extends Nodo {
         }else{
             nodo.agregarHijo(this.operador + "");
             nodo.agregarHijo(this.operadorDer.getNodo());
+        } 
+        return nodo;
+    }
+
+    getNodoCST() {
+        var nodo:NodoCST = new NodoCST("ARITMETICA");
+        if(this.operadorIzq != null){
+            nodo.agregarHijo(this.operadorIzq.getNodoCST());
+            nodo.agregarHijo(this.operador + "");
+            nodo.agregarHijo(this.operadorDer.getNodoCST());
+            
+        }else{
+            nodo.agregarHijo(this.operador + "");
+            nodo.agregarHijo(this.operadorDer.getNodoCST());
         } 
         return nodo;
     }

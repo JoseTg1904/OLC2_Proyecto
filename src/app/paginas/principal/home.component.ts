@@ -105,10 +105,15 @@ local:ackerman(/pruebas/m, /pruebas/n)`;
   astXpath:string = "";
   cstXpath: string = "";
 
+  astXquery: string = "";
+  cstXquery: string = ``;
+  tablaXquery: any[] = [];
+
   //reportesVisualizacion
   grafo:boolean = false;
   bnf: boolean = false;
   tabla: boolean = false;
+  tabla2: boolean = false;
   error: boolean = false;
 
   //tabla de simbolos
@@ -134,7 +139,11 @@ local:ackerman(/pruebas/m, /pruebas/n)`;
     localStorage.setItem("xml", this.xmlEntrada);
     let ascXquery = new XQUERYasc.AnalizadorXquery();
     let ret = ascXquery.ejecutarCodigo(this.querys);
-    
+
+    this.astXquery = ret.ast
+    this.cstXquery = ret.cst
+    this.tablaXquery = ret.tabla
+
     this.xmlSalida = "";
     for(let i = 0; i < ret.consola.length; i++){
       this.xmlSalida += ret.consola[i] + "\n";
@@ -217,7 +226,30 @@ local:ackerman(/pruebas/m, /pruebas/n)`;
   }
 
   botarReportes() {
-    this.grafo = this.bnf = this.tabla = this.error = false;
+    this.grafo = this.bnf = this.tabla = this.error = this.tabla2 = false;
+  }
+
+  reporteASTXQUERY() {
+    this.botarReportes();
+    localStorage.clear();
+    console.log(this.astXquery)
+    localStorage.setItem('grafo', this.astXquery);
+    this.grafo = true;
+  }
+
+  reporteCSTXQUERY() {
+    this.botarReportes();
+    localStorage.clear();
+    localStorage.setItem('grafo', this.cstXquery);
+    this.grafo = true;
+  }
+
+  reporteTablaXQUERY() {
+
+  }
+
+  reporteBNFXQUERY() {
+
   }
 
   reporteTablaSimbolosXML() {

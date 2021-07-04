@@ -4,6 +4,7 @@ import { Tree } from "../Simbolos/Tree";
 import { Error } from "../Varios/Error";
 import { tipos, Tipo } from "../Varios/Tipo";
 import { NodoAST } from "../Arbol/NodoAST";
+import { NodoCST } from "../Arbol/NodoCST";
 
 export class Relacional extends Nodo {
     operadorIzq: Nodo;
@@ -522,10 +523,18 @@ export class Relacional extends Nodo {
     }
 
     getNodo() {
-        var nodo:NodoAST  = new NodoAST("RELACIONAL");
+        var nodo:NodoAST  = new NodoAST("");
         nodo.agregarHijo(this.operadorIzq.getNodo());
         nodo.agregarHijo(this.operador + "");
         nodo.agregarHijo(this.operadorDer.getNodo());
+        return nodo;
+    }
+
+    getNodoCST() {
+        var nodo:NodoCST  = new NodoCST("RELACIONAL");
+        nodo.agregarHijo(this.operadorIzq.getNodoCST());
+        nodo.agregarHijo(this.operador + "");
+        nodo.agregarHijo(this.operadorDer.getNodoCST());
         return nodo;
     }
 }

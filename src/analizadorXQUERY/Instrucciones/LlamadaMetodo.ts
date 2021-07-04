@@ -9,8 +9,8 @@ import { Declaracion } from "./Declaracion";
 import { Retorno } from "./Retorno";
 import { Identificador } from "../Expresiones/identificador";
 import { Primitivo } from "../Expresiones/Primitivo";
-
 import { ToUpper } from "../Expresiones/uppercase";
+import { NodoCST } from "../Arbol/NodoCST";
 
 export class LlamadaMetodo extends Nodo {
     id: String;
@@ -117,11 +117,11 @@ export class LlamadaMetodo extends Nodo {
     }
 
     getNodo() {
-        var nodo: NodoAST = new NodoAST("LLAMADA METODO");
+        var nodo: NodoAST = new NodoAST("");
         nodo.agregarHijo(this.id);
         nodo.agregarHijo("(");
         if (this.listaParams.length != 0) {
-            var nodo2: NodoAST = new NodoAST("Parametros");
+            var nodo2: NodoAST = new NodoAST("");
             var index = 1;
             for (let i = 0; i < this.listaParams.length; i++) {
                 var param = <Declaracion>this.listaParams[i]
@@ -135,7 +135,32 @@ export class LlamadaMetodo extends Nodo {
         nodo.agregarHijo(")");
         nodo.agregarHijo("{");
 
-        var nodo3: NodoAST = new NodoAST("INSTRUCCIONES");
+        var nodo3: NodoAST = new NodoAST("");
+        nodo.agregarHijo(nodo3);
+        nodo.agregarHijo("}");
+        return nodo;
+    }
+
+    getNodoCST() {
+        var nodo: NodoCST = new NodoCST("LLAMADA METODO");
+        nodo.agregarHijo(this.id);
+        nodo.agregarHijo("(");
+        if (this.listaParams.length != 0) {
+            var nodo2: NodoCST = new NodoCST("Parametros");
+            var index = 1;
+            for (let i = 0; i < this.listaParams.length; i++) {
+                var param = <Declaracion>this.listaParams[i]
+                var nodo3: NodoCST = new NodoCST(param.tipo + "");
+                nodo3.agregarHijo(param.id + "");
+                nodo2.agregarHijo(nodo3);
+            }
+            nodo.agregarHijo(nodo2);
+        }
+
+        nodo.agregarHijo(")");
+        nodo.agregarHijo("{");
+
+        var nodo3: NodoCST = new NodoCST("INSTRUCCIONES");
         nodo.agregarHijo(nodo3);
         nodo.agregarHijo("}");
         return nodo;

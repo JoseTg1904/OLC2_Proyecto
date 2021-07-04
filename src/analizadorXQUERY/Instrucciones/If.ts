@@ -5,6 +5,7 @@ import { Excepcion } from "../Varios/Exepciones";
 import { tipos } from "../Varios/Tipo";
 import { NodoAST } from "../Arbol/NodoAST";
 import { Retorno } from "./Retorno";
+import { NodoCST } from "../Arbol/NodoCST";
 
 export class If extends Nodo {
     condicion: Nodo;
@@ -64,6 +65,32 @@ export class If extends Nodo {
             var nodo3: NodoAST = new NodoAST("INSTRUCCIONES ELSE");
             for (let i = 0; i < this.listaElse.length; i++) {
                 nodo3.agregarHijo(this.listaElse[i].getNodo());
+            }
+            nodo.agregarHijo(nodo3);
+            nodo.agregarHijo("}");
+        }
+        return nodo;
+    }
+
+    getNodoCST() {
+        var nodo: NodoCST = new NodoCST("IF");
+        nodo.agregarHijo("if");
+        nodo.agregarHijo("(");
+        nodo.agregarHijo(this.condicion.getNodoCST());
+        nodo.agregarHijo(")");
+        nodo.agregarHijo("{");
+        var nodo2: NodoCST = new NodoCST("INSTRUCCIONES IF");
+        for (let i = 0; i < this.listaIf.length; i++) {
+            nodo2.agregarHijo(this.listaIf[i].getNodoCST());
+        }
+        nodo.agregarHijo(nodo2);
+        nodo.agregarHijo("}");
+        if (this.listaElse != null) { // ELSE
+            nodo.agregarHijo("else");
+            nodo.agregarHijo("{");
+            var nodo3: NodoCST = new NodoCST("INSTRUCCIONES ELSE");
+            for (let i = 0; i < this.listaElse.length; i++) {
+                nodo3.agregarHijo(this.listaElse[i].getNodoCST());
             }
             nodo.agregarHijo(nodo3);
             nodo.agregarHijo("}");

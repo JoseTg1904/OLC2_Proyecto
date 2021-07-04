@@ -17,12 +17,22 @@ import { Table } from './Simbolos/Table';
 import { NodoAST } from './Arbol/NodoAST';
 import { Nodo } from './Arbol/Nodo';
 import { Print } from './Instrucciones/Print';
+import { Substrings } from './Expresiones/Substring';
+import { ToLower } from './Expresiones/ToLower';
+import { ToString } from './Expresiones/ToString';
+import { ToUpper } from './Expresiones/uppercase';
+import { ToNumber } from './Expresiones/ToNumber';
+import { graphAST, graphCST } from './Varios/Graficar';
+import { NodoCST } from './Arbol/NodoCST';
 
 import * as gramatica from './GramaticaXquery';
 
 interface retorno {
     errores: any,
-    consola: any
+    consola: any,
+    ast: any,
+    cst: any,
+    tabla: any
 }
 
 export class AnalizadorXquery {
@@ -33,7 +43,10 @@ export class AnalizadorXquery {
 
         let ret: retorno =  {
             errores: [], 
-            consola: []
+            consola: [],
+            ast: "",
+            cst: "",
+            tabla: []
         };
 
         try {
@@ -57,12 +70,25 @@ export class AnalizadorXquery {
             });
             init.agregarHijo(instr);
         
+            var init2: NodoCST = new NodoCST("RAIZ");
+            var instr2: NodoCST = new NodoCST("INSTRUCCIONES");
+            tree.instrucciones.map((m: Nodo) => {
+                instr2.agregarHijo(m.getNodoCST());
+            });
+            init2.agregarHijo(instr2);
+
+            ret.cst = graphCST(init2);
+            console.log(ret.cst)
+            ret.ast = graphAST(init);
+
+            //graphTabla(tree.Variables);
             //graphAST(init);
             //graphTabla(tree.Variables);
         
             console.log(tree)
             ret.consola = tree.consola;
             ret.errores = tree.errores;
+            ret.tabla = tree.Variables
         } catch (error) {
             console.log(error)
             let consola2 = new Array<String>();

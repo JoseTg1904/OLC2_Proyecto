@@ -2,6 +2,7 @@ import { Table } from "../Simbolos/Table";
 import { Tree } from "../Simbolos/Tree";
 import { Tipo } from '../Varios/Tipo';
 import { NodoAST } from "./NodoAST";
+import { NodoCST } from "./NodoCST";
 
 export abstract class Nodo{
     line: Number;
@@ -9,6 +10,7 @@ export abstract class Nodo{
     tipo: Tipo;
 
     abstract getNodo():NodoAST;
+    abstract getNodoCST(): NodoCST;
 
     abstract execute(table: Table, tree: Tree): any;
 

@@ -4,6 +4,7 @@ import { Tree } from "../Simbolos/Tree";
 import { Excepcion } from "../Varios/Exepciones";
 import { tipos, Tipo } from "../Varios/Tipo";
 import { NodoAST } from "../Arbol/NodoAST";
+import { NodoCST } from "../Arbol/NodoCST";
 
 export class ToLower extends Nodo {
     expresion: Nodo;
@@ -32,14 +33,28 @@ export class ToLower extends Nodo {
 
     getNodo() {
         try {
-            var nodo: NodoAST = new NodoAST("TOLOWER");
+            var nodo: NodoAST = new NodoAST("");
             nodo.agregarHijo("ToLower");
             nodo.agregarHijo("(");
             nodo.agregarHijo(this.expresion.getNodo());
             nodo.agregarHijo(")");
             return nodo;
         } catch (err) {
-            var nodo: NodoAST = new NodoAST("ToLower");
+            var nodo: NodoAST = new NodoAST("");
+            return nodo;
+        }
+    }
+
+    getNodoCST() {
+        try {
+            var nodo: NodoCST = new NodoCST("TOLOWER");
+            nodo.agregarHijo("ToLower");
+            nodo.agregarHijo("(");
+            nodo.agregarHijo(this.expresion.getNodoCST());
+            nodo.agregarHijo(")");
+            return nodo;
+        } catch (err) {
+            var nodo: NodoCST = new NodoCST("ToLower");
             return nodo;
         }
     }

@@ -44,27 +44,31 @@
 
 "if"       {return "tk_if";}
 "else"     {return "tk_else";}
-"then"     {return "tk_then";}
+"then"     {return "tk_then";} 
 
-"int"      {return "tk_int";}
-"integer"  {return "tk_integer";}
-"string"   {return "tk_string";}
-"decimal"  {return "tk_DECIMAL";}
-"double"   {return "tk_double";}
-"declare"  {return "tk_declare";}
-"function" {return "tk_function";}
-"AS"       {return "tk_AS"}
-"as"       {return "tk_as"}
-"xs"       {return "tk_xs"}
-"to"       {return "tk_to"}
-"at"       {return "tk_at"}
-"local"    {return "tk_local";}
-"gt"       { return "tk_mayor"}
-"lt"       { return "tk_menor"}
-"eq"       {return "tk_igual"}
-"ne"       {return "tk_distinto"}
-"le"       {return "tk_menorIgual"}
-"ge"       {return "tk_mayorIgual"}
+"int"       {return "tk_int";}
+"integer"   {return "tk_integer";}
+"string"    {return "tk_string";}
+"decimal"   {return "tk_DECIMAL";}
+"double"    {return "tk_double";}
+"declare"   {return "tk_declare";}
+"function"  {return "tk_function";}
+"AS"        {return "tk_AS"}
+"as"        {return "tk_as"}
+"xs"        {return "tk_xs"}
+"to"        {return "tk_to"}
+"at"        {return "tk_at"}
+"local"     {return "tk_local";}
+"gt"        {return "tk_mayor"}
+"lt"        {return "tk_menor"}
+"eq"        {return "tk_igual"}
+"ne"        {return "tk_distinto"}
+"le"        {return "tk_menorIgual"}
+"ge"        {return "tk_mayorIgual"}
+"upper"     {return "tk_upper"}
+"case"      {return "tk_case"}
+"lower"     {return "tk_lower"}
+"substring" {return "tk_subString"}
 
 //conjunto de simbolos aceptados
 "|"  {return "tk_barra"}
@@ -158,14 +162,13 @@ pero todo esto se ignora*/
     const { Logico } = require('./Expresiones/Logico');
     const { NodoX } = require('./Expresiones/NodoX');
     const { EjecucionXpath } = require('./Arbol/Ejecucion');
-    
-    
-      const {ToUpper} = require('./Expresiones/uppercase');
+
+    const {ToUpper} = require('./Expresiones/uppercase');
     const {ToLower} = require('./Expresiones/ToLower');
     const {ToString} = require('./Expresiones/ToString');
-     const {Substrings} = require('./Expresiones/Substring');
+    const {Substrings} = require('./Expresiones/Substring');
+    const{ToNumber} = require('./Expresiones/ToNumber');
 
-    const{ToNumber}=require('./Expresiones/ToNumber');
     /*const {Logico} = require('../Expresiones/Logico');
     const {Ternario} = require('../Expresiones/Ternario');
     const {Casteo} = require('../Expresiones/Casteo');
@@ -199,7 +202,7 @@ pero todo esto se ignora*/
 %start INICIO_XQUERY
 %%
 
-INICIO_XQUERY : INSTRUCCIONES  
+INICIO_XQUERY : INSTRUCCIONES EOF  
     {
         produccion.push(`<INICIO_XQUERY> ::= <INSTRUCCIONES> EOF`);
         accion.push(`INICIO_XQUERY.Val ::= new Tree()`);
@@ -207,8 +210,8 @@ INICIO_XQUERY : INSTRUCCIONES
         arbol.accion = accion;
         arbol.produccion = produccion;
         return arbol;
-    };
-    |EOF
+    }
+    ;
 
 FUNCION:
     tk_declare tk_function MENU_LOCAL tk_dosPuntos
@@ -330,7 +333,6 @@ INSTRUCCION :
             accion.push(`INSTRUCCION.Val = DECLARACION_GLOBAL.Val`);
             $$ = $1
         }
-    |EOF    
     | FUNCION 
         {
             produccion.push(`<INSTRUCCION> ::= <FUNCION>`);
@@ -416,7 +418,6 @@ RETURN_CICLO:
         {
             produccion.push(`<RETURN_CICLO> ::= return <EXP_QUERY>`);
             accion.push(`RETURN_CICLO.Val = new Retorno()`);
-            console.log($2)
             $$ = new Retorno($2, @1.first_line, @1.first_column)
         }
     ;
@@ -486,6 +487,46 @@ LLAMADA_FUNCION:
             produccion.push(`<LLAMADA_FUNCION> ::= local : identificador ( <PARAMETROS_LLAMADA> )`);
             accion.push(`LLAMADA_FUNCION.Val = new LlamadaMetodo()`);
             $$ = new Print(new LlamadaMetodo($3, $5, @1.first_line, @1.first_column), @1.first_line, @1.first_column)
+        }
+    | NATIVAS
+        {
+            $$ = new Print($1);
+        }
+    ;
+
+DUALIDAD:
+    XPATH {
+        $$  = $1
+    }
+    |EXP_XQUERY {
+        $$ = $1
+    }
+    ;
+
+NATIVAS: 
+    tk_upper tk_menos tk_case tk_parA DUALIDAD tk_parC 
+        {
+            $$ = new ToUpper($5, @1.first_line, @1.first_column)
+        }
+    | tk_lower tk_menos tk_case tk_parA DUALIDAD tk_parC 
+        {
+            $$ = new ToLower($5, @1.first_line, @1.first_column)
+        }
+    | tk_string tk_parA DUALIDAD tk_parC 
+        {     
+            $$ = new ToString($3, @1.first_line, @1.first_column)
+        }
+    | tk_tonumber tk_parA DUALIDAD tk_parC 
+        {
+            $$ = new ToNumber($3, @1.first_line, @1.first_column)
+        }
+    | tk_subString tk_parA DUALIDAD tk_coma DUALIDAD tk_parC 
+        {
+            $$ = new Substrings($3, $5, new Primitivo(new Tipo(esEntero(Number(-1))), Number(-1), @1.first_line, @1.first_column), @1.first_line, @1.first_column)
+        }
+    | tk_subString tk_parA DUALIDAD tk_coma DUALIDAD tk_coma DUALIDAD tk_parC 
+        {
+            $$ = new Substrings($3, $5, $7, @1.first_line, @1.first_column)
         }
     ;
 
@@ -629,8 +670,6 @@ EXP_XQUERY:
             accion.push(`EXP_QUERY.Val = new Logico()`);
             $$ = new Logico($1, $3, '||', @1.first_line, @1.first_column);
         }
-  //  | EXP_XQUERY tk_to EXP_XQUERY{$$=$1+$2+$3}
-  //  | XPATH
     | EXP_XQUERY tk_and EXP_XQUERY
         {
             produccion.push(`<EXP_QUERY> ::= <EXP_QUERY> and <EXP_QUERY>`);
@@ -641,13 +680,13 @@ EXP_XQUERY:
         {
             produccion.push(`<EXP_QUERY> ::= entero`);
             accion.push(`EXP_QUERY.Val = new Primitivo()`);
-            $$ = new Primitivo(new Tipo(esEntero(Number($1))), Number($1), @1.first_line, @1.first_column);
+            $$ = new Primitivo(new Tipo(tipos.ENTERO), Number($1), @1.first_line, @1.first_column);
         }         
     | tk_decimal
         {
             produccion.push(`<EXP_QUERY> ::= decimal`);
             accion.push(`EXP_QUERY.Val = new Primitivo()`);
-            $$ = new Primitivo(new Tipo(esEntero(Number($1))), Number($1), @1.first_line, @1.first_column);
+            $$ = new Primitivo(new Tipo(tipos.DECIMAL), Number($1), @1.first_line, @1.first_column);
         }
     | tk_stringTexto
         {
@@ -655,12 +694,6 @@ EXP_XQUERY:
             accion.push(`EXP_QUERY.Val = new Primitivo()`);
             $$ = new Primitivo(new Tipo(tipos.STRING), $1, @1.first_line, @1.first_column);
         }          
-    | tk_identificador 
-        {
-            produccion.push(`<EXP_QUERY> ::= identificador`);
-            accion.push(`EXP_QUERY.Val = new Identificador()`);
-            $$ = new Identificador($1, @1.first_line, @1.first_column);
-        }
     | tk_identificadorXQUERY //OPCION_IDQ
         {
             produccion.push(`<EXP_QUERY> ::= identificador`);
@@ -679,22 +712,11 @@ EXP_XQUERY:
             accion.push(`EXP_QUERY.Val = new LlamdaMetodo()`);
             $$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);
         } 
-      | tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6} 
-    | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
-    | tk_upper tk_menos  tk_case tk_parA EXP_XQUERY tk_ParC {$$= new ToUpper($5, @1.first_line, @1.first_column)}
-    | tk_lower tk_menos  tk_case tk_parA EXP_XQUERY tk_ParC {$$= new ToLower($5, @1.first_line, @1.first_column)}
-    | tk_toString tk_parA EXP_XQUERY tk_ParC {$$= new ToString($3, @1.first_line, @1.first_column)}
-    |  tk_tonumber tk_parA EXP_XQUERY tk_ParC {$$= new ToNumber($3, @1.first_line, @1.first_column)}
-    |  tk_substring tk_parA EXP_XQUERY tk_ParC {$$= new Substrings($3, @1.first_line, @1.first_column)}
-     
-    |  
-        
- //   | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
+    | NATIVAS 
+        {
+            $$ = $1
+        }
     ;
-/*
-OPCION_IDQ:
-    XPATH { $$ = $1}
-    | {$$ = []};       */
 
 XPATH :
     INICIO
@@ -733,7 +755,6 @@ XPATH :
 
             $$ = new Primitivo(tipoR, valor, @1.first_line, @1.first_column);
         }
-        |EOF
     ;
 
 INICIO:
@@ -787,13 +808,6 @@ INICIALES :
             produccion.push(`<INICIALES> ::= node() <DERIVAIONDIAGONAL>`);
             accion.push('INICIALES.Val = new NodoX();'); 
             $$ = new NodoX("", "node()", [...$4]);
-        }
-    | tk_identificadorXQUERY DERIVACIONDIAGONAL
-        {
-            produccion.push(`<INICIALES> ::= identificador <DERIVAIONDIAGONAL>`);
-            accion.push('INICIALES.Val = new NodoX();'); 
-            $1 = $1.substring(1, $1.length)
-            $$ = new NodoX("", $1, [...$2]);
         }
     ;
 
@@ -853,13 +867,6 @@ DERIVADOSLIMITADO :
             accion.push('DERIVADOSLIMITADO.Val = \"@\" + ATRIBUTO.Val'); 
             $$ = {val: $1 + "" + $2, pre: null};
         }
-    | tk_identificadorXQUERY
-        {
-produccion.push(`<DERIVADOSLIMIADO> ::= identificador <PREDICATE>`);
-            accion.push('DERIVADOSLIMITADO.Val = identificador + PREDICATE.Val');
-            $1 = $1.substring(1, $1.length)
-            $$ = {val: $1, pre: null}
-        }
     ;
 
 DERIVADOS : 
@@ -901,12 +908,5 @@ ATRIBUTO :
             produccion.push(`<ATRIBUTO> ::= node`);
             accion.push('ATRIBUTO.Val = \"node()\"'); 
             $$ = "node()"
-        }
-    | tk_identificadorXQUERY
-        {
-            produccion.push(`<ATRIBUTO> ::= identificador`);
-            accion.push('ATRIBUTO.Val = identificador');  
-            $1 = $1.substring(1, $1.length)
-            $$ = $1
         }
     ;

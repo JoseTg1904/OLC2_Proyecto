@@ -4,6 +4,7 @@ import { Tree } from "../Simbolos/Tree";
 import { Error } from "../Varios/Error";
 import { tipos, Tipo } from "../Varios/Tipo";
 import { NodoAST } from "../Arbol/NodoAST";
+import { NodoCST } from "../Arbol/NodoCST";
 
 export class Logico extends Nodo {
     operadorIzq: Nodo;
@@ -86,7 +87,7 @@ export class Logico extends Nodo {
     }
 
     getNodo() {
-        var nodo: NodoAST  = new NodoAST("LOGICO");
+        var nodo: NodoAST  = new NodoAST("");
         if(this.operadorIzq != null){
             nodo.agregarHijo(this.operadorIzq.getNodo());
             nodo.agregarHijo(this.operador + "");
@@ -95,6 +96,20 @@ export class Logico extends Nodo {
         }else{
             nodo.agregarHijo(this.operador + "");
             nodo.agregarHijo(this.operadorDer.getNodo());
+        } 
+        return nodo;
+    }
+
+    getNodoCST() {
+        var nodo: NodoCST  = new NodoCST("LOGICO");
+        if(this.operadorIzq != null){
+            nodo.agregarHijo(this.operadorIzq.getNodoCST());
+            nodo.agregarHijo(this.operador + "");
+            nodo.agregarHijo(this.operadorDer.getNodoCST());
+            
+        }else{
+            nodo.agregarHijo(this.operador + "");
+            nodo.agregarHijo(this.operadorDer.getNodoCST());
         } 
         return nodo;
     }

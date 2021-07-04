@@ -4,6 +4,7 @@ import {Tree} from "../Simbolos/Tree";
 import {Tipo} from "../Varios/Tipo";
 import {tipos} from "../Varios/Tipo";
 import { NodoAST } from "../Arbol/NodoAST";
+import { NodoCST } from "../Arbol/NodoCST";
 
 export class Print extends Nodo{
     expresion : Nodo;
@@ -20,10 +21,19 @@ export class Print extends Nodo{
     }
 
     getNodo() {
-        var nodo:NodoAST  = new NodoAST("PRINT");
+        var nodo:NodoAST  = new NodoAST("");
         nodo.agregarHijo("print");
         nodo.agregarHijo("(");
         nodo.agregarHijo(this.expresion.getNodo());
+        nodo.agregarHijo(")");
+        return nodo;
+    }
+
+    getNodoCST() {
+        var nodo:NodoCST  = new NodoCST("PRINT");
+        nodo.agregarHijo("print");
+        nodo.agregarHijo("(");
+        nodo.agregarHijo(this.expresion.getNodoCST());
         nodo.agregarHijo(")");
         return nodo;
     }

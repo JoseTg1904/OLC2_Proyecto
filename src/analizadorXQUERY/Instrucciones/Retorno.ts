@@ -2,6 +2,7 @@ import { Nodo } from "../Arbol/Nodo";
 import { NodoAST } from "../Arbol/NodoAST";
 import { Table } from "../Simbolos/Table";
 import { Tree } from "../Simbolos/Tree";
+import { NodoCST } from "../Arbol/NodoCST";
 
 export class Retorno extends Nodo {
     expresion: Nodo;
@@ -19,9 +20,18 @@ export class Retorno extends Nodo {
     }
 
     getNodo() {
-        var nodo: NodoAST = new NodoAST("RETURN");
+        var nodo: NodoAST = new NodoAST("");
         if (this.expresion != null) {
             nodo.agregarHijo(this.expresion.getNodo());
+        }
+
+        return nodo;
+    }
+
+    getNodoCST() {
+        var nodo: NodoCST = new NodoCST("RETURN");
+        if (this.expresion != null) {
+            nodo.agregarHijo(this.expresion.getNodoCST());
         }
 
         return nodo;

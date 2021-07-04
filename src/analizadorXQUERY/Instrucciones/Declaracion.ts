@@ -2,10 +2,11 @@ import { Nodo } from "../Arbol/Nodo"
 import { Table } from "../Simbolos/Table";
 import { Tree } from "../Simbolos/Tree";
 import { Error } from "../Varios/Error";
-import { Tipo, tipos } from "../Varios/Tipo";
+import { esEntero, Tipo, tipos } from "../Varios/Tipo";
 import { Simbolo } from "../Simbolos/Simbolo";
 import { Primitivo } from "../Expresiones/Primitivo";
 import { NodoAST } from "../Arbol/NodoAST";
+import { NodoCST } from "../Arbol/NodoCST";
 
 export function defal(tipo: Tipo, line: Number, column: Number) {
     if (tipo.tipo == tipos.ENTERO) {
@@ -34,13 +35,23 @@ export class Declaracion extends Nodo {
     }
 
     execute(table: Table, tree: Tree) {
-       const result = this.valor.execute(table, tree);
+        const result = this.valor.execute(table, tree);
         if (result instanceof Error) {
             return result;
         }
-       
-           let simbolo: Simbolo;
-        simbolo = new Simbolo(this.tipo, this.id, result, new Tipo(tipos.VARIABLE), this.line, this.column);
+
+        let simbolo: Simbolo;
+        let tipo: Tipo;
+
+        if (isNaN(result)){
+            tipo = new Tipo(tipos.STRING)
+        }else{
+            tipo = new Tipo(esEntero(result))
+        }
+        console.log(isNaN(result))
+
+
+        simbolo = new Simbolo(tipo, this.id, result, new Tipo(tipos.VARIABLE), this.line, this.column);
         const res = table.setVariable(simbolo);
         tree.Variables.push(simbolo);
         // if (res != null) {
@@ -55,13 +66,26 @@ export class Declaracion extends Nodo {
     }
 
     getNodo() {
-        var nodo: NodoAST = new NodoAST("DECLARACION");
+        var nodo: NodoAST = new NodoAST("");
         nodo.agregarHijo(this.tipo + "");
         nodo.agregarHijo(this.id);
 
         if (this.valor != null) {
             nodo.agregarHijo("=");
             nodo.agregarHijo(this.valor.getNodo());
+        }
+
+        return nodo;
+    }
+
+    getNodoCST() {
+        var nodo: NodoCST = new NodoCST("DECLARACION");
+        nodo.agregarHijo(this.tipo + "");
+        nodo.agregarHijo(this.id);
+
+        if (this.valor != null) {
+            nodo.agregarHijo("=");
+            nodo.agregarHijo(this.valor.getNodoCST());
         }
 
         return nodo;
