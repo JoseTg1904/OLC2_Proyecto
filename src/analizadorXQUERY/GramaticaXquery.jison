@@ -1,7 +1,12 @@
 %lex
+%s comment
 %%
 
-
+"//".*                              /* skip comments */
+"(:"                              this.begin('comment');
+<comment>":)"                      this.popState();
+<comment>.                          /* skip comment content*/
+\s+                                 /* skip whitespace */
 //Expresiones regulares para la aceptacion de numeros enteros y decimales
 [0-9]+("."[0-9]+)\b {return "tk_decimal";}
 [0-9]+\b            {return "tk_entero";}
@@ -163,14 +168,14 @@ pero todo esto se ignora*/
     const { xpathBusqueda } = require('../analizadorXML/Instrucciones/Busqueda/xpathBusqueda');
 %}
 
-
+%left tk_local
 %left tk_mod
 %left tk_or
 %left tk_and
 %left tk_barra
-%left tk_igual tk_distinto tk_igualXQUERY
-%left tk_mayorIgual tk_menorIgual tk_mayor tk_menor tk_lt tk_gt
-%left tk_diagonal
+%left tk_igual tk_distinto
+%left tk_mayorIgual tk_menorIgual 
+%left tk_mayor tk_menor tk_lt tk_gt
 %left tk_llaveA tk_llaveC
 %left tk_div tk_asterisco
 %left tk_mas tk_menos
@@ -179,10 +184,11 @@ pero todo esto se ignora*/
 %start INICIO_XQUERY
 %%
 
-INICIO_XQUERY : INSTRUCCIONES EOF 
+INICIO_XQUERY : INSTRUCCIONES  
     {
         return new Tree($1); 
-    };
+    }
+    | EOF;
 
 FUNCION:
     tk_declare tk_function MENU_LOCAL tk_dosPuntos
@@ -260,6 +266,7 @@ INSTRUCCION :
     | FOR {$$=$1}
     | LLAMADA_FUNCION {$$=$1}
     | RETURN_CICLO {$$=$1}
+    | EOF
     ;
 
 FOR :
@@ -471,8 +478,8 @@ EXP_XQUERY:
         {
             $$ = new Logico($1, $3, '||', @1.first_line, @1.first_column);
         }
-    | EXP_XQUERY tk_to EXP_XQUERY{$$=$1+$2+$3}
-    | XPATH
+  //  | EXP_XQUERY tk_to EXP_XQUERY{$$=$1+$2+$3}
+  //  | XPATH
     | EXP_XQUERY tk_and EXP_XQUERY
         {
             $$ = new Logico($1, $3, '&&', @1.first_line, @1.first_column);
@@ -493,10 +500,10 @@ EXP_XQUERY:
         {
             $$ = new Identificador($1, @1.first_line, @1.first_column);
         }
-    | tk_identificadorXQUERY OPCION_IDQ
-        {
-            $$ = new Identificador($1, @1.first_line, @1.first_column);
-        }
+   // | tk_identificadorXQUERY OPCION_IDQ
+    //    {
+     //       $$ = new Identificador($1, @1.first_line, @1.first_column);
+      //  }
     | tk_parA EXP_XQUERY tk_parC
         {
             $$ = $2
@@ -505,7 +512,7 @@ EXP_XQUERY:
         {
             $$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);
         } 
-    | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
+ //   | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
     |
     ;
 
@@ -514,7 +521,7 @@ OPCION_IDQ:
     | {$$ = []};       
 
 XPATH :
-    INICIO 
+    INICIALES
         {
             let analizador = new AnalizadorASCXML();
             let buscador = new xpathBusqueda();
@@ -548,18 +555,9 @@ XPATH :
 
             $$ = new Primitivo(tipoR, valor, @1.first_line, @1.first_column);
         }
+    | EOF
     ;
 
-INICIO : 
-    INICIO tk_barra INICIALES
-        { 
-            $$.push($3)
-        }
-    | INICIALES 
-        { 
-            $$ = [$1]
-        }
-    ;
 
 INICIALES : 
     tk_punto DIAGONALES DERIVADOSLIMITADO DERIVACIONDIAGONAL
