@@ -11,13 +11,14 @@ import { Error } from './Varios/Error';
 import { Identificador } from './Expresiones/identificador';
 import { Declaracion } from './Instrucciones/Declaracion';
 import { DeclaracionMetodo } from './Instrucciones/DeclaracionMetodo';
+import { LlamadaMetodo } from './Instrucciones/LlamadaMetodo';
 
 import * as gramatica from './GramaticaXquery';
 
 export class AnalizadorXquery {
 
     public ejecutarCodigo(entrada: string) {
-        entrada = `let $alv:=2`
+        entrada = `local:minPrice($/bookstore/book/price,$/bookstore/book/year)`
         console.log(gramatica.parse(entrada));
 
         console.log("aaalv")

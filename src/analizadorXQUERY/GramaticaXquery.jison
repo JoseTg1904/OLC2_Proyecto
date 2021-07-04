@@ -158,6 +158,8 @@ pero todo esto se ignora*/
     const {TypeOf} = require('../Expresiones/TypeOf');
     const {ToString} = require('../Expresiones/ToString');
     const {ToCharArray} = require('../Expresiones/ToCharArray');*/
+    const { AnalizadorASCXML } = require('../analizadorXML/index');
+    const { xpathBusqueda } = require('../analizadorXML/Instrucciones/Busqueda/xpathBusqueda');
 %}
 
 
@@ -228,9 +230,9 @@ TIPO_DATO:
 
 INSTRUCCIONES : 
     INSTRUCCIONES INSTRUCCION 
-        { $1.push($2); $$ = $2; }
+        { $$.push($2); }
     | INSTRUCCION  
-        { $$ = $1 }
+        { $$ = [$1] }
     ;
 
 INSTRUCCION :
@@ -338,38 +340,41 @@ valores_if valor_if {$1.push($2); $$=$1;}
 
 
 valor_if:
-    EXP_XQUERY { $$ = $1}
-    | INSTRUCCIONES { $$ = $1}
-    |EOF;
-    
-
-
+    EXP_XQUERY 
+        { 
+            $$ = $1
+        }
+    | INSTRUCCIONES 
+        { 
+            $$ = $1
+        }
+    ;
 
 LLAMADA_FUNCION:
     tk_local tk_dosPuntos tk_identificador tk_parA  Parametros_llamada tk_parC
-   {$$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);}
-   ;
-
+        {
+            $$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);
+        }
+    ;
 
 /*
 $p as xs:decimal?
 */
 
-
 Parametros_llamada:
-Parametros_llamada EXP_XQUERY { $1.push($2)  ;  $$=$1;  } 
-|EXP_XQUERY {$$=$1}
-
-
-;
-
-
-
+    Parametros_llamada tk_coma XPATH 
+        { 
+            $$.push($3); 
+        } 
+    | XPATH 
+        {
+            $$ = [$1]
+        }
+    ;
 
 DECLARACION_GLOBAL :
     tk_let LISTA_ID  tk_igualXQUERY EXP_XQUERY 
         {
-         //   console.log($1, $2, $3, $4);
             $$ = new Declaracion(new Tipo(tipos.VARIABLE), $2, $4, @1.first_line, @1.first_column);
         };
 
@@ -437,8 +442,7 @@ EXP_XQUERY:
             $$ = new Logico($1, $3, '||', @1.first_line, @1.first_column);
         }
     | EXP_XQUERY tk_to EXP_XQUERY{$$=$1+$2+$3}
-
-    |  EXP_XQUERY tk_coma EXP_XQUERY{$$=$1+$2+$3}
+    | EXP_XQUERY tk_coma EXP_XQUERY{$$=$1+$2+$3}
     |XPATH
     | EXP_XQUERY tk_and EXP_XQUERY
         {
@@ -460,11 +464,10 @@ EXP_XQUERY:
         {
             $$ = new Identificador($1, @1.first_line, @1.first_column);
         }
-    | tk_identificadorXQUERY OPCION_IDQ{
-          $$ = new Identificador($1, @1.first_line, @1.first_column);
-
-
-    }
+    | tk_identificadorXQUERY OPCION_IDQ
+        {
+            $$ = new Identificador($1, @1.first_line, @1.first_column);
+        }
     | tk_parA EXP_XQUERY tk_parC
         {
             $$ = $2
@@ -481,9 +484,37 @@ OPCION_IDQ:
 XPATH :
     INICIO 
         {
-            let query = new EjecucionXpath($1, "");
-            console.log(query.ejecutarArbol())
-            $$ = query.ejecutarArbol();
+            let analizador = new AnalizadorASCXML();
+            let buscador = new xpathBusqueda();
+            let ejecu = new EjecucionXpath($1, "");
+
+            let ret = analizador.ejecutarCodigo(localStorage.getItem("xml"));
+            let tabla = ret.objetos;
+            let query = ejecu.ejecutarArbol();
+
+            if(query.includes("|")) {
+                buscador.getNodesByFilters("3", query, tabla);
+            }else if(query[0] !== "/" && query[0] !== "//"){
+                buscador.getNodesByFilters("1", query, tabla)
+            }else{
+                buscador.getNodesByFilters("2", query, tabla)
+            }
+
+            let retorno = buscador.returnListObjects()
+            let valor = retorno[0].texto;
+            let tipoR;
+
+            if (valor.match(/^[0-9]+$/)){
+                tipoR = new Tipo(esEntero(valor))
+                valor = parseInt(valor)
+            }else if (valor.match(/^[0-9]+[.][0-9]+$/)){
+                tipoR = new Tipo(esEntero(valor))
+                valor = parseInt(valor)
+            }else{
+                tipoR = new Tipo(tipos.STRING)
+            }
+
+            $$ = new Primitivo(tipoR, valor, @1.first_line, @1.first_column);
         }
     ;
 
@@ -509,7 +540,7 @@ INICIALES :
         }
     | tk_diagonal DERIVADOS DERIVACIONDIAGONAL
         {
-           $$ = new NodoX($1, $2.val, [...$3]);
+            $$ = new NodoX($1, $2.val, [...$3]);
         }
     | tk_diagonal tk_diagonal DERIVADOS DERIVACIONDIAGONAL
         {
@@ -522,6 +553,11 @@ INICIALES :
     | tk_node tk_parA tk_parC DERIVACIONDIAGONAL
         {
             $$ = new NodoX("", "node()", [...$4]);
+        }
+    | tk_identificadorXQUERY DERIVACIONDIAGONAL
+        {
+            $1 = $1.substring(1, $1.length)
+            $$ = new NodoX("", $1, [...$2]);
         }
     ;
 
@@ -566,6 +602,11 @@ DERIVADOSLIMITADO :
         {
             $$ = {val: $1 + "" + $2, pre: null};
         }
+    | tk_identificadorXQUERY
+        {
+            $1 = $1.substring(1, $1.length)
+            $$ = {val: $1, pre: null}
+        }
     ;
 
 DERIVADOS : 
@@ -595,5 +636,10 @@ ATRIBUTO :
     | tk_node tk_parA tk_ParC
         {
             $$ = "node()"
-        } 
+        }
+    | tk_identificadorXQUERY
+        {
+            $1 = $1.substring(1, $1.length)
+            $$ = $1
+        }
     ;

@@ -41,15 +41,16 @@ export class HomeComponent {
 
   //editor XML entrada
   xmlEntrada: any = `<?xml version="1.0" encoding="UTF-8"?>
+
 <bookstore>
-  <book>
-    <title lang="en">Harry Potter</title>
-    <price>29.99</price>
+  
+  <book category="COOKING">
+    <title lang="en">Everyday Italian</title>
+    <author>Giada De Laurentiis</author>
+    <year>2005</year>
+    <price>30.00</price>
   </book>
-  <book1>
-    <title lang="en">Learning XML</title>
-    <price>39.95</price>
-  </book1>
+  
 </bookstore>`;
   editorXMLEntradaOptions: any = {
     theme: 'gruvbox-dark',
@@ -115,6 +116,7 @@ export class HomeComponent {
 
   ngOnInit(){
     localStorage.clear();
+    localStorage.setItem("xml", this.xmlEntrada);
     let ascXquery = new XQUERYasc.AnalizadorXquery();
     ascXquery.ejecutarCodigo("");
   }

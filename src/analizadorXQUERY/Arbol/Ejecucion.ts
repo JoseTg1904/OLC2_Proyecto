@@ -22,7 +22,6 @@ export class EjecucionXpath {
             this.dot += this.ejecutarNodoArbol(this.objetos[0])
         }
         
-        console.log(this.dot)
         return this.dot
     }
 
