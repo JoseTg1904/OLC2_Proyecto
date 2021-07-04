@@ -158,6 +158,14 @@ pero todo esto se ignora*/
     const { Logico } = require('./Expresiones/Logico');
     const { NodoX } = require('./Expresiones/NodoX');
     const { EjecucionXpath } = require('./Arbol/Ejecucion');
+    
+    
+      const {ToUpper} = require('./Expresiones/uppercase');
+    const {ToLower} = require('./Expresiones/ToLower');
+    const {ToString} = require('./Expresiones/ToString');
+     const {Substrings} = require('./Expresiones/Substring');
+
+    const{ToNumber}=require('./Expresiones/ToNumber');
     /*const {Logico} = require('../Expresiones/Logico');
     const {Ternario} = require('../Expresiones/Ternario');
     const {Casteo} = require('../Expresiones/Casteo');
