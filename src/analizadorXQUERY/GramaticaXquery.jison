@@ -551,6 +551,8 @@ XPATH :
 
             $$ = new Primitivo(tipoR, valor, @1.first_line, @1.first_column);
         }
+
+
     ;
 
 INICIO : 
@@ -594,6 +596,7 @@ INICIALES :
             $1 = $1.substring(1, $1.length)
             $$ = new NodoX("", $1, [...$2]);
         }
+|EOF
     ;
 
 DIAGONALES : 
