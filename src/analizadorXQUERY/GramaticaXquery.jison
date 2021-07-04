@@ -191,7 +191,7 @@ pero todo esto se ignora*/
 %start INICIO_XQUERY
 %%
 
-INICIO_XQUERY : INSTRUCCIONES  EOF
+INICIO_XQUERY : INSTRUCCIONES  
     {
         produccion.push(`<INICIO_XQUERY> ::= <INSTRUCCIONES> EOF`);
         accion.push(`INICIO_XQUERY.Val ::= new Tree()`);
@@ -200,6 +200,7 @@ INICIO_XQUERY : INSTRUCCIONES  EOF
         arbol.produccion = produccion;
         return arbol;
     };
+    |EOF
 
 FUNCION:
     tk_declare tk_function MENU_LOCAL tk_dosPuntos
@@ -669,6 +670,16 @@ EXP_XQUERY:
             accion.push(`EXP_QUERY.Val = new LlamdaMetodo()`);
             $$ = new LlamadaMetodo($3, $5, @1.first_line, @1.first_column);
         } 
+      | tk_local tk_dosPuntos tk_identificador tk_parA  EXP_XQUERY tk_parC {  $$ = $1+$2+$3+$4+$5+$6} 
+    | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
+    | tk_upper tk_menos  tk_case tk_parA EXP_XQUERY tk_ParC {$$= new ToUpper($5, @1.first_line, @1.first_column)}
+    | tk_lower tk_menos  tk_case tk_parA EXP_XQUERY tk_ParC {$$= new ToLower($5, @1.first_line, @1.first_column)}
+    | tk_toString tk_parA EXP_XQUERY tk_ParC {$$= new ToString($3, @1.first_line, @1.first_column)}
+    |  tk_tonumber tk_parA EXP_XQUERY tk_ParC {$$= new ToNumber($3, @1.first_line, @1.first_column)}
+    |  tk_substring tk_parA EXP_XQUERY tk_ParC {$$= new Substrings($3, @1.first_line, @1.first_column)}
+     
+    |  
+        
  //   | EXP_XQUERY tk_parA EXP_XQUERY tk_parC  
     ;
 /*
@@ -713,6 +724,7 @@ XPATH :
 
             $$ = new Primitivo(tipoR, valor, @1.first_line, @1.first_column);
         }
+        |EOF
     ;
 
 INICIO:
