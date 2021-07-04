@@ -58,8 +58,12 @@
 "to"       {return "tk_to"}
 "at"       {return "tk_at"}
 "local"    {return "tk_local";}
-"gt"       { return "tk_gt"}
-"lt"       { return "tk_lt"}
+"gt"       { return "tk_mayor"}
+"lt"       { return "tk_menor"}
+"eq"       {return "tk_igual"}
+"ne"       {return "tk_distinto"}
+"le"       {return "tk_menorIgual"}
+"ge"       {return "tk_mayorIgual"}
 
 //conjunto de simbolos aceptados
 "|"  {return "tk_barra"}
@@ -174,8 +178,7 @@ pero todo esto se ignora*/
 %left tk_and
 %left tk_barra
 %left tk_igual tk_distinto
-%left tk_mayorIgual tk_menorIgual 
-%left tk_mayor tk_menor tk_lt tk_gt
+%left tk_mayorIgual tk_menorIgual tk_mayor tk_menor
 %left tk_llaveA tk_llaveC
 %left tk_div tk_asterisco
 %left tk_mas tk_menos
@@ -184,11 +187,10 @@ pero todo esto se ignora*/
 %start INICIO_XQUERY
 %%
 
-INICIO_XQUERY : INSTRUCCIONES  
+INICIO_XQUERY : INSTRUCCIONES  EOF
     {
         return new Tree($1); 
-    }
-    | EOF;
+    };
 
 FUNCION:
     tk_declare tk_function MENU_LOCAL tk_dosPuntos
@@ -333,6 +335,14 @@ Lista_Ciclo:
     |valor_if { $$ = $1;}
     ;
 
+
+
+valor_if:
+    EXP_XQUERY { $$ = $1}
+    | INSTRUCCIONES { $$ = $1}
+    |EOF
+;
+
 LISTA_ASIGNACION:
     LISTA_ASIGNACION tk_and ASIGNACION_SIMPLE
     | ASIGNACION_SIMPLE ;
@@ -446,14 +456,6 @@ EXP_XQUERY:
         {
             $$ = new Relacional($1, $3, '<', @1.first_line, @1.first_column);
         }
-    | EXP_XQUERY tk_gt EXP_XQUERY
-        {
-            $$ = new Relacional($1, $3, '>', @1.first_line, @1.first_column);
-        }
-    | EXP_XQUERY tk_lt EXP_XQUERY
-        {
-            $$ = new Relacional($1, $3, '<', @1.first_line, @1.first_column);
-        }
     | EXP_XQUERY tk_mayor EXP_XQUERY
         {
             $$ = new Relacional($1, $3, '>', @1.first_line, @1.first_column);
@@ -500,10 +502,10 @@ EXP_XQUERY:
         {
             $$ = new Identificador($1, @1.first_line, @1.first_column);
         }
-   // | tk_identificadorXQUERY OPCION_IDQ
-    //    {
-     //       $$ = new Identificador($1, @1.first_line, @1.first_column);
-      //  }
+    | tk_identificadorXQUERY //OPCION_IDQ
+        {
+            $$ = new Identificador($1, @1.first_line, @1.first_column);
+        }
     | tk_parA EXP_XQUERY tk_parC
         {
             $$ = $2
@@ -521,8 +523,9 @@ OPCION_IDQ:
     | {$$ = []};       
 
 XPATH :
-    INICIALES
+    INICIO
         {
+            console.log($1)
             let analizador = new AnalizadorASCXML();
             let buscador = new xpathBusqueda();
             let ejecu = new EjecucionXpath($1, "");
@@ -531,9 +534,7 @@ XPATH :
             let tabla = ret.objetos;
             let query = ejecu.ejecutarArbol();
 
-            if(query.includes("|")) {
-                buscador.getNodesByFilters("3", query, tabla);
-            }else if(query[0] !== "/" && query[0] !== "//"){
+            if(query[0] !== "/" && query[0] !== "//"){
                 buscador.getNodesByFilters("1", query, tabla)
             }else{
                 buscador.getNodesByFilters("2", query, tabla)
@@ -555,9 +556,18 @@ XPATH :
 
             $$ = new Primitivo(tipoR, valor, @1.first_line, @1.first_column);
         }
-    | EOF
     ;
 
+INICIO:
+    INICIO tk_barra INICIALES
+        {
+            $$.push($3)
+        }
+    | INICIALES
+        {
+            $$ = [$1]
+        }
+    ;
 
 INICIALES : 
     tk_punto DIAGONALES DERIVADOSLIMITADO DERIVACIONDIAGONAL

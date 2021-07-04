@@ -72,12 +72,12 @@
   }
 */
 var GramaticaXquery = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,13],$V1=[1,17],$V2=[1,16],$V3=[1,15],$V4=[1,18],$V5=[1,14],$V6=[1,12],$V7=[1,20],$V8=[1,5,7,20,26,39,52,59,67,72],$V9=[2,89],$Va=[1,29],$Vb=[1,30],$Vc=[1,31],$Vd=[1,26],$Ve=[1,27],$Vf=[1,28],$Vg=[1,34],$Vh=[23,74],$Vi=[14,54,64,75,76,77,78,79,80,81,82,83,84,85,86,87],$Vj=[1,5,7,20,26,39,52,55,59,67,72],$Vk=[1,57],$Vl=[1,54],$Vm=[1,43],$Vn=[1,44],$Vo=[1,45],$Vp=[1,46],$Vq=[1,47],$Vr=[1,48],$Vs=[1,49],$Vt=[1,50],$Vu=[1,51],$Vv=[1,52],$Vw=[1,53],$Vx=[1,55],$Vy=[1,56],$Vz=[1,5,7,14,20,23,26,39,52,54,55,59,64,67,69,72,75,76,77,78,79,80,81,82,83,84,85,86,87],$VA=[2,86],$VB=[1,66],$VC=[23,52,55,59],$VD=[1,5,7,20,26,39,52,54,55,59,67,72],$VE=[1,5,7,14,20,23,39,52,54,55,59,64,67,69,72,75,76,77,78,79,80,81,82,83,84,85,86,87],$VF=[1,90],$VG=[1,5,7,14,20,23,26,39,52,54,55,59,64,67,69,72,77,78,79,80,81,82,83,84,85,86,87],$VH=[1,5,7,14,20,23,26,39,52,54,55,59,64,67,69,72,78,80,81,82,83,84,85,86,87],$VI=[1,5,7,14,20,23,26,39,52,54,55,59,64,67,69,72,78,84,85,86,87],$VJ=[1,5,7,14,20,23,26,39,52,54,55,59,64,67,69,72,78,86,87],$VK=[1,104],$VL=[1,110],$VM=[1,117],$VN=[1,115],$VO=[1,113],$VP=[1,114],$VQ=[1,116],$VR=[1,120],$VS=[14,23,54,64,75,76,77,78,79,80,81,82,83,84,85,86,87],$VT=[1,5,7,20,23,26,39,52,55,59,67,72],$VU=[1,5,7,14,20,23,26,39,52,55,59,67,72],$VV=[1,130],$VW=[1,129],$VX=[1,137],$VY=[1,141],$VZ=[1,138],$V_=[1,135],$V$=[1,139],$V01=[1,140],$V11=[2,105],$V21=[14,23],$V31=[1,149],$V41=[11,25,79,93,99,100],$V51=[1,2,5,7,14,20,23,26,39,52,55,59,67,72,97],$V61=[1,192],$V71=[1,193],$V81=[1,194],$V91=[1,195],$Va1=[1,196],$Vb1=[2,5],$Vc1=[1,199],$Vd1=[14,19,22,23];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,11],$V1=[1,13],$V2=[1,17],$V3=[1,16],$V4=[1,15],$V5=[1,18],$V6=[1,14],$V7=[1,12],$V8=[5,7,20,26,39,52,54,55,59,67,72],$V9=[2,23],$Va=[5,7,20,39,52,54,55,59,64,67,72,75,76,77,78,79,80,81,82,83,84,85],$Vb=[2,90],$Vc=[1,29],$Vd=[1,31],$Ve=[1,30],$Vf=[1,32],$Vg=[1,26],$Vh=[1,27],$Vi=[1,28],$Vj=[1,35],$Vk=[20,54,55,64,75,76,77,78,79,80,81,82,83,84,85],$Vl=[1,41],$Vm=[1,42],$Vn=[23,74],$Vo=[14,54,64,75,76,77,78,79,80,81,82,83,84,85],$Vp=[5,7,20,26,39,52,55,59,67,72],$Vq=[1,60],$Vr=[1,57],$Vs=[1,48],$Vt=[1,49],$Vu=[1,50],$Vv=[1,51],$Vw=[1,52],$Vx=[1,53],$Vy=[1,54],$Vz=[1,55],$VA=[1,56],$VB=[1,58],$VC=[1,59],$VD=[5,7,14,20,23,26,39,52,54,55,59,64,67,69,72,75,76,77,78,79,80,81,82,83,84,85],$VE=[2,86],$VF=[2,87],$VG=[1,69],$VH=[23,52,55,59],$VI=[5,7,14,20,23,39,52,54,55,59,64,67,69,72,75,76,77,78,79,80,81,82,83,84,85],$VJ=[1,92],$VK=[5,7,14,20,23,26,39,52,54,55,59,64,67,69,72,77,78,79,80,81,82,83,84,85],$VL=[5,7,14,20,23,26,39,52,54,55,59,64,67,69,72,78,80,81,82,83,84,85],$VM=[5,7,14,20,23,26,39,52,54,55,59,64,67,69,72,78,84,85],$VN=[1,107],$VO=[1,113],$VP=[1,114],$VQ=[1,119],$VR=[1,117],$VS=[1,118],$VT=[1,120],$VU=[1,123],$VV=[1,124],$VW=[14,23,54,64,75,76,77,78,79,80,81,82,83,84,85],$VX=[5,7,20,23,26,39,52,54,55,59,67,72],$VY=[14,23,52,54,55,59,64,75,76,77,78,79,80,81,82,83,84,85],$VZ=[1,136],$V_=[2,107],$V$=[1,135],$V01=[5,7,14,20,23,26,39,52,54,55,59,67,72,91],$V11=[1,144],$V21=[1,148],$V31=[1,145],$V41=[1,142],$V51=[1,146],$V61=[1,147],$V71=[14,23],$V81=[1,155],$V91=[11,25,79,93,99,100],$Va1=[2,5,7,14,20,23,26,39,52,54,55,59,67,72,91,97],$Vb1=[1,199],$Vc1=[1,200],$Vd1=[1,201],$Ve1=[1,202],$Vf1=[1,203],$Vg1=[2,4],$Vh1=[1,206],$Vi1=[14,19,22,23];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"INICIO_XQUERY":3,"INSTRUCCIONES":4,"EOF":5,"FUNCION":6,"tk_declare":7,"tk_function":8,"MENU_LOCAL":9,"tk_dosPuntos":10,"tk_identificador":11,"tk_parA":12,"LISTA_DECLARACION_FUNCION":13,"tk_parC":14,"tk_as":15,"tk_xs":16,"TIPO_DATO":17,"MENU_INTERROGA":18,"llaveA":19,"llaveC":20,"tk_punto_coma":21,"tk_Interroga":22,"tk_coma":23,"DECLARACION_FUNCION":24,"tk_identificadorXQUERY":25,"tk_local":26,"tk_int":27,"tk_string":28,"tk_double":29,"tk_DECIMAL":30,"tk_integer":31,"INSTRUCCION":32,"DECLARACION_GLOBAL":33,"IF":34,"WHERE":35,"FOR":36,"LLAMADA_FUNCION":37,"RETURN_CICLO":38,"tk_for":39,"DECLARACIONES_FOR":40,"OPCIONES_FOR":41,"DECLARACION_FOR":42,"OPCION_AT":43,"tk_in":44,"FOR_REC":45,"tk_at":46,"CORDERNADA":47,"EXP_XQUERY":48,"XPATH":49,"OPCION_FOR":50,"ORDER":51,"tk_where":52,"CONDITIONES_WHERE":53,"tk_and":54,"tk_order":55,"tk_by":56,"LISTA_ORDER":57,"ORDER_":58,"tk_return":59,"Lista_Ciclo":60,"valor_if":61,"LISTA_ASIGNACION":62,"ASIGNACION_SIMPLE":63,"tk_igual":64,"valores_if":65,"TK":66,"tk_if":67,"tk_then":68,"tk_else":69,"Parametros_llamada":70,"Parametros_funcion":71,"tk_let":72,"LISTA_ID":73,"tk_igualXQUERY":74,"tk_menos":75,"tk_mas":76,"tk_div":77,"tk_mod":78,"tk_asterisco":79,"tk_menor":80,"tk_gt":81,"tk_lt":82,"tk_mayor":83,"tk_menorIgual":84,"tk_mayorIgual":85,"tk_distinto":86,"tk_or":87,"tk_entero":88,"tk_decimal":89,"tk_stringTexto":90,"OPCION_IDQ":91,"INICIALES":92,"tk_punto":93,"DIAGONALES":94,"DERIVADOSLIMITADO":95,"DERIVACIONDIAGONAL":96,"tk_diagonal":97,"DERIVADOS":98,"tk_node":99,"tk_arroba":100,"ATRIBUTO":101,"tk_ParC":102,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",7:"tk_declare",8:"tk_function",10:"tk_dosPuntos",11:"tk_identificador",12:"tk_parA",14:"tk_parC",15:"tk_as",16:"tk_xs",19:"llaveA",20:"llaveC",21:"tk_punto_coma",22:"tk_Interroga",23:"tk_coma",25:"tk_identificadorXQUERY",26:"tk_local",27:"tk_int",28:"tk_string",29:"tk_double",30:"tk_DECIMAL",31:"tk_integer",39:"tk_for",44:"tk_in",46:"tk_at",52:"tk_where",54:"tk_and",55:"tk_order",56:"tk_by",59:"tk_return",61:"valor_if",64:"tk_igual",66:"TK",67:"tk_if",68:"tk_then",69:"tk_else",72:"tk_let",74:"tk_igualXQUERY",75:"tk_menos",76:"tk_mas",77:"tk_div",78:"tk_mod",79:"tk_asterisco",80:"tk_menor",81:"tk_gt",82:"tk_lt",83:"tk_mayor",84:"tk_menorIgual",85:"tk_mayorIgual",86:"tk_distinto",87:"tk_or",88:"tk_entero",89:"tk_decimal",90:"tk_stringTexto",93:"tk_punto",97:"tk_diagonal",99:"tk_node",100:"tk_arroba",102:"tk_ParC"},
-productions_: [0,[3,1],[3,1],[6,17],[18,1],[18,0],[13,3],[13,1],[24,6],[9,1],[17,1],[17,1],[17,1],[17,1],[17,1],[4,2],[4,1],[32,1],[32,1],[32,1],[32,1],[32,1],[32,1],[32,1],[32,1],[36,3],[40,3],[40,1],[42,4],[43,2],[43,0],[47,5],[45,1],[45,1],[45,1],[41,2],[41,1],[50,1],[50,1],[50,1],[35,2],[53,3],[53,1],[51,3],[57,3],[57,1],[58,2],[58,1],[38,2],[60,3],[60,1],[62,3],[62,1],[63,3],[63,4],[34,6],[34,8],[34,8],[65,2],[65,1],[37,6],[70,3],[70,1],[71,3],[71,1],[33,4],[73,3],[73,1],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,1],[48,1],[48,1],[48,1],[48,3],[48,6],[48,0],[91,1],[91,0],[49,1],[49,1],[92,4],[92,2],[92,3],[92,4],[92,2],[92,4],[92,2],[94,1],[94,2],[94,2],[96,3],[96,0],[95,1],[95,1],[95,3],[95,2],[95,1],[98,1],[98,2],[98,1],[101,1],[101,1],[101,3],[101,1]],
+symbols_: {"error":2,"INICIO_XQUERY":3,"INSTRUCCIONES":4,"EOF":5,"FUNCION":6,"tk_declare":7,"tk_function":8,"MENU_LOCAL":9,"tk_dosPuntos":10,"tk_identificador":11,"tk_parA":12,"LISTA_DECLARACION_FUNCION":13,"tk_parC":14,"tk_as":15,"tk_xs":16,"TIPO_DATO":17,"MENU_INTERROGA":18,"llaveA":19,"llaveC":20,"tk_punto_coma":21,"tk_Interroga":22,"tk_coma":23,"DECLARACION_FUNCION":24,"tk_identificadorXQUERY":25,"tk_local":26,"tk_int":27,"tk_string":28,"tk_double":29,"tk_DECIMAL":30,"tk_integer":31,"INSTRUCCION":32,"DECLARACION_GLOBAL":33,"IF":34,"WHERE":35,"FOR":36,"LLAMADA_FUNCION":37,"RETURN_CICLO":38,"tk_for":39,"DECLARACIONES_FOR":40,"OPCIONES_FOR":41,"DECLARACION_FOR":42,"OPCION_AT":43,"tk_in":44,"FOR_REC":45,"tk_at":46,"CORDERNADA":47,"EXP_XQUERY":48,"XPATH":49,"OPCION_FOR":50,"ORDER":51,"tk_where":52,"CONDITIONES_WHERE":53,"tk_and":54,"tk_order":55,"tk_by":56,"LISTA_ORDER":57,"ORDER_":58,"tk_return":59,"Lista_Ciclo":60,"valor_if":61,"LISTA_ASIGNACION":62,"ASIGNACION_SIMPLE":63,"tk_igual":64,"valores_if":65,"TK":66,"tk_if":67,"tk_then":68,"tk_else":69,"Parametros_llamada":70,"Parametros_funcion":71,"tk_let":72,"LISTA_ID":73,"tk_igualXQUERY":74,"tk_menos":75,"tk_mas":76,"tk_div":77,"tk_mod":78,"tk_asterisco":79,"tk_menor":80,"tk_mayor":81,"tk_menorIgual":82,"tk_mayorIgual":83,"tk_distinto":84,"tk_or":85,"tk_entero":86,"tk_decimal":87,"tk_stringTexto":88,"OPCION_IDQ":89,"INICIO":90,"tk_barra":91,"INICIALES":92,"tk_punto":93,"DIAGONALES":94,"DERIVADOSLIMITADO":95,"DERIVACIONDIAGONAL":96,"tk_diagonal":97,"DERIVADOS":98,"tk_node":99,"tk_arroba":100,"ATRIBUTO":101,"tk_ParC":102,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",7:"tk_declare",8:"tk_function",10:"tk_dosPuntos",11:"tk_identificador",12:"tk_parA",14:"tk_parC",15:"tk_as",16:"tk_xs",19:"llaveA",20:"llaveC",21:"tk_punto_coma",22:"tk_Interroga",23:"tk_coma",25:"tk_identificadorXQUERY",26:"tk_local",27:"tk_int",28:"tk_string",29:"tk_double",30:"tk_DECIMAL",31:"tk_integer",39:"tk_for",44:"tk_in",46:"tk_at",52:"tk_where",54:"tk_and",55:"tk_order",56:"tk_by",59:"tk_return",64:"tk_igual",66:"TK",67:"tk_if",68:"tk_then",69:"tk_else",72:"tk_let",74:"tk_igualXQUERY",75:"tk_menos",76:"tk_mas",77:"tk_div",78:"tk_mod",79:"tk_asterisco",80:"tk_menor",81:"tk_mayor",82:"tk_menorIgual",83:"tk_mayorIgual",84:"tk_distinto",85:"tk_or",86:"tk_entero",87:"tk_decimal",88:"tk_stringTexto",91:"tk_barra",93:"tk_punto",97:"tk_diagonal",99:"tk_node",100:"tk_arroba",102:"tk_ParC"},
+productions_: [0,[3,2],[6,17],[18,1],[18,0],[13,3],[13,1],[24,6],[9,1],[17,1],[17,1],[17,1],[17,1],[17,1],[4,2],[4,1],[32,1],[32,1],[32,1],[32,1],[32,1],[32,1],[32,1],[32,1],[36,3],[40,3],[40,1],[42,4],[43,2],[43,0],[47,5],[45,1],[45,1],[45,1],[41,2],[41,1],[50,1],[50,1],[50,1],[35,2],[53,3],[53,1],[51,3],[57,3],[57,1],[58,2],[58,1],[38,2],[60,3],[60,1],[61,1],[61,1],[61,1],[62,3],[62,1],[63,3],[63,4],[34,6],[34,8],[34,8],[65,2],[65,1],[37,6],[70,3],[70,1],[71,3],[71,1],[33,4],[73,3],[73,1],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,3],[48,1],[48,1],[48,1],[48,1],[48,1],[48,3],[48,6],[48,0],[89,1],[89,0],[49,1],[90,3],[90,1],[92,4],[92,2],[92,3],[92,4],[92,2],[92,4],[92,2],[94,1],[94,2],[94,2],[96,3],[96,0],[95,1],[95,1],[95,3],[95,2],[95,1],[98,1],[98,2],[98,1],[101,1],[101,1],[101,3],[101,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -85,79 +85,82 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
 
-        return new Tree($$[$0]); 
+        return new Tree($$[$0-1]); 
     
 break;
-case 3:
+case 2:
 
             this.$ = new DeclaracionMetodo($$[$0-5], $$[$0-12], $$[$0-10], $$[$0-2], _$[$0-16].first_line, _$[$0-16].first_column);
         
 break;
-case 4: case 101:
+case 3: case 103:
 
             this.$ = $$[$0]
         
 break;
-case 5:
+case 4:
  
             this.$ = ''
         
 break;
-case 6:
+case 5:
  
             this.$.push($$[$0]);
         
 break;
-case 7: case 62: case 64:
+case 6: case 64: case 66: case 95:
 
             this.$ = [$$[$0]]
         
 break;
-case 8:
+case 7:
 
             this.$ = new Declaracion($$[$0-1], $$[$0-5], null, _$[$0-5].first_line, _$[$0-5].first_column);
         
 break;
-case 9:
+case 8:
 this.$=$$[$0];
 break;
-case 10: case 14:
+case 9: case 13:
 this.$ = new Tipo(tipos.ENTERO);
 break;
-case 11:
+case 10:
 this.$ = new Tipo(tipos.STRING);
 break;
-case 12: case 13:
+case 11: case 12:
 this.$ = new Tipo(tipos.DECIMAL);
 break;
-case 15:
+case 14:
  this.$.push($$[$0]); 
 break;
-case 16:
+case 15:
  this.$ = [$$[$0]] 
 break;
-case 17: case 18: case 19: case 20: case 21: case 22: case 23:
+case 16: case 17: case 18: case 19: case 20: case 21: case 22:
 this.$=$$[$0]
 break;
-case 48:
+case 47:
 
             this.$ = new Retorno($$[$0], _$[$0-1].first_line, _$[$0-1].first_column)
         
 break;
-case 49:
+case 48:
  $$[$0-2].push($$[$0]); this.$ = $$[$0-2];
 break;
-case 50:
+case 49:
  this.$ = $$[$0];
 break;
-case 55:
+case 50: case 51: case 91:
+ this.$ = $$[$0]
+break;
+case 57:
 
             this.$ = new If($$[$0-3], 
                     [new Retorno($$[$0], _$[$0-5].first_line, _$[$0-5].first_column)], 
                     [], _$[$0-5].first_line, _$[$0-5].first_column);
         
 break;
-case 56:
+case 58:
 
             this.$ = new If($$[$0-5], 
                     [new Retorno($$[$0-2], _$[$0-7].first_line, _$[$0-7].first_column)], 
@@ -165,7 +168,7 @@ case 56:
                     _$[$0-7].first_line, _$[$0-7].first_column);
         
 break;
-case 57:
+case 59:
 
             this.$ = new If($$[$0-5], 
                 [new Retorno($$[$0-2], _$[$0-7].first_line, _$[$0-7].first_column)], 
@@ -173,73 +176,73 @@ case 57:
                 _$[$0-7].first_line, _$[$0-7].first_column);
         
 break;
-case 58:
+case 60:
 
             this.$.push($$[$0]);
         
 break;
-case 59:
+case 61:
  
             this.$ = [$$[$0]]
         
 break;
-case 60:
+case 62:
 
             this.$ = new Print(new LlamadaMetodo($$[$0-3], $$[$0-1], _$[$0-5].first_line, _$[$0-5].first_column), _$[$0-5].first_line, _$[$0-5].first_column)
         
 break;
-case 61:
+case 63:
  
             this.$.push($$[$0]); 
         
 break;
-case 63:
+case 65: case 94:
 
             this.$.push($$[$0])
         
 break;
-case 65:
+case 67:
 
             this.$ = new Declaracion(new Tipo(tipos.VARIABLE), $$[$0-2], $$[$0], _$[$0-3].first_line, _$[$0-3].first_column);
         
 break;
-case 66:
+case 68:
 $$[$0-2].push($$[$0]); this.$=$$[$0-2];  
 break;
-case 67:
+case 69:
 this.$ = $$[$0]
 break;
-case 68:
+case 70:
 
             this.$ = new Aritmetica($$[$0-2], $$[$0], '-', _$[$0-2].first_line, _$[$0-2].first_column);
         
 break;
-case 69:
+case 71:
 
             this.$ = new Aritmetica($$[$0-2], $$[$0], '+', _$[$0-2].first_line, _$[$0-2].first_column);
         
 break;
-case 70:
+case 72:
 
             this.$ = new Aritmetica($$[$0-2], $$[$0], '/', _$[$0-2].first_line, _$[$0-2].first_column);
         
 break;
-case 71:
+case 73:
 
             this.$ = new Aritmetica($$[$0-2], $$[$0], '%', _$[$0-2].first_line, _$[$0-2].first_column);
         
 break;
-case 72:
+case 74:
 
             this.$ = new Aritmetica($$[$0-2], $$[$0], '*', _$[$0-2].first_line, _$[$0-2].first_column);
         
 break;
-case 73: case 75:
+case 75:
 
             this.$ = new Relacional($$[$0-2], $$[$0], '<', _$[$0-2].first_line, _$[$0-2].first_column);
         
 break;
-case 74: case 76:
+case 76:
 
             this.$ = new Relacional($$[$0-2], $$[$0], '>', _$[$0-2].first_line, _$[$0-2].first_column);
         
@@ -284,29 +287,27 @@ case 85:
             this.$ = new Primitivo(new Tipo(tipos.STRING), $$[$0], _$[$0].first_line, _$[$0].first_column);
         
 break;
-case 86:
+case 86: case 87:
 
             this.$ = new Identificador($$[$0], _$[$0].first_line, _$[$0].first_column);
         
 break;
-case 87:
+case 88:
 
             this.$ = $$[$0-1]
         
 break;
-case 88:
+case 89:
 
             this.$ = new LlamadaMetodo($$[$0-3], $$[$0-1], _$[$0-5].first_line, _$[$0-5].first_column);
         
 break;
-case 90:
- this.$ = $$[$0]
-break;
-case 91:
+case 92:
 this.$ = []
 break;
-case 92:
+case 93:
 
+            console.log($$[$0])
             let analizador = new AnalizadorASCXML();
             let buscador = new xpathBusqueda();
             let ejecu = new EjecucionXpath($$[$0], "");
@@ -315,9 +316,7 @@ case 92:
             let tabla = ret.objetos;
             let query = ejecu.ejecutarArbol();
 
-            if(query.includes("|")) {
-                buscador.getNodesByFilters("3", query, tabla);
-            }else if(query[0] !== "/" && query[0] !== "//"){
+            if(query[0] !== "/" && query[0] !== "//"){
                 buscador.getNodesByFilters("1", query, tabla)
             }else{
                 buscador.getNodesByFilters("2", query, tabla)
@@ -340,100 +339,100 @@ case 92:
             this.$ = new Primitivo(tipoR, valor, _$[$0].first_line, _$[$0].first_column);
         
 break;
-case 94:
+case 96:
 
             this.$ = new NodoX("", ".", [new NodoX($$[$0-2], $$[$0-1].val, [...$$[$0]])]);
         
 break;
-case 95: case 98:
+case 97: case 100:
 
             this.$ = new NodoX("", $$[$0-1], [...$$[$0]]);
         
 break;
-case 96:
+case 98:
 
             this.$ = new NodoX($$[$0-2], $$[$0-1].val, [...$$[$0]]);
         
 break;
-case 97:
+case 99:
 
             this.$ = new NodoX("//", $$[$0-1].val, [...$$[$0]]);
         
 break;
-case 99:
+case 101:
 
             this.$ = new NodoX("", "node()", [...$$[$0]]);
         
 break;
-case 100:
+case 102:
 
             $$[$0-1] = $$[$0-1].substring(1, $$[$0-1].length)
             this.$ = new NodoX("", $$[$0-1], [...$$[$0]]);
         
 break;
-case 102:
+case 104:
 
             this.$ = "//"
         
 break;
-case 104:
+case 106:
 
             this.$ = new Array();
             this.$.push(new NodoX($$[$0-2], $$[$0-1].val, [...$$[$0]])); 
         
 break;
-case 105:
+case 107:
 
             this.$ = [];
         
 break;
-case 106: case 107:
+case 108: case 109:
 
             this.$ = {val: $$[$0], pre: null};
         
 break;
-case 108:
+case 110:
 
             this.$ = {val: "node()", pre: null}
         
 break;
-case 109:
+case 111:
 
             this.$ = {val: $$[$0-1] + "" + $$[$0], pre: null};
         
 break;
-case 110:
+case 112:
 
             $$[$0] = $$[$0].substring(1, $$[$0].length)
             this.$ = {val: $$[$0], pre: null}
         
 break;
-case 111:
+case 113:
 
             this.$ = {val: $$[$0], pre: null}; 
         
 break;
-case 112:
+case 114:
 
             this.$ = {val: "..", pre: null}; 
         
 break;
-case 113:
+case 115:
 
             this.$ = $$[$0]; 
         
 break;
-case 114: case 115:
+case 116: case 117:
 
             this.$ = $$[$0];
         
 break;
-case 116:
+case 118:
 
             this.$ = "node()"
         
 break;
-case 117:
+case 119:
 
             $$[$0] = $$[$0].substring(1, $$[$0].length)
             this.$ = $$[$0]
@@ -441,8 +440,8 @@ case 117:
 break;
 }
 },
-table: [{3:1,4:2,5:[1,3],6:6,7:$V0,26:$V1,32:4,33:5,34:7,35:8,36:9,37:10,38:11,39:$V2,52:$V3,59:$V4,67:$V5,72:$V6},{1:[3]},{1:[2,1],5:$V7,6:6,7:$V0,26:$V1,32:19,33:5,34:7,35:8,36:9,37:10,38:11,39:$V2,52:$V3,59:$V4,67:$V5,72:$V6},o([1,5,7,26,39,52,59,67,72],[2,2]),o($V8,[2,16]),o($V8,[2,17]),o($V8,[2,18]),o($V8,[2,19]),o($V8,[2,20]),o($V8,[2,21]),o($V8,[2,22]),o($V8,[2,23]),{25:[1,22],73:21},{8:[1,23]},{12:[1,24]},o([1,5,7,20,39,52,54,55,59,64,67,72,75,76,77,78,79,80,81,82,83,84,85,86,87],$V9,{48:25,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),{25:$Vg,40:32,42:33},{10:[1,35]},{60:36,61:[1,37]},o($V8,[2,15]),o($V8,[2,24]),{23:[1,39],74:[1,38]},o($Vh,[2,67]),{9:40,26:[1,41]},o($Vi,$V9,{48:42,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($Vj,[2,40],{54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy}),o($Vz,[2,83]),o($Vz,[2,84]),o($Vz,[2,85]),o($Vz,$VA),o($Vi,$V9,{48:58,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),{10:[1,59]},{23:[1,61],35:63,38:65,41:60,50:62,51:64,52:$V3,55:$VB,59:$V4},o($VC,[2,27]),{43:67,44:[2,30],46:[1,68]},{11:[1,69]},o($Vj,[2,48],{54:[1,70]}),o($VD,[2,50]),o([1,5,7,20,39,52,54,59,64,67,72,75,76,77,78,79,80,81,82,83,84,85,86,87],$V9,{48:71,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),{25:[1,72]},{10:[1,73]},{10:[2,9]},{14:[1,74],54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy},o($VE,$V9,{48:75,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:76,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:77,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:78,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:79,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:80,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:81,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:82,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:83,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:84,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:85,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:86,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:87,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:88,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VE,$V9,{48:89,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),{14:$VF,54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy},{11:[1,91]},o([1,5,7,20,26,39,67,72],[2,25],{35:63,51:64,38:65,50:92,52:$V3,55:$VB,59:$V4}),{25:$Vg,42:93},o($Vj,[2,36]),o($Vj,[2,37]),o($Vj,[2,38]),o($Vj,[2,39]),{56:[1,94]},{44:[1,95]},{25:[1,96]},{12:[1,97]},{61:[1,98]},o($V8,[2,65],{54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy}),o($Vh,[2,66]),{11:[1,99]},{68:[1,100]},o($Vz,[2,68]),o($Vz,[2,69]),o($VG,[2,70],{75:$Vm,76:$Vn}),o([1,5,7,14,20,23,26,39,52,55,59,67,69,72,78],[2,71],{54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy}),o($VG,[2,72],{75:$Vm,76:$Vn}),o($VH,[2,73],{75:$Vm,76:$Vn,77:$Vo,79:$Vq}),o($VH,[2,74],{75:$Vm,76:$Vn,77:$Vo,79:$Vq}),o($VH,[2,75],{75:$Vm,76:$Vn,77:$Vo,79:$Vq}),o($VH,[2,76],{75:$Vm,76:$Vn,77:$Vo,79:$Vq}),o($VI,[2,77],{75:$Vm,76:$Vn,77:$Vo,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu}),o($VI,[2,78],{75:$Vm,76:$Vn,77:$Vo,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu}),o($VJ,[2,79],{75:$Vm,76:$Vn,77:$Vo,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw}),o($VJ,[2,80],{75:$Vm,76:$Vn,77:$Vo,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw}),o([1,5,7,14,20,23,26,39,52,55,59,67,69,72,78,87],[2,81],{54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx}),o([1,5,7,14,20,23,26,39,52,54,55,59,67,69,72,78,87],[2,82],{64:$Vl,75:$Vm,76:$Vn,77:$Vo,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx}),o($Vz,[2,87]),{12:[1,101]},o($Vj,[2,35]),o($VC,[2,26]),{25:$VK,57:102,58:103},o([23,52,54,55,59,64,75,76,77,78,80,81,82,83,84,85,86,87],$V9,{45:105,49:106,48:107,47:108,92:109,5:$VL,11:[1,111],12:[1,112],25:$VM,26:$Vc,79:$VN,88:$Vd,89:$Ve,90:$Vf,93:$VO,97:$VP,99:$VQ}),{44:[2,29]},{5:$VL,11:$VR,25:$VM,49:119,70:118,79:$VN,92:109,93:$VO,97:$VP,99:$VQ},o($VD,[2,49]),{12:[1,121]},o([1,5,7,20,39,52,54,59,64,67,69,72,75,76,77,78,79,80,81,82,83,84,85,86,87],$V9,{48:122,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VS,$V9,{71:123,48:124,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($Vj,[2,43],{23:[1,125]}),o($VT,[2,45]),o([1,7,20,23,26,39,52,55,59,67,72],[2,47],{92:109,49:126,5:$VL,11:$VR,25:$VM,79:$VN,93:$VO,97:$VP,99:$VQ}),o($VC,[2,28]),o($VC,[2,32]),o($VC,[2,33],{54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy}),o($VC,[2,34]),o($VU,[2,92]),o($VU,[2,93]),o([23,52,54,55,59,64,75,76,77,78,79,80,81,82,83,84,85,86,87],$VA,{96:127,94:128,2:$VV,97:$VW}),o($VS,$V9,{48:131,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),{2:$VV,94:132,97:$VW},{11:$VX,25:$VY,79:$VZ,93:$V_,95:136,97:[1,134],98:133,99:$V$,100:$V01},o($VU,$V11,{94:128,96:142,2:$VV,97:$VW}),{12:[1,143]},o($VU,$V11,{94:128,96:144,2:$VV,97:$VW}),{14:[1,145],23:[1,146]},o($V21,[2,62]),o($VU,$V11,{96:127,94:128,2:$VV,97:$VW}),{13:147,24:148,25:$V31},o($V8,[2,55],{54:$Vk,64:$Vl,69:[1,150],75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy}),{14:[1,151],23:[1,152]},o($V21,[2,64],{54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy}),{25:$VK,58:153},o($VT,[2,46]),o($VU,[2,95]),{11:$VX,25:$VY,79:$VZ,93:$V_,95:136,98:154,99:$V$,100:$V01},o($V41,[2,101],{97:[1,155]}),{97:[1,156]},{14:$VF,23:[1,157],54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy},{11:$VX,25:$VY,79:$VZ,95:158,99:$V$,100:$V01},o($VU,$V11,{94:128,96:159,2:$VV,97:$VW}),{11:$VX,25:$VY,79:$VZ,93:$V_,95:136,98:160,99:$V$,100:$V01},o($V51,[2,111],{93:[1,161]}),o($V51,[2,113]),o($V51,[2,106]),o($V51,[2,107]),{12:[1,162]},{11:[1,165],25:[1,167],79:[1,164],99:[1,166],101:163},o($V51,[2,110]),o($VU,[2,98]),{14:[1,168]},o($VU,[2,100]),o($V8,[2,60]),{5:$VL,11:$VR,25:$VM,49:169,79:$VN,92:109,93:$VO,97:$VP,99:$VQ},{14:[1,170],23:[1,171]},o($V21,[2,7]),{15:[1,172]},o([1,5,7,20,39,52,54,59,64,72,75,76,77,78,79,80,81,82,83,84,85,86,87],$V9,{48:173,34:174,11:$Va,12:$Vb,26:$Vc,67:$V5,88:$Vd,89:$Ve,90:$Vf}),o($Vz,[2,88]),o($VS,$V9,{48:175,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VT,[2,44]),o($VU,$V11,{94:128,96:176,2:$VV,97:$VW}),o($V41,[2,102]),o($V41,[2,103]),o($Vi,$V9,{48:177,11:$Va,12:$Vb,26:$Vc,88:$Vd,89:$Ve,90:$Vf}),o($VU,$V11,{94:128,96:178,2:$VV,97:$VW}),o($VU,[2,96]),o($VU,$V11,{94:128,96:179,2:$VV,97:$VW}),o($V51,[2,112]),{14:[1,180]},o($V51,[2,109]),o($V51,[2,114]),o($V51,[2,115]),{12:[1,181]},o($V51,[2,117]),o($VU,$V11,{94:128,96:182,2:$VV,97:$VW}),o($V21,[2,61]),{15:[1,183]},{24:184,25:$V31},{16:[1,185]},o($V8,[2,56],{54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy}),o($V8,[2,57]),o($V21,[2,63],{54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy}),o($VU,[2,104]),{14:[1,186],54:$Vk,64:$Vl,75:$Vm,76:$Vn,77:$Vo,78:$Vp,79:$Vq,80:$Vr,81:$Vs,82:$Vt,83:$Vu,84:$Vv,85:$Vw,86:$Vx,87:$Vy},o($VU,[2,94]),o($VU,[2,97]),o($V51,[2,108]),{102:[1,187]},o($VU,[2,99]),{16:[1,188]},o($V21,[2,6]),{10:[1,189]},o($VC,[2,31]),o($V51,[2,116]),{10:[1,190]},{17:191,27:$V61,28:$V71,29:$V81,30:$V91,31:$Va1},{17:197,27:$V61,28:$V71,29:$V81,30:$V91,31:$Va1},o($V21,$Vb1,{18:198,22:$Vc1}),o($Vd1,[2,10]),o($Vd1,[2,11]),o($Vd1,[2,12]),o($Vd1,[2,13]),o($Vd1,[2,14]),{18:200,19:$Vb1,22:$Vc1},o($V21,[2,8]),o([14,19,23],[2,4]),{19:[1,201]},{4:202,5:$V7,6:6,7:$V0,26:$V1,32:4,33:5,34:7,35:8,36:9,37:10,38:11,39:$V2,52:$V3,59:$V4,67:$V5,72:$V6},{5:$V7,6:6,7:$V0,20:[1,203],26:$V1,32:19,33:5,34:7,35:8,36:9,37:10,38:11,39:$V2,52:$V3,59:$V4,67:$V5,72:$V6},{21:[1,204]},o($V8,[2,3])],
-defaultActions: {41:[2,9],96:[2,29]},
+table: [{3:1,4:2,5:$V0,6:5,7:$V1,26:$V2,32:3,33:4,34:6,35:7,36:8,37:9,38:10,39:$V3,52:$V4,59:$V5,67:$V6,72:$V7},{1:[3]},{5:[1,19],6:5,7:$V1,26:$V2,32:20,33:4,34:6,35:7,36:8,37:9,38:10,39:$V3,52:$V4,59:$V5,67:$V6,72:$V7},o($V8,[2,15]),o($V8,[2,16]),o($V8,[2,17]),o($V8,[2,18]),o($V8,[2,19]),o($V8,[2,20]),o($V8,[2,21]),o($V8,[2,22]),o($V8,$V9),{25:[1,22],73:21},{8:[1,23]},{12:[1,24]},o($Va,$Vb,{48:25,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),{25:$Vj,40:33,42:34},{10:[1,36]},o($Vk,$Vb,{32:3,33:4,6:5,34:6,35:7,36:8,37:9,38:10,60:37,61:38,48:39,4:40,5:$Vl,7:$V1,11:$Vc,12:$Vd,25:$Ve,26:$Vm,39:$V3,52:$V4,59:$V5,67:$V6,72:$V7,86:$Vg,87:$Vh,88:$Vi}),o([5,7,26,39,52,59,67,72],$V9,{1:[2,1]}),o($V8,[2,14]),{23:[1,44],74:[1,43]},o($Vn,[2,69]),{9:45,26:[1,46]},o($Vo,$Vb,{48:47,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($Vp,[2,39],{54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC}),o($VD,[2,83]),o($VD,[2,84]),o($VD,[2,85]),o($VD,$VE),o($VD,$VF),o($Vo,$Vb,{48:61,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),{10:[1,62]},{23:[1,64],35:66,38:68,41:63,50:65,51:67,52:$V4,55:$VG,59:$V5},o($VH,[2,26]),{43:70,44:[2,29],46:[1,71]},{11:[1,72]},o($Vp,[2,47],{54:[1,73]}),o($V8,[2,49]),o($Vp,[2,50],{54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC}),o([20,54,55],[2,51],{33:4,6:5,34:6,35:7,36:8,37:9,38:10,32:20,5:$V0,7:$V1,26:$V2,39:$V3,52:$V4,59:$V5,67:$V6,72:$V7}),o($V8,[2,52]),{10:[1,74]},o($Va,$Vb,{48:75,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),{25:[1,76]},{10:[1,77]},{10:[2,8]},{14:[1,78],54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC},o($VI,$Vb,{48:79,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:80,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:81,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:82,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:83,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:84,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:85,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:86,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:87,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:88,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:89,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:90,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VI,$Vb,{48:91,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),{14:$VJ,54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC},{11:[1,93]},o([5,7,20,26,39,54,67,72],[2,24],{35:66,51:67,38:68,50:94,52:$V4,55:$VG,59:$V5}),{25:$Vj,42:95},o($V8,[2,35]),o($V8,[2,36]),o($V8,[2,37]),o($V8,[2,38]),{56:[1,96]},{44:[1,97]},{25:[1,98]},{12:[1,99]},o($Vk,$Vb,{32:3,33:4,6:5,34:6,35:7,36:8,37:9,38:10,48:39,4:40,61:100,5:$Vl,7:$V1,11:$Vc,12:$Vd,25:$Ve,26:$Vm,39:$V3,52:$V4,59:$V5,67:$V6,72:$V7,86:$Vg,87:$Vh,88:$Vi}),{11:[1,101]},o($Vp,[2,67],{54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC}),o($Vn,[2,68]),{11:[1,102]},{68:[1,103]},o($VD,[2,70]),o($VD,[2,71]),o($VK,[2,72],{75:$Vs,76:$Vt}),o([5,7,14,20,23,26,39,52,55,59,67,69,72,78],[2,73],{54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC}),o($VK,[2,74],{75:$Vs,76:$Vt}),o($VL,[2,75],{75:$Vs,76:$Vt,77:$Vu,79:$Vw}),o($VL,[2,76],{75:$Vs,76:$Vt,77:$Vu,79:$Vw}),o($VL,[2,77],{75:$Vs,76:$Vt,77:$Vu,79:$Vw}),o($VL,[2,78],{75:$Vs,76:$Vt,77:$Vu,79:$Vw}),o($VM,[2,79],{75:$Vs,76:$Vt,77:$Vu,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA}),o($VM,[2,80],{75:$Vs,76:$Vt,77:$Vu,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA}),o([5,7,14,20,23,26,39,52,55,59,67,69,72,78,85],[2,81],{54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB}),o([5,7,14,20,23,26,39,52,54,55,59,67,69,72,78,85],[2,82],{64:$Vr,75:$Vs,76:$Vt,77:$Vu,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB}),o($VD,[2,88]),{12:[1,104]},o($V8,[2,34]),o($VH,[2,25]),{25:$VN,57:105,58:106},o([23,52,54,55,59,64,75,76,77,78,80,81,82,83,84,85],$Vb,{45:108,49:109,48:110,47:111,90:112,92:116,11:$VO,12:[1,115],25:$VP,26:$Vf,79:$VQ,86:$Vg,87:$Vh,88:$Vi,93:$VR,97:$VS,99:$VT}),{44:[2,28]},{11:$VU,25:$VV,49:122,70:121,79:$VQ,90:112,92:116,93:$VR,97:$VS,99:$VT},o($V8,[2,48]),{12:[1,125]},{12:[1,126]},o([5,7,20,39,52,54,55,59,64,67,69,72,75,76,77,78,79,80,81,82,83,84,85],$Vb,{48:127,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VW,$Vb,{71:128,48:129,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($V8,[2,42],{23:[1,130]}),o($VX,[2,44]),o($VX,[2,46],{90:112,92:116,49:131,11:$VU,25:$VV,79:$VQ,93:$VR,97:$VS,99:$VT}),o($VH,[2,27]),o($VH,[2,31]),o($VH,[2,32],{54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC}),o($VH,[2,33]),o([5,7,14,20,23,26,39,52,54,55,59,67,72],[2,93],{91:[1,132]}),o($VY,$VE,{96:133,94:134,2:$VZ,91:$V_,97:$V$}),o($VY,$VF,{94:134,96:137,2:$VZ,91:$V_,97:$V$}),o($VW,$Vb,{48:138,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($V01,[2,95]),{2:$VZ,94:139,97:$V$},{11:$V11,25:$V21,79:$V31,93:$V41,95:143,97:[1,141],98:140,99:$V51,100:$V61},o($V01,$V_,{94:134,96:149,2:$VZ,97:$V$}),{12:[1,150]},{14:[1,151],23:[1,152]},o($V71,[2,64]),o($V01,$V_,{96:133,94:134,2:$VZ,97:$V$}),o($V01,$V_,{94:134,96:137,2:$VZ,97:$V$}),o([14,23,54,64,75,76,77,78,80,81,82,83,84,85],$Vb,{90:112,92:116,70:121,49:122,71:128,48:129,11:$VO,12:$Vd,25:$VP,26:$Vf,79:$VQ,86:$Vg,87:$Vh,88:$Vi,93:$VR,97:$VS,99:$VT}),{13:153,24:154,25:$V81},o($V8,[2,57],{64:$Vr,69:[1,156],75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC}),{14:[1,157],23:[1,158]},o($V71,[2,66],{54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC}),{25:$VN,58:159},o($VX,[2,45]),{11:$VU,25:$VV,79:$VQ,92:160,93:$VR,97:$VS,99:$VT},o($V01,[2,97]),{11:$V11,25:$V21,79:$V31,93:$V41,95:143,98:161,99:$V51,100:$V61},o($V91,[2,103],{97:[1,162]}),{97:[1,163]},o($V01,[2,102]),{14:$VJ,23:[1,164],54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC},{11:$V11,25:$V21,79:$V31,95:165,99:$V51,100:$V61},o($V01,$V_,{94:134,96:166,2:$VZ,97:$V$}),{11:$V11,25:$V21,79:$V31,93:$V41,95:143,98:167,99:$V51,100:$V61},o($Va1,[2,113],{93:[1,168]}),o($Va1,[2,115]),o($Va1,[2,108]),o($Va1,[2,109]),{12:[1,169]},{11:[1,172],25:[1,174],79:[1,171],99:[1,173],101:170},o($Va1,[2,112]),o($V01,[2,100]),{14:[1,175]},o($V8,[2,62]),{11:$VU,25:$VV,49:176,79:$VQ,90:112,92:116,93:$VR,97:$VS,99:$VT},{14:[1,177],23:[1,178]},o($V71,[2,6]),{15:[1,179]},o([5,7,20,39,52,54,55,59,64,72,75,76,77,78,79,80,81,82,83,84,85],$Vb,{48:180,34:181,11:$Vc,12:$Vd,25:$Ve,26:$Vf,67:$V6,86:$Vg,87:$Vh,88:$Vi}),o($VD,[2,89]),o($VW,$Vb,{48:182,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($VX,[2,43]),o($V01,[2,94]),o($V01,$V_,{94:134,96:183,2:$VZ,97:$V$}),o($V91,[2,104]),o($V91,[2,105]),o($Vo,$Vb,{48:184,11:$Vc,12:$Vd,25:$Ve,26:$Vf,86:$Vg,87:$Vh,88:$Vi}),o($V01,$V_,{94:134,96:185,2:$VZ,97:$V$}),o($V01,[2,98]),o($V01,$V_,{94:134,96:186,2:$VZ,97:$V$}),o($Va1,[2,114]),{14:[1,187]},o($Va1,[2,111]),o($Va1,[2,116]),o($Va1,[2,117]),{12:[1,188]},o($Va1,[2,119]),o($V01,$V_,{94:134,96:189,2:$VZ,97:$V$}),o($V71,[2,63]),{15:[1,190]},{24:191,25:$V81},{16:[1,192]},o($V8,[2,58],{64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC}),o($V8,[2,59]),o($V71,[2,65],{54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC}),o($V01,[2,106]),{14:[1,193],54:$Vq,64:$Vr,75:$Vs,76:$Vt,77:$Vu,78:$Vv,79:$Vw,80:$Vx,81:$Vy,82:$Vz,83:$VA,84:$VB,85:$VC},o($V01,[2,96]),o($V01,[2,99]),o($Va1,[2,110]),{102:[1,194]},o($V01,[2,101]),{16:[1,195]},o($V71,[2,5]),{10:[1,196]},o($VH,[2,30]),o($Va1,[2,118]),{10:[1,197]},{17:198,27:$Vb1,28:$Vc1,29:$Vd1,30:$Ve1,31:$Vf1},{17:204,27:$Vb1,28:$Vc1,29:$Vd1,30:$Ve1,31:$Vf1},o($V71,$Vg1,{18:205,22:$Vh1}),o($Vi1,[2,9]),o($Vi1,[2,10]),o($Vi1,[2,11]),o($Vi1,[2,12]),o($Vi1,[2,13]),{18:207,19:$Vg1,22:$Vh1},o($V71,[2,7]),o([14,19,23],[2,3]),{19:[1,208]},{4:209,5:$V0,6:5,7:$V1,26:$V2,32:3,33:4,34:6,35:7,36:8,37:9,38:10,39:$V3,52:$V4,59:$V5,67:$V6,72:$V7},{5:$V0,6:5,7:$V1,20:[1,210],26:$V2,32:20,33:4,34:6,35:7,36:8,37:9,38:10,39:$V3,52:$V4,59:$V5,67:$V6,72:$V7},{21:[1,211]},o($V8,[2,2])],
+defaultActions: {46:[2,8],98:[2,28]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -1170,84 +1169,92 @@ case 48:return "tk_at"
 break;
 case 49:return "tk_local";
 break;
-case 50: return "tk_gt"
+case 50: return "tk_mayor"
 break;
-case 51: return "tk_lt"
+case 51: return "tk_menor"
 break;
-case 52:return "tk_barra"
+case 52:return "tk_igual"
 break;
-case 53:return "tk_punto"
+case 53:return "tk_distinto"
 break;
-case 54:return "tk_punto_coma"
+case 54:return "tk_menorIgual"
 break;
-case 55:return "tk_coma"
+case 55:return "tk_mayorIgual"
 break;
-case 56:return "tk_diagonal"
+case 56:return "tk_barra"
 break;
-case 57:return "tk_asterisco"
+case 57:return "tk_punto"
 break;
-case 58:return "tk_Interroga"
+case 58:return "tk_punto_coma"
 break;
-case 59:return "tk_mas"
+case 59:return "tk_coma"
 break;
-case 60:return "tk_menos"
+case 60:return "tk_diagonal"
 break;
-case 61:return "tk_menorIgual"
+case 61:return "tk_asterisco"
 break;
-case 62:return "tk_mayorIgual"
+case 62:return "tk_Interroga"
 break;
-case 63:return "tk_menor"
+case 63:return "tk_mas"
 break;
-case 64:return "tk_mayor"
+case 64:return "tk_menos"
 break;
-case 65:return "tk_distinto"
+case 65:return "tk_menorIgual"
 break;
-case 66:return "tk_igualXQUERY"
+case 66:return "tk_mayorIgual"
 break;
-case 67:return "tk_dosPuntos"
+case 67:return "tk_menor"
 break;
-case 68:return "tk_igual"
+case 68:return "tk_mayor"
 break;
-case 69:return "tk_llaveA"
+case 69:return "tk_distinto"
 break;
-case 70:return "tk_llaveC"
+case 70:return "tk_igualXQUERY"
 break;
-case 71:return "tk_arroba"
+case 71:return "tk_dosPuntos"
 break;
-case 72:return "llaveA"
+case 72:return "tk_igual"
 break;
-case 73:return "llaveC"
+case 73:return "tk_llaveA"
 break;
-case 74:return "tk_parA"
+case 74:return "tk_llaveC"
 break;
-case 75:return "tk_parC"
+case 75:return "tk_arroba"
 break;
-case 76:return "tk_stringTexto";
+case 76:return "llaveA"
 break;
-case 77:return "tk_stringTexto";
+case 77:return "llaveC"
 break;
-case 78:return "tk_stringTexto";
+case 78:return "tk_parA"
 break;
-case 79:return "tk_stringTexto";
+case 79:return "tk_parC"
 break;
-case 80:return "tk_identificador";
+case 80:return "tk_stringTexto";
 break;
-case 81:return "tk_identificadorXQUERY";
+case 81:return "tk_stringTexto";
+break;
+case 82:return "tk_stringTexto";
+break;
+case 83:return "tk_stringTexto";
+break;
+case 84:return "tk_identificador";
+break;
+case 85:return "tk_identificadorXQUERY";
 console.log("indentificador papa")
 
 break;
-case 82:return "EOF";
+case 86:return "EOF";
 break;
-case 83:
+case 87:
 break;
-case 84:         
+case 88:         
     console.log('Léxico',yy_.yytext,yy_.yylloc.first_line,yy_.yylloc.first_column );
 
 break;
 }
 },
-rules: [/^(?:\/\/.*)/,/^(?:\(:)/,/^(?::\))/,/^(?:.)/,/^(?:\s+)/,/^(?:[0-9]+(\.[0-9]+)\b)/,/^(?:[0-9]+\b)/,/^(?:node\b)/,/^(?:child\b)/,/^(?:let\b)/,/^(?:descendant\b)/,/^(?:descendant-or-self\b)/,/^(?:ancestor\b)/,/^(?:ancestor-or-self\b)/,/^(?:attribute\b)/,/^(?:following\b)/,/^(?:following-sibling\b)/,/^(?:parent\b)/,/^(?:preceding\b)/,/^(?:preceding-sibling\b)/,/^(?:self\b)/,/^(?:text\b)/,/^(?:position\b)/,/^(?:last\b)/,/^(?:div\b)/,/^(?:and\b)/,/^(?:or\b)/,/^(?:mod\b)/,/^(?:for\b)/,/^(?:in\b)/,/^(?:where\b)/,/^(?:order\b)/,/^(?:by\b)/,/^(?:return\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:then\b)/,/^(?:int\b)/,/^(?:integer\b)/,/^(?:string\b)/,/^(?:decimal\b)/,/^(?:double\b)/,/^(?:declare\b)/,/^(?:function\b)/,/^(?:AS\b)/,/^(?:as\b)/,/^(?:xs\b)/,/^(?:to\b)/,/^(?:at\b)/,/^(?:local\b)/,/^(?:gt\b)/,/^(?:lt\b)/,/^(?:\|)/,/^(?:\.)/,/^(?:;)/,/^(?:,)/,/^(?:\/)/,/^(?:\*)/,/^(?:\?)/,/^(?:\+)/,/^(?:-)/,/^(?:<=)/,/^(?:>=)/,/^(?:<)/,/^(?:>)/,/^(?:!=)/,/^(?::=)/,/^(?::)/,/^(?:=)/,/^(?:\[)/,/^(?:\])/,/^(?:@)/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:"[^\"]*")/,/^(?:“[^\“]*“)/,/^(?:'[^\']*')/,/^(?:‘[^\‘]*‘)/,/^(?:[a-zA-Z]([a-zA-Z0-9_])*)/,/^(?:[$]([a-zA-Z0-9_])*)/,/^(?:$)/,/^(?:[ \t\r\n\f])/,/^(?:.)/],
-conditions: {"comment":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84],"inclusive":true},"INITIAL":{"rules":[0,1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84],"inclusive":true}}
+rules: [/^(?:\/\/.*)/,/^(?:\(:)/,/^(?::\))/,/^(?:.)/,/^(?:\s+)/,/^(?:[0-9]+(\.[0-9]+)\b)/,/^(?:[0-9]+\b)/,/^(?:node\b)/,/^(?:child\b)/,/^(?:let\b)/,/^(?:descendant\b)/,/^(?:descendant-or-self\b)/,/^(?:ancestor\b)/,/^(?:ancestor-or-self\b)/,/^(?:attribute\b)/,/^(?:following\b)/,/^(?:following-sibling\b)/,/^(?:parent\b)/,/^(?:preceding\b)/,/^(?:preceding-sibling\b)/,/^(?:self\b)/,/^(?:text\b)/,/^(?:position\b)/,/^(?:last\b)/,/^(?:div\b)/,/^(?:and\b)/,/^(?:or\b)/,/^(?:mod\b)/,/^(?:for\b)/,/^(?:in\b)/,/^(?:where\b)/,/^(?:order\b)/,/^(?:by\b)/,/^(?:return\b)/,/^(?:if\b)/,/^(?:else\b)/,/^(?:then\b)/,/^(?:int\b)/,/^(?:integer\b)/,/^(?:string\b)/,/^(?:decimal\b)/,/^(?:double\b)/,/^(?:declare\b)/,/^(?:function\b)/,/^(?:AS\b)/,/^(?:as\b)/,/^(?:xs\b)/,/^(?:to\b)/,/^(?:at\b)/,/^(?:local\b)/,/^(?:gt\b)/,/^(?:lt\b)/,/^(?:eq\b)/,/^(?:ne\b)/,/^(?:le\b)/,/^(?:ge\b)/,/^(?:\|)/,/^(?:\.)/,/^(?:;)/,/^(?:,)/,/^(?:\/)/,/^(?:\*)/,/^(?:\?)/,/^(?:\+)/,/^(?:-)/,/^(?:<=)/,/^(?:>=)/,/^(?:<)/,/^(?:>)/,/^(?:!=)/,/^(?::=)/,/^(?::)/,/^(?:=)/,/^(?:\[)/,/^(?:\])/,/^(?:@)/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:"[^\"]*")/,/^(?:“[^\“]*“)/,/^(?:'[^\']*')/,/^(?:‘[^\‘]*‘)/,/^(?:[a-zA-Z]([a-zA-Z0-9_])*)/,/^(?:[$]([a-zA-Z0-9_])*)/,/^(?:$)/,/^(?:[ \t\r\n\f])/,/^(?:.)/],
+conditions: {"comment":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88],"inclusive":true},"INITIAL":{"rules":[0,1,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88],"inclusive":true}}
 });
 return lexer;
 })();
