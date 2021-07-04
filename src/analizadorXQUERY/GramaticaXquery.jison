@@ -322,6 +322,7 @@ INSTRUCCION :
             accion.push(`INSTRUCCION.Val = DECLARACION_GLOBAL.Val`);
             $$ = $1
         }
+    |EOF    
     | FUNCION 
         {
             produccion.push(`<INSTRUCCION> ::= <FUNCION>`);
