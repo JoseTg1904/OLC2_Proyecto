@@ -243,4 +243,10 @@ export class xpathBusqueda {
         }*/
         return this.listObjects;
     }
+
+    clearList() {
+        this.listNodosName = [];
+        this.listObjects = [];
+    }
+    
 }
