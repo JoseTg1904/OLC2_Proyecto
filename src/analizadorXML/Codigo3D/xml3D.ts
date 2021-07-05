@@ -169,7 +169,8 @@ void xml(){
     // ---------------------------------------- INICIO CODIGO PARA IMPRIMIR LOS VALORES XML
     sp = t1 - 1;
     int t4 = 0;
-    
+    t4 = t4 + 0;
+
     printf("VALORES XML:%c",10);
 
     etiqueta_for:
@@ -200,6 +201,7 @@ void xml(){
         }
     etiqueta_imp3:
         t2 = t4;
+        t2 = t2 + 0;
         imprimir();
         goto etiqueta_for2;
     // ---------------------------------------- FIN CODIGO PARA IMPRIMIR LOS VALORES
@@ -306,6 +308,7 @@ ${this.crear3DDecla(definiciones)}
                 //lista += `\tSTACK[(int)${this.contadorStack}] =  t1;   // --- AGREGAR OBJETO\n`;
                 //this.contadorStack++;
                 lista += `\tt0 = t1;\n`;
+                lista += `\tt0 = t0 + 0;\n`;
                 lista += `\tHEAP[t1] = ${valores[i]};   //RAIZ\n`;
                 lista += `\tt1 = t1 + 1;\n`;
                 lista += `\tSTACK[(int)${this.contadorStack}] =  t0;   // --- AGREGAR OBJETO\n`;
@@ -315,6 +318,7 @@ ${this.crear3DDecla(definiciones)}
             else if (valores[i].includes("153")) {
                 this.contadorStack++;
                 lista += `\tt0 = t1;\n`;
+                lista += `\tt0 = t0 + 0;\n`;
                 lista += `\tHEAP[t1] = ${valores[i]};   //OBJETO\n`;
                 lista += `\tt1 = t1 + 1;\n`;
                 lista += `\tSTACK[(int)${this.contadorStack}] =  t0;   // --- AGREGAR OBJETO\n`;
@@ -486,8 +490,10 @@ ${this.crear3DDecla(definiciones)}
     //Construcción deficiones
     crear3DDecla(lista: any): string {
         var decla3D = `void declaraciones(){
+         
     t6 = sp + 1;
     t7 = t6;
+    t7 = t7 * 1;
 
     ${this.generate3DDecla(lista)}
 
@@ -548,6 +554,7 @@ ${this.crear3DDecla(definiciones)}
         caracteres = caracteres.concat(this.getCharAtCodeSplit(valor));
         this.contadorStack++;
         tmpWord += `\tt0 = t1;\n`;
+        tmpWord += `\tt0 = t0 * 1;\n`;
         for (let i = 0; i < caracteres.length; i++) {
             tmpWord += `\tHEAP[t1] = ${caracteres[i]};     //${caracteres[i]}\n`;
             tmpWord += `\tt1 = t1 + 1;\n`;
