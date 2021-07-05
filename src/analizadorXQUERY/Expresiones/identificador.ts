@@ -25,7 +25,6 @@ export class Identificador extends Nodo {
             tree.errores.push(error);
             return error;
         }
-        console.log(variable)
         this.tipo = variable.tipo;
         this.valor = variable.valor;
         return variable.valor;

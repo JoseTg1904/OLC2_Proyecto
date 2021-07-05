@@ -48,8 +48,6 @@ export class Declaracion extends Nodo {
         }else{
             tipo = new Tipo(esEntero(result))
         }
-        console.log(isNaN(result))
-
 
         simbolo = new Simbolo(tipo, this.id, result, new Tipo(tipos.VARIABLE), this.line, this.column);
         const res = table.setVariable(simbolo);
