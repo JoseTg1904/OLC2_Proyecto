@@ -183,8 +183,10 @@ pero todo esto se ignora*/
     const {ToCharArray} = require('../Expresiones/ToCharArray');*/
     const { AnalizadorASCXML } = require('../analizadorXML/index');
     const { xpathBusqueda } = require('../analizadorXML/Instrucciones/Busqueda/xpathBusqueda');
+    const { xml3D } = require('../analizadorXML/Codigo3D/xml3D')
     var produccion = [];
     var accion = [];
+    var codigo3Dxpath = [];
 %}
 
 %left tk_local
@@ -209,6 +211,7 @@ INICIO_XQUERY : INSTRUCCIONES EOF
         let arbol = new Tree($1);
         arbol.accion = accion;
         arbol.produccion = produccion;
+        arbol.salida3d = codigo3Dxpath
         return arbol;
     }
     ;
@@ -379,7 +382,7 @@ CORDERNADA:
     tk_parA EXP_XQUERY tk_coma EXP_XQUERY tk_parC ;
 
 FOR_REC:
-    XPATH
+    f
     | EXP_XQUERY 
     | CORDERNADA;
 //111111111+1111
@@ -740,6 +743,12 @@ XPATH :
             }
 
             let retorno = buscador.returnListObjects()
+            
+            let dir = new xml3D();
+            let salida3D = dir.getNodesByFilters(tabla, 0, buscador.returnListValues());
+            salida3D = "// 3D de consulta: " + query + salida3D
+            codigo3Dxpath.push(salida3D)
+
             let valor = retorno[0].texto;
             let tipoR;
 

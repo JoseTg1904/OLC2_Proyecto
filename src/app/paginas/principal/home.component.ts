@@ -108,6 +108,7 @@ local:ackerman(/pruebas/m, /pruebas/n)`;
   astXquery: string = "";
   cstXquery: string = ``;
   tablaXquery: any[] = [];
+  bnfXquery: any[] = []
 
   //reportesVisualizacion
   grafo:boolean = false;
@@ -143,6 +144,12 @@ local:ackerman(/pruebas/m, /pruebas/n)`;
     this.astXquery = ret.ast
     this.cstXquery = ret.cst
     this.tablaXquery = ret.tabla
+    this.bnfXquery = ret.bnf;
+    this.salida3D = ""
+    for (let i = 0 ; i < ret.salida3d.length; i++) {
+      this.salida3D += ret.salida3d[i];
+      this.salida3D += "\n\n\n" 
+    }
 
     this.xmlSalida = "";
     for(let i = 0; i < ret.consola.length; i++){
@@ -245,11 +252,19 @@ local:ackerman(/pruebas/m, /pruebas/n)`;
   }
 
   reporteTablaXQUERY() {
-
+    this.botarReportes();
+    localStorage.clear();
+    console.log(this.tablaXquery);
+    localStorage.setItem('tablaXquery', JSON.stringify(this.tablaXquery));
+    this.tabla2 = true;
   }
 
   reporteBNFXQUERY() {
-
+    this.botarReportes();
+    localStorage.clear();
+    console.log(this.bnfXquery)
+    localStorage.setItem('bnf', JSON.stringify(this.bnfXquery));
+    this.bnf = true;
   }
 
   reporteTablaSimbolosXML() {

@@ -24,6 +24,7 @@ import { ToUpper } from './Expresiones/uppercase';
 import { ToNumber } from './Expresiones/ToNumber';
 import { graphAST, graphCST } from './Varios/Graficar';
 import { NodoCST } from './Arbol/NodoCST';
+import { GramaticaBNF } from './Arbol/GramaticaBNF';
 
 import * as gramatica from './GramaticaXquery';
 
@@ -32,7 +33,9 @@ interface retorno {
     consola: any,
     ast: any,
     cst: any,
-    tabla: any
+    tabla: any,
+    bnf: any,
+    salida3d: any
 }
 
 export class AnalizadorXquery {
@@ -46,7 +49,9 @@ export class AnalizadorXquery {
             consola: [],
             ast: "",
             cst: "",
-            tabla: []
+            tabla: [],
+            bnf: [],
+            salida3d: []
         };
 
         try {
@@ -59,7 +64,6 @@ export class AnalizadorXquery {
                 } catch (error) {
                 const error2 = new Error('Sintactico', `Irrecuperable`, 0, 0);
                     tree.consola.push(error2.toString());
-                    console.log(error)
                 }
             });
         
@@ -81,16 +85,16 @@ export class AnalizadorXquery {
             console.log(ret.cst)
             ret.ast = graphAST(init);
 
-            //graphTabla(tree.Variables);
-            //graphAST(init);
-            //graphTabla(tree.Variables);
-        
+            let bnfC = new GramaticaBNF(tree.produccion, tree.accion)
+            let reporteBNF = bnfC.getBNFReport();
+
             console.log(tree)
             ret.consola = tree.consola;
             ret.errores = tree.errores;
-            ret.tabla = tree.Variables
+            ret.tabla = tree.Variables;
+            ret.bnf = reporteBNF;
+            ret.salida3d = tree.salida3d;
         } catch (error) {
-            console.log(error)
             let consola2 = new Array<String>();
             consola2.push(error);
             consola2.push("Ocurrio un Error sintactico Irrecuperable\n\n");
