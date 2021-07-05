@@ -216,6 +216,7 @@ ${this.getXpath3D(xpath)}
 
 ${this.crear3DDecla(definiciones)}
 
+
 \n\n`
 
 
@@ -299,48 +300,48 @@ ${this.crear3DDecla(definiciones)}
         //var contadorStack = 0;
         for (let i = 0; i < valores.length; i++) {
             if (valores[i] === '') {
-                lista += `\tHEAP[t1] = 32;   //TEXTO VACIO \n`;
-                lista += `\tt1 = t1 + 1;\n`;
+                lista += `  HEAP[t1] = 32;   //TEXTO VACIO \n`;
+                lista += `  t1 = t1 + 1;\n`;
 
                 this.tmpArray.push('32');
             }
             else if (valores[i].includes("152")) {
-                //lista += `\tSTACK[(int)${this.contadorStack}] =  t1;   // --- AGREGAR OBJETO\n`;
+                //lista += `    STACK[(int)${this.contadorStack}] =  t1;   // --- AGREGAR OBJETO\n`;
                 //this.contadorStack++;
-                lista += `\tt0 = t1;\n`;
-                lista += `\tt0 = t0 + 0;\n`;
-                lista += `\tHEAP[t1] = ${valores[i]};   //RAIZ\n`;
-                lista += `\tt1 = t1 + 1;\n`;
-                lista += `\tSTACK[(int)${this.contadorStack}] =  t0;   // --- AGREGAR OBJETO\n`;
+                lista += `  t0 = t1;\n`;
+                lista += `  t0 = t0 + 0;\n`;
+                lista += `  HEAP[t1] = ${valores[i]};   //RAIZ\n`;
+                lista += `  t1 = t1 + 1;\n`;
+                lista += `  STACK[(int)${this.contadorStack}] =  t0;   // --- AGREGAR OBJETO\n`;
 
                 this.tmpArray.push(153);
             }
             else if (valores[i].includes("153")) {
                 this.contadorStack++;
-                lista += `\tt0 = t1;\n`;
-                lista += `\tt0 = t0 + 0;\n`;
-                lista += `\tHEAP[t1] = ${valores[i]};   //OBJETO\n`;
-                lista += `\tt1 = t1 + 1;\n`;
-                lista += `\tSTACK[(int)${this.contadorStack}] =  t0;   // --- AGREGAR OBJETO\n`;
+                lista += `  t0 = t1;\n`;
+                lista += `  t0 = t0 + 0;\n`;
+                lista += `  HEAP[t1] = ${valores[i]};   //OBJETO\n`;
+                lista += `  t1 = t1 + 1;\n`;
+                lista += `  STACK[(int)${this.contadorStack}] =  t0;   // --- AGREGAR OBJETO\n`;
 
                 this.tmpArray.push(valores[i]);
             }
             else if (valores[i].includes("154")) {
-                lista += `\tHEAP[t1] = ${valores[i]};   //ATRIBUTO\n`;
-                lista += `\tt1 = t1 + 1;\n`;
+                lista += `  HEAP[t1] = ${valores[i]};   //ATRIBUTO\n`;
+                lista += `  t1 = t1 + 1;\n`;
 
                 this.tmpArray.push(valores[i]);
             }
             else if (valores[i].startsWith(" ")) {
                 lista += this.splitString(valores[i].substring(1));
-                lista += `\tHEAP[t1] = -1;   // --------- FIN DEL STRING\n`;
-                lista += `\tt1 = t1 + 1;\n`;
+                lista += `  HEAP[t1] = -1;   // --------- FIN DEL STRING\n`;
+                lista += `  t1 = t1 + 1;\n`;
 
                 this.tmpArray.push(-1);
             } else {
                 lista += this.splitString(valores[i]);
-                lista += `\tHEAP[t1] = -1;   // --------- FIN DEL STRING\n`;
-                lista += `\tt1 = t1 + 1;\n`;
+                lista += `  HEAP[t1] = -1;   // --------- FIN DEL STRING\n`;
+                lista += `  t1 = t1 + 1;\n`;
 
                 this.tmpArray.push(-1);
             }
@@ -368,8 +369,8 @@ ${this.crear3DDecla(definiciones)}
             } else {
                 letter = tmp[i].charCodeAt(0);
             }
-            tmpWord += `\tHEAP[t1] = ${letter};     //${tmp[i]}\n`;
-            tmpWord += `\tt1 = t1 + 1;\n`;
+            tmpWord += `    HEAP[t1] = ${letter};     //${tmp[i]}\n`;
+            tmpWord += `    t1 = t1 + 1;\n`;
 
             this.tmpArray.push(letter);
         }
@@ -552,16 +553,16 @@ ${this.crear3DDecla(definiciones)}
         caracteres = caracteres.concat(this.getCharAtCodeSplit(nombre));
         caracteres = caracteres.concat(-2);
         caracteres = caracteres.concat(this.getCharAtCodeSplit(valor));
-        this.contadorStack++;
-        tmpWord += `\tt0 = t1;\n`;
-        tmpWord += `\tt0 = t0 * 1;\n`;
+        this.contadorStack++;    
+        tmpWord += `    t0 = t1;\n`;
+        tmpWord += `    t0 = t0 * 1;\n`;
         for (let i = 0; i < caracteres.length; i++) {
-            tmpWord += `\tHEAP[t1] = ${caracteres[i]};     //${caracteres[i]}\n`;
-            tmpWord += `\tt1 = t1 + 1;\n`;
+            tmpWord += `    HEAP[t1] = ${caracteres[i]};     //${caracteres[i]}\n`;
+            tmpWord += `    t1 = t1 + 1;\n`;
         }
-        tmpWord += `\tHEAP[t1] = -1;     //FIN DE LA DECLARACIÓN\n`;
-        tmpWord += `\tt1 = t1 + 1;\n`;
-        tmpWord += `\tSTACK[(int)${this.contadorStack}] =  t0;   // --- AGREGAR VARIABLE\n`;
+        tmpWord += `    HEAP[t1] = -1;     //FIN DE LA DECLARACIÓN\n`;
+        tmpWord += `    t1 = t1 + 1;\n`;
+        tmpWord += `    STACK[(int)${this.contadorStack}] =  t0;   // --- AGREGAR VARIABLE\n`;
         return tmpWord
     }
 
