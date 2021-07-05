@@ -69,8 +69,6 @@
 "case"      {return "tk_case"}
 "lower"     {return "tk_lower"}
 "substring" {return "tk_subString"}
-"toString"             {return "tk_toString"}
-"tonumber"             {return "tk_tonumber"}
 
 //conjunto de simbolos aceptados
 "|"  {return "tk_barra"}
@@ -529,9 +527,9 @@ NATIVAS:
         {
             $$ = new Substrings($3, $5, new Primitivo(new Tipo(esEntero(Number(-1))), Number(-1), @1.first_line, @1.first_column), @1.first_line, @1.first_column)
         }
-    | tk_toString tk_parA DUALIDAD tk_coma DUALIDAD tk_coma DUALIDAD tk_parC 
+    | tk_subString tk_parA DUALIDAD tk_coma DUALIDAD tk_coma DUALIDAD tk_parC 
         {
-            $$ = new ToString($3, @1.first_line, @1.first_column)
+            $$ = new Substrings($3, $5, $7, @1.first_line, @1.first_column)
         }
     ;
 
