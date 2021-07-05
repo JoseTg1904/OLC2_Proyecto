@@ -245,7 +245,6 @@ ${this.crear3DDecla(definiciones)}
            //     throw error;
             //}
         //});
-        console.log(this.salida3D)
         return this.salida3D;
     }
 
@@ -407,6 +406,7 @@ ${this.crear3DDecla(definiciones)}
     // Obtener code del caracter 
     getCharAtCodeSplit(valL: any) {
         var tmpAr: any = [];
+        valL = valL.toString()
         valL = valL.split('');
         for (let i = 0; i < valL.length; i++) {
             var letter = '';
@@ -486,7 +486,6 @@ ${this.crear3DDecla(definiciones)}
     //Construcción deficiones
     crear3DDecla(lista: any): string {
         var decla3D = `void declaraciones(){
-         
     t6 = sp + 1;
     t7 = t6;
 

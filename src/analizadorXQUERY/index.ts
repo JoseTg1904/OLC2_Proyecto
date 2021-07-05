@@ -25,6 +25,7 @@ import { ToNumber } from './Expresiones/ToNumber';
 import { graphAST, graphCST } from './Varios/Graficar';
 import { NodoCST } from './Arbol/NodoCST';
 import { GramaticaBNF } from './Arbol/GramaticaBNF';
+import { xml3D } from '../analizadorXML/Codigo3D/xml3D';
 
 import * as gramatica from './GramaticaXquery';
 
@@ -82,11 +83,13 @@ export class AnalizadorXquery {
             init2.agregarHijo(instr2);
 
             ret.cst = graphCST(init2);
-            console.log(ret.cst)
             ret.ast = graphAST(init);
 
             let bnfC = new GramaticaBNF(tree.produccion, tree.accion)
             let reporteBNF = bnfC.getBNFReport();
+
+            let buscador = new xml3D();
+            
 
             console.log(tree)
             ret.consola = tree.consola;
@@ -94,6 +97,7 @@ export class AnalizadorXquery {
             ret.tabla = tree.Variables;
             ret.bnf = reporteBNF;
             ret.salida3d = tree.salida3d;
+            ret.salida3d.push(buscador.generate3DDecla(tree.Variables))
         } catch (error) {
             let consola2 = new Array<String>();
             consola2.push(error);
