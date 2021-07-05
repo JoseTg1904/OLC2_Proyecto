@@ -69,6 +69,8 @@
 "case"      {return "tk_case"}
 "lower"     {return "tk_lower"}
 "substring" {return "tk_subString"}
+"toString"             {return "tk_toString"}
+"tonumber"             {return "tk_tonumber"}
 
 //conjunto de simbolos aceptados
 "|"  {return "tk_barra"}
